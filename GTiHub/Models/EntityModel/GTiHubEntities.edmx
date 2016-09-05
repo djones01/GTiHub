@@ -1,0 +1,1224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ihubdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="industry" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="condId" />
+          </Key>
+          <Property Name="condId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="left_paren" Type="char" MaxLength="1" />
+          <Property Name="sfieldId" Type="int" Nullable="false" />
+          <Property Name="operator" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="cond_value" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="right_paren" Type="char" MaxLength="1" />
+          <Property Name="transformId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Map">
+          <Key>
+            <PropertyRef Name="mapId" />
+          </Key>
+          <Property Name="mapId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="effective_date" Type="datetime" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="projectId" />
+          </Key>
+          <Property Name="projectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="proj_type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="clientId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectMap">
+          <Key>
+            <PropertyRef Name="proj_map_Id" />
+          </Key>
+          <Property Name="proj_map_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="projectId" Type="int" Nullable="false" />
+          <Property Name="mapId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectSource">
+          <Key>
+            <PropertyRef Name="proj_source_Id" />
+          </Key>
+          <Property Name="proj_source_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="projectId" Type="int" Nullable="false" />
+          <Property Name="sourceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectTarget">
+          <Key>
+            <PropertyRef Name="proj_target_Id" />
+          </Key>
+          <Property Name="proj_target_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="projectId" Type="int" Nullable="false" />
+          <Property Name="targetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rule">
+          <Key>
+            <PropertyRef Name="ruleId" />
+          </Key>
+          <Property Name="ruleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tfieldId" Type="int" Nullable="false" />
+          <Property Name="transformId" Type="int" Nullable="false" />
+          <Property Name="rule_value" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RuleSourceField">
+          <Key>
+            <PropertyRef Name="rulesourceId" />
+          </Key>
+          <Property Name="rulesourceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ruleId" Type="int" Nullable="false" />
+          <Property Name="sfieldId" Type="int" Nullable="false" />
+          <Property Name="append" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="prepend" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="custom_format" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="sourceId" />
+          </Key>
+          <Property Name="sourceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="effective_date" Type="datetime" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SourceField">
+          <Key>
+            <PropertyRef Name="sfieldId" />
+          </Key>
+          <Property Name="sfieldId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="datatype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="sequence_num" Type="int" Nullable="false" />
+          <Property Name="sourceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Target">
+          <Key>
+            <PropertyRef Name="targetId" />
+          </Key>
+          <Property Name="targetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="effective_date" Type="datetime" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TargetField">
+          <Key>
+            <PropertyRef Name="tfieldId" />
+          </Key>
+          <Property Name="tfieldId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="datatype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="sequence_num" Type="int" Nullable="false" />
+          <Property Name="targetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transformation">
+          <Key>
+            <PropertyRef Name="transformId" />
+          </Key>
+          <Property Name="transformId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="mapId" Type="int" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="creation_date" Type="datetime" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="salt" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="hash" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProjectSec">
+          <Key>
+            <PropertyRef Name="user_proj_sec_Id" />
+          </Key>
+          <Property Name="user_proj_sec_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="projectId" Type="int" Nullable="false" />
+          <Property Name="added_date" Type="datetime" Nullable="false" />
+          <Property Name="access_level" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Condition_SourceField">
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="1" />
+          <End Role="Condition" Type="Self.Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SourceField">
+              <PropertyRef Name="sfieldId" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="sfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Condition_Transformation">
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="1" />
+          <End Role="Condition" Type="Self.Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transformation">
+              <PropertyRef Name="transformId" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="transformId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMap_Map">
+          <End Role="Map" Type="Self.Map" Multiplicity="1" />
+          <End Role="ProjectMap" Type="Self.ProjectMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Map">
+              <PropertyRef Name="mapId" />
+            </Principal>
+            <Dependent Role="ProjectMap">
+              <PropertyRef Name="mapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMap_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectMap" Type="Self.ProjectMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectMap">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectSource_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectSource" Type="Self.ProjectSource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectSource">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectSource_Source">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="ProjectSource" Type="Self.ProjectSource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="sourceId" />
+            </Principal>
+            <Dependent Role="ProjectSource">
+              <PropertyRef Name="sourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectTarget_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectTarget" Type="Self.ProjectTarget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectTarget">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectTarget_Target">
+          <End Role="Target" Type="Self.Target" Multiplicity="1" />
+          <End Role="ProjectTarget" Type="Self.ProjectTarget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="targetId" />
+            </Principal>
+            <Dependent Role="ProjectTarget">
+              <PropertyRef Name="targetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rule_TargetField">
+          <End Role="TargetField" Type="Self.TargetField" Multiplicity="1" />
+          <End Role="Rule" Type="Self.Rule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TargetField">
+              <PropertyRef Name="tfieldId" />
+            </Principal>
+            <Dependent Role="Rule">
+              <PropertyRef Name="tfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rule_Transformation">
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="1" />
+          <End Role="Rule" Type="Self.Rule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transformation">
+              <PropertyRef Name="transformId" />
+            </Principal>
+            <Dependent Role="Rule">
+              <PropertyRef Name="transformId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSourceField_Rule">
+          <End Role="Rule" Type="Self.Rule" Multiplicity="1" />
+          <End Role="RuleSourceField" Type="Self.RuleSourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rule">
+              <PropertyRef Name="ruleId" />
+            </Principal>
+            <Dependent Role="RuleSourceField">
+              <PropertyRef Name="ruleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSourceField_SourceField">
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="1" />
+          <End Role="RuleSourceField" Type="Self.RuleSourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SourceField">
+              <PropertyRef Name="sfieldId" />
+            </Principal>
+            <Dependent Role="RuleSourceField">
+              <PropertyRef Name="sfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SourceField_Source">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="sourceId" />
+            </Principal>
+            <Dependent Role="SourceField">
+              <PropertyRef Name="sourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TargetField_Target">
+          <End Role="Target" Type="Self.Target" Multiplicity="1" />
+          <End Role="TargetField" Type="Self.TargetField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="targetId" />
+            </Principal>
+            <Dependent Role="TargetField">
+              <PropertyRef Name="targetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transformation_Map">
+          <End Role="Map" Type="Self.Map" Multiplicity="1" />
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Map">
+              <PropertyRef Name="mapId" />
+            </Principal>
+            <Dependent Role="Transformation">
+              <PropertyRef Name="mapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectSec_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="UserProjectSec" Type="Self.UserProjectSec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="UserProjectSec">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectSec_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserProjectSec" Type="Self.UserProjectSec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="UserProjectSec">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ihubdbModelStoreContainer">
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Condition" EntityType="Self.Condition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Map" EntityType="Self.Map" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectMap" EntityType="Self.ProjectMap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectSource" EntityType="Self.ProjectSource" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectTarget" EntityType="Self.ProjectTarget" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RuleSourceField" EntityType="Self.RuleSourceField" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Source" EntityType="Self.Source" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SourceField" EntityType="Self.SourceField" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Target" EntityType="Self.Target" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TargetField" EntityType="Self.TargetField" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transformation" EntityType="Self.Transformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProjectSec" EntityType="Self.UserProjectSec" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Condition_SourceField" Association="Self.FK_Condition_SourceField">
+            <End Role="SourceField" EntitySet="SourceField" />
+            <End Role="Condition" EntitySet="Condition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Condition_Transformation" Association="Self.FK_Condition_Transformation">
+            <End Role="Transformation" EntitySet="Transformation" />
+            <End Role="Condition" EntitySet="Condition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Client" Association="Self.FK_Project_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMap_Map" Association="Self.FK_ProjectMap_Map">
+            <End Role="Map" EntitySet="Map" />
+            <End Role="ProjectMap" EntitySet="ProjectMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMap_Project" Association="Self.FK_ProjectMap_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectMap" EntitySet="ProjectMap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectSource_Project" Association="Self.FK_ProjectSource_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectSource" EntitySet="ProjectSource" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectSource_Source" Association="Self.FK_ProjectSource_Source">
+            <End Role="Source" EntitySet="Source" />
+            <End Role="ProjectSource" EntitySet="ProjectSource" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTarget_Project" Association="Self.FK_ProjectTarget_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="ProjectTarget" EntitySet="ProjectTarget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTarget_Target" Association="Self.FK_ProjectTarget_Target">
+            <End Role="Target" EntitySet="Target" />
+            <End Role="ProjectTarget" EntitySet="ProjectTarget" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rule_TargetField" Association="Self.FK_Rule_TargetField">
+            <End Role="TargetField" EntitySet="TargetField" />
+            <End Role="Rule" EntitySet="Rule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rule_Transformation" Association="Self.FK_Rule_Transformation">
+            <End Role="Transformation" EntitySet="Transformation" />
+            <End Role="Rule" EntitySet="Rule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSourceField_Rule" Association="Self.FK_RuleSourceField_Rule">
+            <End Role="Rule" EntitySet="Rule" />
+            <End Role="RuleSourceField" EntitySet="RuleSourceField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSourceField_SourceField" Association="Self.FK_RuleSourceField_SourceField">
+            <End Role="SourceField" EntitySet="SourceField" />
+            <End Role="RuleSourceField" EntitySet="RuleSourceField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SourceField_Source" Association="Self.FK_SourceField_Source">
+            <End Role="Source" EntitySet="Source" />
+            <End Role="SourceField" EntitySet="SourceField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TargetField_Target" Association="Self.FK_TargetField_Target">
+            <End Role="Target" EntitySet="Target" />
+            <End Role="TargetField" EntitySet="TargetField" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transformation_Map" Association="Self.FK_Transformation_Map">
+            <End Role="Map" EntitySet="Map" />
+            <End Role="Transformation" EntitySet="Transformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectSec_Project" Association="Self.FK_UserProjectSec_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UserProjectSec" EntitySet="UserProjectSec" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectSec_User" Association="Self.FK_UserProjectSec_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProjectSec" EntitySet="UserProjectSec" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ihubdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Project_Client" FromRole="Client" ToRole="Project" />
+          <Property Name="industry" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Condition">
+          <Key>
+            <PropertyRef Name="condId" />
+          </Key>
+          <Property Name="condId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="left_paren" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="sfieldId" Type="Int32" Nullable="false" />
+          <Property Name="operator" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="cond_value" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="right_paren" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="transformId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SourceField" Relationship="Self.FK_Condition_SourceField" FromRole="Condition" ToRole="SourceField" />
+          <NavigationProperty Name="Transformation" Relationship="Self.FK_Condition_Transformation" FromRole="Condition" ToRole="Transformation" />
+        </EntityType>
+        <EntityType Name="Map">
+          <Key>
+            <PropertyRef Name="mapId" />
+          </Key>
+          <Property Name="mapId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="effective_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProjectMaps" Relationship="Self.FK_ProjectMap_Map" FromRole="Map" ToRole="ProjectMap" />
+          <NavigationProperty Name="Transformations" Relationship="Self.FK_Transformation_Map" FromRole="Map" ToRole="Transformation" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="projectId" />
+          </Key>
+          <Property Name="projectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="proj_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="clientId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Project_Client" FromRole="Project" ToRole="Client" />
+          <NavigationProperty Name="ProjectMaps" Relationship="Self.FK_ProjectMap_Project" FromRole="Project" ToRole="ProjectMap" />
+          <NavigationProperty Name="ProjectSources" Relationship="Self.FK_ProjectSource_Project" FromRole="Project" ToRole="ProjectSource" />
+          <NavigationProperty Name="ProjectTargets" Relationship="Self.FK_ProjectTarget_Project" FromRole="Project" ToRole="ProjectTarget" />
+          <NavigationProperty Name="UserProjectSecs" Relationship="Self.FK_UserProjectSec_Project" FromRole="Project" ToRole="UserProjectSec" />
+        </EntityType>
+        <EntityType Name="ProjectMap">
+          <Key>
+            <PropertyRef Name="proj_map_Id" />
+          </Key>
+          <Property Name="proj_map_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="projectId" Type="Int32" Nullable="false" />
+          <Property Name="mapId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Map" Relationship="Self.FK_ProjectMap_Map" FromRole="ProjectMap" ToRole="Map" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_ProjectMap_Project" FromRole="ProjectMap" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="ProjectSource">
+          <Key>
+            <PropertyRef Name="proj_source_Id" />
+          </Key>
+          <Property Name="proj_source_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="projectId" Type="Int32" Nullable="false" />
+          <Property Name="sourceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_ProjectSource_Project" FromRole="ProjectSource" ToRole="Project" />
+          <NavigationProperty Name="Source" Relationship="Self.FK_ProjectSource_Source" FromRole="ProjectSource" ToRole="Source" />
+        </EntityType>
+        <EntityType Name="ProjectTarget">
+          <Key>
+            <PropertyRef Name="proj_target_Id" />
+          </Key>
+          <Property Name="proj_target_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="projectId" Type="Int32" Nullable="false" />
+          <Property Name="targetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_ProjectTarget_Project" FromRole="ProjectTarget" ToRole="Project" />
+          <NavigationProperty Name="Target" Relationship="Self.FK_ProjectTarget_Target" FromRole="ProjectTarget" ToRole="Target" />
+        </EntityType>
+        <EntityType Name="Rule">
+          <Key>
+            <PropertyRef Name="ruleId" />
+          </Key>
+          <Property Name="ruleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tfieldId" Type="Int32" Nullable="false" />
+          <Property Name="transformId" Type="Int32" Nullable="false" />
+          <Property Name="rule_value" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TargetField" Relationship="Self.FK_Rule_TargetField" FromRole="Rule" ToRole="TargetField" />
+          <NavigationProperty Name="Transformation" Relationship="Self.FK_Rule_Transformation" FromRole="Rule" ToRole="Transformation" />
+          <NavigationProperty Name="RuleSourceFields" Relationship="Self.FK_RuleSourceField_Rule" FromRole="Rule" ToRole="RuleSourceField" />
+        </EntityType>
+        <EntityType Name="RuleSourceField">
+          <Key>
+            <PropertyRef Name="rulesourceId" />
+          </Key>
+          <Property Name="rulesourceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ruleId" Type="Int32" Nullable="false" />
+          <Property Name="sfieldId" Type="Int32" Nullable="false" />
+          <Property Name="append" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="prepend" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="custom_format" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Rule" Relationship="Self.FK_RuleSourceField_Rule" FromRole="RuleSourceField" ToRole="Rule" />
+          <NavigationProperty Name="SourceField" Relationship="Self.FK_RuleSourceField_SourceField" FromRole="RuleSourceField" ToRole="SourceField" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="sourceId" />
+          </Key>
+          <Property Name="sourceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="effective_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProjectSources" Relationship="Self.FK_ProjectSource_Source" FromRole="Source" ToRole="ProjectSource" />
+          <NavigationProperty Name="SourceFields" Relationship="Self.FK_SourceField_Source" FromRole="Source" ToRole="SourceField" />
+        </EntityType>
+        <EntityType Name="SourceField">
+          <Key>
+            <PropertyRef Name="sfieldId" />
+          </Key>
+          <Property Name="sfieldId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="datatype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="sequence_num" Type="Int32" Nullable="false" />
+          <Property Name="sourceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Conditions" Relationship="Self.FK_Condition_SourceField" FromRole="SourceField" ToRole="Condition" />
+          <NavigationProperty Name="RuleSourceFields" Relationship="Self.FK_RuleSourceField_SourceField" FromRole="SourceField" ToRole="RuleSourceField" />
+          <NavigationProperty Name="Source" Relationship="Self.FK_SourceField_Source" FromRole="SourceField" ToRole="Source" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Target">
+          <Key>
+            <PropertyRef Name="targetId" />
+          </Key>
+          <Property Name="targetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="effective_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProjectTargets" Relationship="Self.FK_ProjectTarget_Target" FromRole="Target" ToRole="ProjectTarget" />
+          <NavigationProperty Name="TargetFields" Relationship="Self.FK_TargetField_Target" FromRole="Target" ToRole="TargetField" />
+        </EntityType>
+        <EntityType Name="TargetField">
+          <Key>
+            <PropertyRef Name="tfieldId" />
+          </Key>
+          <Property Name="tfieldId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="datatype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
+          <Property Name="sequence_num" Type="Int32" Nullable="false" />
+          <Property Name="targetId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rules" Relationship="Self.FK_Rule_TargetField" FromRole="TargetField" ToRole="Rule" />
+          <NavigationProperty Name="Target" Relationship="Self.FK_TargetField_Target" FromRole="TargetField" ToRole="Target" />
+        </EntityType>
+        <EntityType Name="Transformation">
+          <Key>
+            <PropertyRef Name="transformId" />
+          </Key>
+          <Property Name="transformId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="mapId" Type="Int32" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Conditions" Relationship="Self.FK_Condition_Transformation" FromRole="Transformation" ToRole="Condition" />
+          <NavigationProperty Name="Map" Relationship="Self.FK_Transformation_Map" FromRole="Transformation" ToRole="Map" />
+          <NavigationProperty Name="Rules" Relationship="Self.FK_Rule_Transformation" FromRole="Transformation" ToRole="Rule" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="creation_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="salt" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="hash" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="UserProjectSecs" Relationship="Self.FK_UserProjectSec_User" FromRole="User" ToRole="UserProjectSec" />
+        </EntityType>
+        <EntityType Name="UserProjectSec">
+          <Key>
+            <PropertyRef Name="user_proj_sec_Id" />
+          </Key>
+          <Property Name="user_proj_sec_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="projectId" Type="Int32" Nullable="false" />
+          <Property Name="added_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="access_level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_UserProjectSec_Project" FromRole="UserProjectSec" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserProjectSec_User" FromRole="UserProjectSec" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Project_Client">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Condition_SourceField">
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="1" />
+          <End Role="Condition" Type="Self.Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SourceField">
+              <PropertyRef Name="sfieldId" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="sfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Condition_Transformation">
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="1" />
+          <End Role="Condition" Type="Self.Condition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transformation">
+              <PropertyRef Name="transformId" />
+            </Principal>
+            <Dependent Role="Condition">
+              <PropertyRef Name="transformId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMap_Map">
+          <End Role="Map" Type="Self.Map" Multiplicity="1" />
+          <End Role="ProjectMap" Type="Self.ProjectMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Map">
+              <PropertyRef Name="mapId" />
+            </Principal>
+            <Dependent Role="ProjectMap">
+              <PropertyRef Name="mapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transformation_Map">
+          <End Role="Map" Type="Self.Map" Multiplicity="1" />
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Map">
+              <PropertyRef Name="mapId" />
+            </Principal>
+            <Dependent Role="Transformation">
+              <PropertyRef Name="mapId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectMap_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectMap" Type="Self.ProjectMap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectMap">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectSource_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectSource" Type="Self.ProjectSource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectSource">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectTarget_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="ProjectTarget" Type="Self.ProjectTarget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="ProjectTarget">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectSec_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="UserProjectSec" Type="Self.UserProjectSec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="UserProjectSec">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectSource_Source">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="ProjectSource" Type="Self.ProjectSource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="sourceId" />
+            </Principal>
+            <Dependent Role="ProjectSource">
+              <PropertyRef Name="sourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProjectTarget_Target">
+          <End Role="Target" Type="Self.Target" Multiplicity="1" />
+          <End Role="ProjectTarget" Type="Self.ProjectTarget" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="targetId" />
+            </Principal>
+            <Dependent Role="ProjectTarget">
+              <PropertyRef Name="targetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rule_TargetField">
+          <End Role="TargetField" Type="Self.TargetField" Multiplicity="1" />
+          <End Role="Rule" Type="Self.Rule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TargetField">
+              <PropertyRef Name="tfieldId" />
+            </Principal>
+            <Dependent Role="Rule">
+              <PropertyRef Name="tfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rule_Transformation">
+          <End Role="Transformation" Type="Self.Transformation" Multiplicity="1" />
+          <End Role="Rule" Type="Self.Rule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Transformation">
+              <PropertyRef Name="transformId" />
+            </Principal>
+            <Dependent Role="Rule">
+              <PropertyRef Name="transformId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSourceField_Rule">
+          <End Role="Rule" Type="Self.Rule" Multiplicity="1" />
+          <End Role="RuleSourceField" Type="Self.RuleSourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rule">
+              <PropertyRef Name="ruleId" />
+            </Principal>
+            <Dependent Role="RuleSourceField">
+              <PropertyRef Name="ruleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSourceField_SourceField">
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="1" />
+          <End Role="RuleSourceField" Type="Self.RuleSourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SourceField">
+              <PropertyRef Name="sfieldId" />
+            </Principal>
+            <Dependent Role="RuleSourceField">
+              <PropertyRef Name="sfieldId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SourceField_Source">
+          <End Role="Source" Type="Self.Source" Multiplicity="1" />
+          <End Role="SourceField" Type="Self.SourceField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Source">
+              <PropertyRef Name="sourceId" />
+            </Principal>
+            <Dependent Role="SourceField">
+              <PropertyRef Name="sourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TargetField_Target">
+          <End Role="Target" Type="Self.Target" Multiplicity="1" />
+          <End Role="TargetField" Type="Self.TargetField" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Target">
+              <PropertyRef Name="targetId" />
+            </Principal>
+            <Dependent Role="TargetField">
+              <PropertyRef Name="targetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectSec_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserProjectSec" Type="Self.UserProjectSec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="UserProjectSec">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GTiHubEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Conditions" EntityType="Self.Condition" />
+          <EntitySet Name="Maps" EntityType="Self.Map" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="ProjectMaps" EntityType="Self.ProjectMap" />
+          <EntitySet Name="ProjectSources" EntityType="Self.ProjectSource" />
+          <EntitySet Name="ProjectTargets" EntityType="Self.ProjectTarget" />
+          <EntitySet Name="Rules" EntityType="Self.Rule" />
+          <EntitySet Name="RuleSourceFields" EntityType="Self.RuleSourceField" />
+          <EntitySet Name="Sources" EntityType="Self.Source" />
+          <EntitySet Name="SourceFields" EntityType="Self.SourceField" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Targets" EntityType="Self.Target" />
+          <EntitySet Name="TargetFields" EntityType="Self.TargetField" />
+          <EntitySet Name="Transformations" EntityType="Self.Transformation" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserProjectSecs" EntityType="Self.UserProjectSec" />
+          <AssociationSet Name="FK_Project_Client" Association="Self.FK_Project_Client">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Condition_SourceField" Association="Self.FK_Condition_SourceField">
+            <End Role="SourceField" EntitySet="SourceFields" />
+            <End Role="Condition" EntitySet="Conditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Condition_Transformation" Association="Self.FK_Condition_Transformation">
+            <End Role="Transformation" EntitySet="Transformations" />
+            <End Role="Condition" EntitySet="Conditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMap_Map" Association="Self.FK_ProjectMap_Map">
+            <End Role="Map" EntitySet="Maps" />
+            <End Role="ProjectMap" EntitySet="ProjectMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transformation_Map" Association="Self.FK_Transformation_Map">
+            <End Role="Map" EntitySet="Maps" />
+            <End Role="Transformation" EntitySet="Transformations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectMap_Project" Association="Self.FK_ProjectMap_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectMap" EntitySet="ProjectMaps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectSource_Project" Association="Self.FK_ProjectSource_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectSource" EntitySet="ProjectSources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTarget_Project" Association="Self.FK_ProjectTarget_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ProjectTarget" EntitySet="ProjectTargets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectSec_Project" Association="Self.FK_UserProjectSec_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UserProjectSec" EntitySet="UserProjectSecs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectSource_Source" Association="Self.FK_ProjectSource_Source">
+            <End Role="Source" EntitySet="Sources" />
+            <End Role="ProjectSource" EntitySet="ProjectSources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProjectTarget_Target" Association="Self.FK_ProjectTarget_Target">
+            <End Role="Target" EntitySet="Targets" />
+            <End Role="ProjectTarget" EntitySet="ProjectTargets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rule_TargetField" Association="Self.FK_Rule_TargetField">
+            <End Role="TargetField" EntitySet="TargetFields" />
+            <End Role="Rule" EntitySet="Rules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rule_Transformation" Association="Self.FK_Rule_Transformation">
+            <End Role="Transformation" EntitySet="Transformations" />
+            <End Role="Rule" EntitySet="Rules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSourceField_Rule" Association="Self.FK_RuleSourceField_Rule">
+            <End Role="Rule" EntitySet="Rules" />
+            <End Role="RuleSourceField" EntitySet="RuleSourceFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSourceField_SourceField" Association="Self.FK_RuleSourceField_SourceField">
+            <End Role="SourceField" EntitySet="SourceFields" />
+            <End Role="RuleSourceField" EntitySet="RuleSourceFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SourceField_Source" Association="Self.FK_SourceField_Source">
+            <End Role="Source" EntitySet="Sources" />
+            <End Role="SourceField" EntitySet="SourceFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TargetField_Target" Association="Self.FK_TargetField_Target">
+            <End Role="Target" EntitySet="Targets" />
+            <End Role="TargetField" EntitySet="TargetFields" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectSec_User" Association="Self.FK_UserProjectSec_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserProjectSec" EntitySet="UserProjectSecs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ihubdbModelStoreContainer" CdmEntityContainer="GTiHubEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="ihubdbModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="industry" ColumnName="industry" />
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Conditions">
+            <EntityTypeMapping TypeName="ihubdbModel.Condition">
+              <MappingFragment StoreEntitySet="Condition">
+                <ScalarProperty Name="condId" ColumnName="condId" />
+                <ScalarProperty Name="left_paren" ColumnName="left_paren" />
+                <ScalarProperty Name="sfieldId" ColumnName="sfieldId" />
+                <ScalarProperty Name="operator" ColumnName="operator" />
+                <ScalarProperty Name="cond_value" ColumnName="cond_value" />
+                <ScalarProperty Name="right_paren" ColumnName="right_paren" />
+                <ScalarProperty Name="transformId" ColumnName="transformId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Maps">
+            <EntityTypeMapping TypeName="ihubdbModel.Map">
+              <MappingFragment StoreEntitySet="Map">
+                <ScalarProperty Name="mapId" ColumnName="mapId" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="ihubdbModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="proj_type" ColumnName="proj_type" />
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectMaps">
+            <EntityTypeMapping TypeName="ihubdbModel.ProjectMap">
+              <MappingFragment StoreEntitySet="ProjectMap">
+                <ScalarProperty Name="proj_map_Id" ColumnName="proj_map_Id" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="mapId" ColumnName="mapId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectSources">
+            <EntityTypeMapping TypeName="ihubdbModel.ProjectSource">
+              <MappingFragment StoreEntitySet="ProjectSource">
+                <ScalarProperty Name="proj_source_Id" ColumnName="proj_source_Id" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="sourceId" ColumnName="sourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectTargets">
+            <EntityTypeMapping TypeName="ihubdbModel.ProjectTarget">
+              <MappingFragment StoreEntitySet="ProjectTarget">
+                <ScalarProperty Name="proj_target_Id" ColumnName="proj_target_Id" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="targetId" ColumnName="targetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rules">
+            <EntityTypeMapping TypeName="ihubdbModel.Rule">
+              <MappingFragment StoreEntitySet="Rule">
+                <ScalarProperty Name="ruleId" ColumnName="ruleId" />
+                <ScalarProperty Name="tfieldId" ColumnName="tfieldId" />
+                <ScalarProperty Name="transformId" ColumnName="transformId" />
+                <ScalarProperty Name="rule_value" ColumnName="rule_value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleSourceFields">
+            <EntityTypeMapping TypeName="ihubdbModel.RuleSourceField">
+              <MappingFragment StoreEntitySet="RuleSourceField">
+                <ScalarProperty Name="rulesourceId" ColumnName="rulesourceId" />
+                <ScalarProperty Name="ruleId" ColumnName="ruleId" />
+                <ScalarProperty Name="sfieldId" ColumnName="sfieldId" />
+                <ScalarProperty Name="append" ColumnName="append" />
+                <ScalarProperty Name="prepend" ColumnName="prepend" />
+                <ScalarProperty Name="custom_format" ColumnName="custom_format" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sources">
+            <EntityTypeMapping TypeName="ihubdbModel.Source">
+              <MappingFragment StoreEntitySet="Source">
+                <ScalarProperty Name="sourceId" ColumnName="sourceId" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SourceFields">
+            <EntityTypeMapping TypeName="ihubdbModel.SourceField">
+              <MappingFragment StoreEntitySet="SourceField">
+                <ScalarProperty Name="sfieldId" ColumnName="sfieldId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="datatype" ColumnName="datatype" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="sequence_num" ColumnName="sequence_num" />
+                <ScalarProperty Name="sourceId" ColumnName="sourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ihubdbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Targets">
+            <EntityTypeMapping TypeName="ihubdbModel.Target">
+              <MappingFragment StoreEntitySet="Target">
+                <ScalarProperty Name="targetId" ColumnName="targetId" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="effective_date" ColumnName="effective_date" />
+                <ScalarProperty Name="active" ColumnName="active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TargetFields">
+            <EntityTypeMapping TypeName="ihubdbModel.TargetField">
+              <MappingFragment StoreEntitySet="TargetField">
+                <ScalarProperty Name="tfieldId" ColumnName="tfieldId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="datatype" ColumnName="datatype" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="sequence_num" ColumnName="sequence_num" />
+                <ScalarProperty Name="targetId" ColumnName="targetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transformations">
+            <EntityTypeMapping TypeName="ihubdbModel.Transformation">
+              <MappingFragment StoreEntitySet="Transformation">
+                <ScalarProperty Name="transformId" ColumnName="transformId" />
+                <ScalarProperty Name="mapId" ColumnName="mapId" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ihubdbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="creation_date" ColumnName="creation_date" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="salt" ColumnName="salt" />
+                <ScalarProperty Name="hash" ColumnName="hash" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProjectSecs">
+            <EntityTypeMapping TypeName="ihubdbModel.UserProjectSec">
+              <MappingFragment StoreEntitySet="UserProjectSec">
+                <ScalarProperty Name="user_proj_sec_Id" ColumnName="user_proj_sec_Id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="added_date" ColumnName="added_date" />
+                <ScalarProperty Name="access_level" ColumnName="access_level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

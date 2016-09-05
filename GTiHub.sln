@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTiHub", "GTiHub\GTiHub.csproj", "{55512F11-F456-4439-9271-1D90CEB99FEB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTiHub", "GTiHub\GTiHub.csproj", "{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{55512F11-F456-4439-9271-1D90CEB99FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55512F11-F456-4439-9271-1D90CEB99FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55512F11-F456-4439-9271-1D90CEB99FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55512F11-F456-4439-9271-1D90CEB99FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

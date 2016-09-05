@@ -1,4 +1,29 @@
-﻿body {
+﻿/*
+    Layout Styling
+*/
+.nav li > a:hover {
+    background-color: #583589;
+}
+.nav li a{
+    color: #fff;
+}
+.navbar {
+    background-color: #9884B9;
+}
+
+/* Custom CSS */
+.content-container {
+    margin: 20px;
+}
+
+.pad-content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Auto Generated CSS */
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }

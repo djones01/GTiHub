@@ -1,0 +1,40 @@
+﻿@section scripts{
+
+    <script src="~/Scripts/angular/Client/ClientAngular.js"></script>
+}
+
+<div class="content-container" ng-app="ClientApp"  ng-controller="ClientController">
+    <h4>Create / Search Clients</h4>
+    <hr />
+    <div class="container">      
+        <form>
+            <div class="form-group row">
+                <label for="clientNameInput">Client Name</label>
+                <input type="text" class="form-control" id="clientNameInput" placeholder="Client Name" ng-model="client.name"/>
+            </div>
+            <div class="form-group row">
+                <label for="">Client Industry</label>
+                <select class="form-control" id="clientIndSelect" ng-model="client.industry">
+                    <option>Healthcare</option>
+                    <option>Technology</option>
+                </select>
+            </div>
+            <div class="form-group row">
+                <button type="button" class="btn btn-primary" id="addClient" ng-click='addClient()'>Add Client</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <br />
+        <div>
+            <table class="table">
+                <tr ng-repeat="r in clients | filter: clientNameInput">
+                    <td>{{r.name}}</td>
+                    <td>{{r.creation_date}}</td>
+                    <td>{{r.industry}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+

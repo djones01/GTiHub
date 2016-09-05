@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{55512F11-F456-4439-9271-1D90CEB99FEB}</ProjectGuid>
+    <ProjectGuid>{2743726B-0A5E-45B8-9BDC-DDC81C2FD173}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -122,6 +122,7 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -214,6 +215,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\ClientsController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MeController.cs" />
@@ -221,6 +224,72 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EntityModel\Client.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Condition.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\GTiHubEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTiHubEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\GTiHubEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\GTiHubEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTiHubEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Map.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Project.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\ProjectMap.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\ProjectSource.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\ProjectTarget.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Rule.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\RuleSourceField.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Source.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\SourceField.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\sysdiagram.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Target.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\TargetField.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\Transformation.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\User.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntityModel\UserProjectSec.cs">
+      <DependentUpon>GTiHubEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MeViewModels.cs" />
@@ -235,9 +304,31 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\EntityModel\GTiHubEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GTiHubEntities.edmx</DependentUpon>
+      <LastGenOutput>GTiHubEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\EntityModel\GTiHubEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GTiHubEntities.edmx</DependentUpon>
+      <LastGenOutput>GTiHubEntities.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular\Client\ClientAngular.js" />
+    <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -259,13 +350,18 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <EntityDeploy Include="Models\EntityModel\GTiHubEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>GTiHubEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\EntityModel\GTiHubEntities.edmx.diagram">
+      <DependentUpon>GTiHubEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="Scripts\angular-resource.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\knockout-2.3.0.debug.js" />
-    <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\knockout.validation.debug.js" />
-    <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -314,6 +410,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\Client\ManageClients.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -325,6 +422,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -342,9 +442,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>55538</DevelopmentServerPort>
+          <DevelopmentServerPort>57633</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:55538/</IISUrl>
+          <IISUrl>http://localhost:57633/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
