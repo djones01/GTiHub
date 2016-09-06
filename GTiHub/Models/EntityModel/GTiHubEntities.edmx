@@ -176,6 +176,7 @@
           <Property Name="projectId" Type="int" Nullable="false" />
           <Property Name="added_date" Type="datetime" Nullable="false" />
           <Property Name="access_level" Type="int" Nullable="false" />
+          <Property Name="active_on_project" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Condition_SourceField">
           <End Role="SourceField" Type="Self.SourceField" Multiplicity="1" />
@@ -695,6 +696,7 @@
           <Property Name="access_level" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Project" Relationship="Self.FK_UserProjectSec_Project" FromRole="UserProjectSec" ToRole="Project" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserProjectSec_User" FromRole="UserProjectSec" ToRole="User" />
+          <Property Name="active_on_project" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Project_Client">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
@@ -1190,6 +1192,7 @@
           <EntitySetMapping Name="UserProjectSecs">
             <EntityTypeMapping TypeName="ihubdbModel.UserProjectSec">
               <MappingFragment StoreEntitySet="UserProjectSec">
+                <ScalarProperty Name="active_on_project" ColumnName="active_on_project" />
                 <ScalarProperty Name="user_proj_sec_Id" ColumnName="user_proj_sec_Id" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="projectId" ColumnName="projectId" />

@@ -12,44 +12,44 @@ using GTiHub.Models.EntityModel;
 
 namespace GTiHub.Controllers.API
 {
-    public class ClientsController : ApiController
+    public class UsersController : ApiController
     {
         private GTiHubEntities db = new GTiHubEntities();
 
-        // GET: api/Clients
-        public IQueryable<Client> GetClients()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Clients;
+            return db.Users;
         }
 
-        // GET: api/Clients/5
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult GetClient(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult GetUser(int id)
         {
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(client);
+            return Ok(user);
         }
 
-        // PUT: api/Clients/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutClient(int id, Client client)
+        public IHttpActionResult PutUser(int id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != client.clientId)
+            if (id != user.userId)
             {
                 return BadRequest();
             }
 
-            db.Entry(client).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace GTiHub.Controllers.API
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClientExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace GTiHub.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Clients
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult PostClient(Client client)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public IHttpActionResult PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Clients.Add(client);
+            db.Users.Add(user);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = client.clientId }, client);
+            return CreatedAtRoute("DefaultApi", new { id = user.userId }, user);
         }
 
-        // DELETE: api/Clients/5
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult DeleteClient(int id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult DeleteUser(int id)
         {
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.Clients.Remove(client);
+            db.Users.Remove(user);
             db.SaveChanges();
 
-            return Ok(client);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace GTiHub.Controllers.API
             base.Dispose(disposing);
         }
 
-        private bool ClientExists(int id)
+        private bool UserExists(int id)
         {
-            return db.Clients.Count(e => e.clientId == id) > 0;
+            return db.Users.Count(e => e.userId == id) > 0;
         }
     }
 }

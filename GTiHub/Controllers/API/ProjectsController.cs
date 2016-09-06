@@ -12,44 +12,44 @@ using GTiHub.Models.EntityModel;
 
 namespace GTiHub.Controllers.API
 {
-    public class ClientsController : ApiController
+    public class ProjectsController : ApiController
     {
         private GTiHubEntities db = new GTiHubEntities();
 
-        // GET: api/Clients
-        public IQueryable<Client> GetClients()
+        // GET: api/Projects
+        public IQueryable<Project> GetProjects()
         {
-            return db.Clients;
+            return db.Projects;
         }
 
-        // GET: api/Clients/5
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult GetClient(int id)
+        // GET: api/Projects/5
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult GetProject(int id)
         {
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            Project project = db.Projects.Find(id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return Ok(client);
+            return Ok(project);
         }
 
-        // PUT: api/Clients/5
+        // PUT: api/Projects/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutClient(int id, Client client)
+        public IHttpActionResult PutProject(int id, Project project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != client.clientId)
+            if (id != project.projectId)
             {
                 return BadRequest();
             }
 
-            db.Entry(client).State = EntityState.Modified;
+            db.Entry(project).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace GTiHub.Controllers.API
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClientExists(id))
+                if (!ProjectExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace GTiHub.Controllers.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Clients
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult PostClient(Client client)
+        // POST: api/Projects
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult PostProject(Project project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Clients.Add(client);
+            db.Projects.Add(project);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = client.clientId }, client);
+            return CreatedAtRoute("DefaultApi", new { id = project.projectId }, project);
         }
 
-        // DELETE: api/Clients/5
-        [ResponseType(typeof(Client))]
-        public IHttpActionResult DeleteClient(int id)
+        // DELETE: api/Projects/5
+        [ResponseType(typeof(Project))]
+        public IHttpActionResult DeleteProject(int id)
         {
-            Client client = db.Clients.Find(id);
-            if (client == null)
+            Project project = db.Projects.Find(id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            db.Clients.Remove(client);
+            db.Projects.Remove(project);
             db.SaveChanges();
 
-            return Ok(client);
+            return Ok(project);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace GTiHub.Controllers.API
             base.Dispose(disposing);
         }
 
-        private bool ClientExists(int id)
+        private bool ProjectExists(int id)
         {
-            return db.Clients.Count(e => e.clientId == id) > 0;
+            return db.Projects.Count(e => e.projectId == id) > 0;
         }
     }
 }

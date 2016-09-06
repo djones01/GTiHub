@@ -26,14 +26,7 @@
     </div>
     <div class="container">
         <br />
-        <div>
-            <table class="table">
-                <tr ng-repeat="r in clients | filter: clientNameInput">
-                    <td>{{r.name}}</td>
-                    <td>{{r.creation_date}}</td>
-                    <td>{{r.industry}}</td>
-                </tr>
-            </table>
+        <div ui-grid="gridOptions" ui-grid-edit>
         </div>
     </div>
 </div>

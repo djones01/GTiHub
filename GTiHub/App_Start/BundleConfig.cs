@@ -12,9 +12,10 @@ namespace GTiHub
         {
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                 "~/Scripts/angular.js",
-                "~/Scripts/angular-resource.js"
+                "~/Scripts/angular-resource.js",
                 "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
-                "~/Scripts/angular-ui/ui-bootstrap.min.js"));
+                "~/Scripts/angular-ui/ui-bootstrap.min.js",
+                "~/Scripts/ui-grid.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/Scripts/jquery-{version}.js"));
@@ -40,9 +41,10 @@ namespace GTiHub
                 "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                 "~/Content/bootstrap.css",
+                 "~/Content/bootstrap.min.css",
                  "~/Content/Site.css",
-                 "~/Content/ui-bootstrap-csp.css"));
+                 "~/Content/ui-bootstrap-csp.css",
+                 "~/Content/ui-grid.min.css"));
         }
     }
 }

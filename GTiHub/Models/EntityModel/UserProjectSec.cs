@@ -19,6 +19,7 @@ namespace GTiHub.Models.EntityModel
         public int projectId { get; set; }
         public System.DateTime added_date { get; set; }
         public int access_level { get; set; }
+        public bool active_on_project { get; set; }
     
         public virtual Project Project { get; set; }
         public virtual User User { get; set; }

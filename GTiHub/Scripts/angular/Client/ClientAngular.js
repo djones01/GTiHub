@@ -1,8 +1,9 @@
-﻿var ClientApp = angular.module('ClientApp', ['ngResource']);
+﻿var ClientApp = angular.module('ClientApp', ['ngResource', 'ui.grid','ui.grid.edit']);
 ClientApp.controller('ClientController', function ($scope, ClientService) {
     $scope.refreshClients = function () {
         ClientService.query(function (clients) {
             $scope.clients = clients;
+            $scope.gridOptions.data = clients;
         });
     };
 
@@ -17,6 +18,16 @@ ClientApp.controller('ClientController', function ($scope, ClientService) {
 
             }
         );
+    };
+
+    $scope.gridOptions = {
+        enableSorting: true,
+        columnDefs: [
+            { name: 'name', field: 'name' },
+            { name: 'creation_date', field: 'creation_date' },
+            { name: 'industry', field: 'industry' }
+        ],
+        data: $scope.clients
     };
 
     $scope.refreshClients();
