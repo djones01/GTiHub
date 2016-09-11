@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,6 +15,8 @@ namespace GTiHub.Models.EntityModel
             this.RuleSourceFields = new List<RuleSourceField>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int sfieldId { get; set; }
         public string name { get; set; }
         public DateTime creation_date { get; set; }

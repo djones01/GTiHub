@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using GTiHub.Models;
 using Microsoft.EntityFrameworkCore;
+using GTiHub.Models.EntityModel;
 
 namespace GTiHub
 {
@@ -32,6 +33,8 @@ namespace GTiHub
             // Add framework services.
             services.AddMvc();
 
+            var connection = @"Server=DJ-PC;Database=ihubdb;Trusted_Connection=True;";
+            services.AddDbContext<GTiHubContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

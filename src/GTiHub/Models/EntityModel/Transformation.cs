@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +14,8 @@ namespace GTiHub.Models.EntityModel
             this.Conditions = new List<Condition>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int transformId { get; set; }
         public int mapId { get; set; }
         public DateTime creation_date { get; set; }

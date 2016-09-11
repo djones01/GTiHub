@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +14,8 @@ namespace GTiHub.Models.EntityModel
             this.RuleSourceFields = new List<RuleSourceField>();
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ruleId { get; set; }
         public int tfieldId { get; set; }
         public int transformId { get; set; }
