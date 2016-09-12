@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class Source
+    public class Source : BaseEntity
     {
         public Source()
         {
@@ -19,7 +19,6 @@ namespace GTiHub.Models.EntityModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int sourceId { get; set; }
         public string description { get; set; }
-        public DateTime creation_date { get; set; }
         public DateTime effective_date { get; set; }
         public bool active { get; set; }
 

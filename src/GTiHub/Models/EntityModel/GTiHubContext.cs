@@ -1,15 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Session;
 
 namespace GTiHub.Models.EntityModel
 {
     public class GTiHubContext : DbContext
     {
-        public GTiHubContext(DbContextOptions<GTiHubContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
+
+        public GTiHubContext(DbContextOptions<GTiHubContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<Client> Clients { get; set; }
@@ -34,6 +38,33 @@ namespace GTiHub.Models.EntityModel
             modelBuilder.Entity<ProjectMap>().HasKey(t => new { t.projectId, t.mapId });
             modelBuilder.Entity<ProjectSource>().HasKey(t => new { t.projectId, t.sourceId });
             modelBuilder.Entity<ProjectTarget>().HasKey(t => new { t.projectId, t.targetId });
+        }
+
+        public override int SaveChanges()
+        {
+            LogCreationAndUser();
+            return base.SaveChanges();
+        }
+
+        private void LogCreationAndUser()
+        {
+            var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            var currentUser = !string.IsNullOrEmpty(_session.GetString("CurrentUser"))
+                ? _session.GetString("CurrentUser")
+                : "Anonymous";
+
+            foreach (var entity in entities)
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).creation_date = DateTime.UtcNow;
+                    ((BaseEntity)entity.Entity).created_by = currentUser;
+                }
+
+                ((BaseEntity)entity.Entity).date_modified = DateTime.UtcNow;
+                ((BaseEntity)entity.Entity).modified_by = currentUser;
+            }
         }
 
     }

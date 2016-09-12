@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class Project
+    public class Project : BaseEntity
     {
         public Project()
         {
@@ -21,7 +21,6 @@ namespace GTiHub.Models.EntityModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int projectId { get; set; }
         public string name { get; set; }
-        public DateTime creation_date { get; set; }
         public string description { get; set; }
         public string proj_type { get; set; }
         public int clientId { get; set; }

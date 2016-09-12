@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class ProjectMap
+    public class ProjectMap : BaseEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]

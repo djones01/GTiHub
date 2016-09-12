@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using GTiHub.Models;
 using Microsoft.EntityFrameworkCore;
 using GTiHub.Models.EntityModel;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace GTiHub
 {
@@ -32,6 +34,10 @@ namespace GTiHub
         {
             // Add framework services.
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var connection = @"Server=DJ-PC;Database=ihubdb;Trusted_Connection=True;";
             services.AddDbContext<GTiHubContext>(options => options.UseSqlServer(connection));
@@ -55,13 +61,15 @@ namespace GTiHub
 
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute("spa-fallback", "{*anything}", new { controller = "Home", action = "Index" });
-                routes.MapWebApiRoute("defaultApi", "api/{controller}/{id?}");
+                //routes.MapWebApiRoute("defaultApi", "api/{controller}/{id?}");
             });
         }
     }

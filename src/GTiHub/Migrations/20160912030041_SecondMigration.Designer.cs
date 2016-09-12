@@ -8,9 +8,10 @@ using GTiHub.Models.EntityModel;
 namespace GTiHub.Migrations
 {
     [DbContext(typeof(GTiHubContext))]
-    partial class GTiHubContextModelSnapshot : ModelSnapshot
+    [Migration("20160912030041_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

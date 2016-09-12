@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class Rule
+    public class Rule : BaseEntity
     {
         public Rule()
         {
@@ -20,7 +20,6 @@ namespace GTiHub.Models.EntityModel
         public int tfieldId { get; set; }
         public int transformId { get; set; }
         public string rule_value { get; set; }
-        public DateTime creation_date { get; set; }
 
         public virtual TargetField TargetField { get; set; }
         public virtual Transformation Transformation { get; set; }

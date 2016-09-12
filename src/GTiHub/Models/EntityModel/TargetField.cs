@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class TargetField
+    public class TargetField : BaseEntity
     {
         public TargetField()
         {
@@ -18,7 +18,6 @@ namespace GTiHub.Models.EntityModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int tfieldId { get; set; }
         public string name { get; set; }
-        public System.DateTime creation_date { get; set; }
         public string datatype { get; set; }
         public bool active { get; set; }
         public int sequence_num { get; set; }

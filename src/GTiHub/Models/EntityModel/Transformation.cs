@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GTiHub.Models.EntityModel
 {
-    public class Transformation
+    public class Transformation : BaseEntity
     {
         public Transformation()
         {
@@ -18,7 +18,6 @@ namespace GTiHub.Models.EntityModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int transformId { get; set; }
         public int mapId { get; set; }
-        public DateTime creation_date { get; set; }
 
         public virtual Map Map { get; set; }
         public virtual Rule Rule { get; set; }
