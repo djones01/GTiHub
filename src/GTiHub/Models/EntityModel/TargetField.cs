@@ -21,7 +21,6 @@ namespace GTiHub.Models.EntityModel
         public string datatype { get; set; }
         public bool active { get; set; }
         public int sequence_num { get; set; }
-        public int targetId { get; set; }
 
         public virtual ICollection<Rule> Rules { get; set; }
         public virtual Target Target { get; set; }

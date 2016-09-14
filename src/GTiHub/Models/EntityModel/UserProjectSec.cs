@@ -12,8 +12,6 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int user_proj_sec_Id { get; set; }
-        public int userId { get; set; }
-        public int projectId { get; set; }
         public DateTime added_date { get; set; }
         public int access_level { get; set; }
         public bool active_on_project { get; set; }

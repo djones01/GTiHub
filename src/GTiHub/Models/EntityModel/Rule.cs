@@ -17,8 +17,7 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ruleId { get; set; }
-        public int tfieldId { get; set; }
-        public int transformId { get; set; }
+
         public string rule_value { get; set; }
 
         public virtual TargetField TargetField { get; set; }

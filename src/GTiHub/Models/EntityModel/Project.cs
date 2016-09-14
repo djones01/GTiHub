@@ -23,7 +23,6 @@ namespace GTiHub.Models.EntityModel
         public string name { get; set; }
         public string description { get; set; }
         public string proj_type { get; set; }
-        public int clientId { get; set; }
 
         public virtual Client Client { get; set; }
         public virtual ICollection<ProjectMap> ProjectMaps { get; set; }

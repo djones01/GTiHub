@@ -12,8 +12,10 @@ namespace GTiHub.Models.EntityModel
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int projectId { get; set; }
+        public virtual Project project { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int targetId { get; set; }
+        public virtual Target target { get; set; }
     }
 }

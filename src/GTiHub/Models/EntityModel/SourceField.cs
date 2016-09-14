@@ -22,7 +22,6 @@ namespace GTiHub.Models.EntityModel
         public string datatype { get; set; }
         public bool active { get; set; }
         public int sequence_num { get; set; }
-        public int sourceId { get; set; }
 
         public virtual ICollection<Condition> Conditions { get; set; }
         public virtual ICollection<RuleSourceField> RuleSourceFields { get; set; }
