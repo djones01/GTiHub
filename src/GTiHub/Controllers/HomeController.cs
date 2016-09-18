@@ -8,5 +8,10 @@ namespace GTiHub.Controllers
         {
             return View();
         }
+
+        public IActionResult Source()
+        {
+            return View("Sources");
+        }
     }
 }
