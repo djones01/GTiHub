@@ -17,10 +17,10 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int targetId { get; set; }
-        public string description { get; set; }
-        public DateTime effective_date { get; set; }
-        public bool active { get; set; }
+        public int TargetId { get; set; }
+        public string Description { get; set; }
+        public DateTime Effective_Date { get; set; }
+        public bool Active { get; set; }
 
         public virtual ICollection<ProjectTarget> ProjectTargets { get; set; }
         public virtual ICollection<TargetField> TargetFields { get; set; }

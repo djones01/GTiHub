@@ -20,7 +20,7 @@ gulp.task("copy-deps:angular2", function () {
 });
 
 gulp.task("copy-deps:rxjs", function () {
-    return gulp.src(paths.npmSrc + '/rxjs/bundles/*.*', { base: paths.npmSrc + '/rxjs/bundles/' })
+    return gulp.src(paths.npmSrc + '/rxjs/**/**/*.*', { base: paths.npmSrc + '/rxjs/' })
          .pipe(gulp.dest(paths.npmLibs + '/rxjs/'));
 });
 

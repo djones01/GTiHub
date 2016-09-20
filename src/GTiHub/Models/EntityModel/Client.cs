@@ -16,10 +16,10 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int clientId { get; set; }
-        public string name { get; set; }
+        public int ClientId { get; set; }
+        public string Name { get; set; }
     
-        public string industry { get; set; }
+        public string Industry { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
     }

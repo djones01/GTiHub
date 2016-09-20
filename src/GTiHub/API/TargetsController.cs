@@ -30,7 +30,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}",Name = "GetTarget")]
         public IActionResult Get(int id)
         {
-            var target = dbContext.Targets.FirstOrDefault(x => x.targetId == id);
+            var target = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
             if (target == null)
             {
                 return NotFound();
@@ -48,28 +48,28 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Targets.Add(target);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetTarget", new { id = target.targetId }, target);
+            return CreatedAtRoute("GetTarget", new { id = target.TargetId }, target);
         }
 
         // PUT api/Targets/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Target target)
         {
-            if (target == null || target.targetId != id)
+            if (target == null || target.TargetId != id)
             {
                 return BadRequest();
             }
 
-            var updatedTarget = dbContext.Targets.FirstOrDefault(x => x.targetId == id);
+            var updatedTarget = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
 
             if (updatedTarget == null)
             {
                 return NotFound();
             }
 
-            updatedTarget.description = target.description;
-            updatedTarget.effective_date = target.effective_date;
-            updatedTarget.active = target.active;
+            updatedTarget.Description = target.Description;
+            updatedTarget.Effective_Date = target.Effective_Date;
+            updatedTarget.Active = target.Active;
             updatedTarget.ProjectTargets = target.ProjectTargets;
             updatedTarget.TargetFields = target.TargetFields;
 
@@ -82,7 +82,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var target = dbContext.Targets.FirstOrDefault(x => x.targetId == id);
+            var target = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
             if (target == null)
             {
                 return NotFound();

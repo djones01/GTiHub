@@ -26,7 +26,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}", Name = "GetCondition")]
         public IActionResult Get(int id)
         {
-            var condition = dbContext.Conditions.FirstOrDefault(x => x.condId == id);
+            var condition = dbContext.Conditions.FirstOrDefault(x => x.ConditionId == id);
             if (condition == null)
             {
                 return NotFound();
@@ -44,29 +44,29 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Conditions.Add(condition);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetCondition", new { id = condition.condId }, condition);
+            return CreatedAtRoute("GetCondition", new { id = condition.ConditionId }, condition);
         }
 
         // PUT api/Conditions/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Condition condition)
         {
-            if (condition == null || condition.condId != id)
+            if (condition == null || condition.ConditionId != id)
             {
                 return BadRequest();
             }
 
-            var updatedCondition = dbContext.Conditions.FirstOrDefault(x => x.condId == id);
+            var updatedCondition = dbContext.Conditions.FirstOrDefault(x => x.ConditionId == id);
 
             if (updatedCondition == null)
             {
                 return NotFound();
             }
 
-            updatedCondition.left_paren = condition.left_paren;
-            updatedCondition.operation = condition.operation;
-            updatedCondition.cond_value = condition.cond_value;
-            updatedCondition.right_paren = condition.right_paren;
+            updatedCondition.Left_Paren = condition.Left_Paren;
+            updatedCondition.Operation = condition.Operation;
+            updatedCondition.Cond_Value = condition.Cond_Value;
+            updatedCondition.Right_Paren = condition.Right_Paren;
             updatedCondition.SourceField = condition.SourceField;
             updatedCondition.Transformation = condition.Transformation;
 
@@ -79,7 +79,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var condition = dbContext.Conditions.FirstOrDefault(x => x.condId == id);
+            var condition = dbContext.Conditions.FirstOrDefault(x => x.ConditionId == id);
             if (condition == null)
             {
                 return NotFound();

@@ -16,14 +16,14 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int userId { get; set; }
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-        public string title { get; set; }
-        public string email { get; set; }
-        public string phone { get; set; }
-        public string salt { get; set; }
-        public string hash { get; set; }
+        public int UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Salt { get; set; }
+        public string Hash { get; set; }
 
         public virtual ICollection<UserProjectSec> UserProjectSecs { get; set; }
     }

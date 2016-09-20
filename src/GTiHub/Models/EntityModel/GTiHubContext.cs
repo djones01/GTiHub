@@ -35,9 +35,9 @@ namespace GTiHub.Models.EntityModel
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ProjectMap>().HasKey(t => new { t.projectId, t.mapId });
-            modelBuilder.Entity<ProjectSource>().HasKey(t => new { t.projectId, t.sourceId });
-            modelBuilder.Entity<ProjectTarget>().HasKey(t => new { t.projectId, t.targetId });
+            modelBuilder.Entity<ProjectMap>().HasKey(t => new { t.ProjectId, t.MapId });
+            modelBuilder.Entity<ProjectSource>().HasKey(t => new { t.ProjectId, t.SourceId });
+            modelBuilder.Entity<ProjectTarget>().HasKey(t => new { t.ProjectId, t.TargetId });
         }
 
         public override int SaveChanges()
@@ -58,12 +58,12 @@ namespace GTiHub.Models.EntityModel
             {
                 if (entity.State == EntityState.Added)
                 {
-                    ((BaseEntity)entity.Entity).creation_date = DateTime.UtcNow;
-                    ((BaseEntity)entity.Entity).created_by = currentUser;
+                    ((BaseEntity)entity.Entity).Creation_Date = DateTime.UtcNow;
+                    ((BaseEntity)entity.Entity).Created_By = currentUser;
                 }
 
-                ((BaseEntity)entity.Entity).date_modified = DateTime.UtcNow;
-                ((BaseEntity)entity.Entity).modified_by = currentUser;
+                ((BaseEntity)entity.Entity).Date_Modified = DateTime.UtcNow;
+                ((BaseEntity)entity.Entity).Modified_By = currentUser;
             }
         }
 

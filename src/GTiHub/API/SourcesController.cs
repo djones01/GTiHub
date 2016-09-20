@@ -28,7 +28,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}", Name = "GetSource")]
         public IActionResult Get(int id)
         {
-            var source = dbContext.Sources.FirstOrDefault(x => x.sourceId == id);
+            var source = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
             if (source == null)
             {
                 return NotFound();
@@ -46,28 +46,28 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Sources.Add(source);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetSource", new { id = source.sourceId }, source);
+            return CreatedAtRoute("GetSource", new { id = source.SourceId }, source);
         }
 
         // PUT api/Sources/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Source source)
         {
-            if (source == null || source.sourceId != id)
+            if (source == null || source.SourceId != id)
             {
                 return BadRequest();
             }
 
-            var updatedSource = dbContext.Sources.FirstOrDefault(x => x.sourceId == id);
+            var updatedSource = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
 
             if (updatedSource == null)
             {
                 return NotFound();
             }
 
-            updatedSource.description = source.description;
-            updatedSource.effective_date = source.effective_date;
-            updatedSource.active = source.active;
+            updatedSource.Description = source.Description;
+            updatedSource.Effective_Date = source.Effective_Date;
+            updatedSource.Active = source.Active;
             updatedSource.ProjectSources = source.ProjectSources;
             updatedSource.SourceFields = source.SourceFields;
 
@@ -80,7 +80,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var source = dbContext.Sources.FirstOrDefault(x => x.sourceId == id);
+            var source = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
             if (source == null)
             {
                 return NotFound();

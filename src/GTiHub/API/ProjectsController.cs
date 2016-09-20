@@ -26,7 +26,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}", Name = "GetProject")]
         public IActionResult Get(int id)
         {
-            var project = dbContext.Projects.FirstOrDefault(x => x.projectId == id);
+            var project = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
             if (project == null)
             {
                 return NotFound();
@@ -44,28 +44,28 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Projects.Add(project);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetProject", new { id = project.projectId }, project);
+            return CreatedAtRoute("GetProject", new { id = project.ProjectId }, project);
         }
 
         // PUT api/Projects/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Project project)
         {
-            if (project == null || project.projectId != id)
+            if (project == null || project.ProjectId != id)
             {
                 return BadRequest();
             }
 
-            var updatedProject = dbContext.Projects.FirstOrDefault(x => x.projectId == id);
+            var updatedProject = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
 
             if (updatedProject == null)
             {
                 return NotFound();
             }
 
-            updatedProject.name = project.name;
-            updatedProject.description = project.description;
-            updatedProject.proj_type = project.proj_type;
+            updatedProject.Name = project.Name;
+            updatedProject.Description = project.Description;
+            updatedProject.Project_Type = project.Project_Type;
             updatedProject.Client = project.Client;
             updatedProject.ProjectMaps = project.ProjectMaps;
             updatedProject.ProjectSources = project.ProjectSources;
@@ -81,7 +81,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var project = dbContext.Projects.FirstOrDefault(x => x.projectId == id);
+            var project = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
             if (project == null)
             {
                 return NotFound();

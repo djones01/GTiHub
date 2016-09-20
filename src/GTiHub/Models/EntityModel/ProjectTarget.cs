@@ -9,13 +9,9 @@ namespace GTiHub.Models.EntityModel
 {
     public class ProjectTarget : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        public int projectId { get; set; }
-        public virtual Project project { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        public int targetId { get; set; }
-        public virtual Target target { get; set; }
+        public int ProjectId { get; set; }
+        public virtual Project Project { get; set; }
+        public int TargetId { get; set; }
+        public virtual Target Target { get; set; }
     }
 }

@@ -9,13 +9,9 @@ namespace GTiHub.Models.EntityModel
 {
     public class ProjectMap : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        public int projectId { get; set; }
-        public virtual Project project { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Key]
-        public int mapId { get; set; }
-        public virtual Map map { get; set; }
+        public int ProjectId { get; set; }
+        public virtual Project Project { get; set; }
+        public int MapId { get; set; }
+        public virtual Map Map { get; set; }
     }
 }

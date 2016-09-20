@@ -16,9 +16,13 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int transformId { get; set; }
-        public string note { get; set; }
+        public int TransformationId { get; set; }
+        public string Note { get; set; }
+
+        public int MapId { get; set; }
         public virtual Map Map { get; set; }
+
+        public int RuleId { get; set; }
         public virtual Rule Rule { get; set; }
         public virtual ICollection<Condition> Conditions { get; set; }    
     }

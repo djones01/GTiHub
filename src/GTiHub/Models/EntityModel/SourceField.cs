@@ -17,14 +17,16 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int sfieldId { get; set; }
-        public string name { get; set; }
-        public string datatype { get; set; }
-        public bool active { get; set; }
-        public int sequence_num { get; set; }
+        public int SourceFieldId { get; set; }
+        public string Name { get; set; }
+        public string Datatype { get; set; }
+        public bool Active { get; set; }
+        public int SeqNum { get; set; }
 
         public virtual ICollection<Condition> Conditions { get; set; }
         public virtual ICollection<RuleSourceField> RuleSourceFields { get; set; }
+
+        public int SourceId { get; set; }
         public virtual Source Source { get; set; }
     }
 }

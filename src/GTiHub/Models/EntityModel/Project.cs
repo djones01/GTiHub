@@ -19,11 +19,12 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int projectId { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public string proj_type { get; set; }
+        public int ProjectId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Project_Type { get; set; }
 
+        public int ClientId { get; set; }
         public virtual Client Client { get; set; }
         public virtual ICollection<ProjectMap> ProjectMaps { get; set; }
         public virtual ICollection<ProjectTarget> ProjectTargets { get; set; }

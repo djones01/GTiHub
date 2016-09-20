@@ -28,7 +28,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}", Name = "GetMap")]
         public IActionResult Get(int id)
         {
-            var map = dbContext.Maps.FirstOrDefault(x => x.mapId == id);
+            var map = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
             if (map == null)
             {
                 return NotFound();
@@ -46,28 +46,28 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Maps.Add(map);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetMap", new { id = map.mapId }, map);
+            return CreatedAtRoute("GetMap", new { id = map.MapId }, map);
         }
 
         // PUT api/Maps/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Map map)
         {
-            if (map == null || map.mapId != id)
+            if (map == null || map.MapId != id)
             {
                 return BadRequest();
             }
 
-            var updatedMap = dbContext.Maps.FirstOrDefault(x => x.mapId == id);
+            var updatedMap = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
 
             if (updatedMap == null)
             {
                 return NotFound();
             }
 
-            updatedMap.description = map.description;
-            updatedMap.effective_date = map.effective_date;
-            updatedMap.active = map.active;
+            updatedMap.Description = map.Description;
+            updatedMap.Effective_Date = map.Effective_Date;
+            updatedMap.Active = map.Active;
             updatedMap.ProjectMaps = map.ProjectMaps;
             updatedMap.Transformations = map.Transformations;
 
@@ -80,7 +80,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var map = dbContext.Maps.FirstOrDefault(x => x.mapId == id);
+            var map = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
             if (map == null)
             {
                 return NotFound();

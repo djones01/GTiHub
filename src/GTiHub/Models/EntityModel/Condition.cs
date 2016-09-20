@@ -11,13 +11,16 @@ namespace GTiHub.Models.EntityModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int condId { get; set; }
-        public string left_paren { get; set; }
-        public string operation { get; set; }
-        public string cond_value { get; set; }
-        public string right_paren { get; set; }
+        public int ConditionId { get; set; }
+        public string Left_Paren { get; set; }
+        public string Operation { get; set; }
+        public string Cond_Value { get; set; }
+        public string Right_Paren { get; set; }
 
+        public int SourceFieldId { get; set; }
         public virtual SourceField SourceField { get; set; }
+
+        public int TransformationId { get; set; }
         public virtual Transformation Transformation { get; set; }
     }
 }

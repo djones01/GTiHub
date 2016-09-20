@@ -16,11 +16,14 @@ namespace GTiHub.Models.EntityModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ruleId { get; set; }
+        public int RuleId { get; set; }
 
-        public string rule_value { get; set; }
+        public string Rule_Value { get; set; }
 
+        public int TargetFieldId { get; set; }
         public virtual TargetField TargetField { get; set; }
+
+        public int TransformationId { get; set; }
         public virtual Transformation Transformation { get; set; }
         public virtual ICollection<RuleSourceField> RuleSourceFields { get; set; }
     }

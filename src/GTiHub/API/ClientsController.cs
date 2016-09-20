@@ -26,7 +26,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("{id}", Name = "GetClient")]
         public IActionResult Get(int id)
         {
-            var client = dbContext.Clients.FirstOrDefault(x => x.clientId == id);
+            var client = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
             if (client == null)
             {
                 return NotFound();
@@ -44,27 +44,27 @@ namespace GTiHub.Controllers.API
             }
             dbContext.Clients.Add(client);
             dbContext.SaveChanges();
-            return CreatedAtRoute("GetClient", new { id = client.clientId }, client);
+            return CreatedAtRoute("GetClient", new { id = client.ClientId }, client);
         }
 
         // PUT api/Clients/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Client client)
         {
-            if (client == null || client.clientId != id)
+            if (client == null || client.ClientId != id)
             {
                 return BadRequest();
             }
 
-            var updatedClient = dbContext.Clients.FirstOrDefault(x => x.clientId == id);
+            var updatedClient = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
 
             if (updatedClient == null)
             {
                 return NotFound();
             }
 
-            updatedClient.name = client.name;
-            updatedClient.industry = client.industry;
+            updatedClient.Name = client.Name;
+            updatedClient.Industry = client.Industry;
             updatedClient.Projects = client.Projects;
 
             dbContext.SaveChanges();
@@ -76,7 +76,7 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var client = dbContext.Clients.FirstOrDefault(x => x.clientId == id);
+            var client = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
             if (client == null)
             {
                 return NotFound();

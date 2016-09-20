@@ -7,9 +7,9 @@ namespace GTiHub.Models.EntityModel
 {
     public class BaseEntity
     {
-        public DateTime? creation_date { get; set; }
-        public string created_by { get; set; }
-        public DateTime? date_modified { get; set; }
-        public string modified_by { get; set; }
+        public DateTime? Creation_Date { get; set; }
+        public string Created_By { get; set; }
+        public DateTime? Date_Modified { get; set; }
+        public string Modified_By { get; set; }
     }
 }
