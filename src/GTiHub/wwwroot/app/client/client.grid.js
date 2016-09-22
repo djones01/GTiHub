@@ -9,17 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
+var ClientGridComponent = (function () {
+    function ClientGridComponent() {
     }
-    AppComponent = __decorate([
+    ClientGridComponent = __decorate([
         core_1.Component({
-            selector: 'app-route',
-            templateUrl: 'app/app.component.html'
+            selector: 'home',
+            templateUrl: 'app/client/client.grid.html'
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], ClientGridComponent);
+    return ClientGridComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.ClientGridComponent = ClientGridComponent;
+//# sourceMappingURL=client.grid.js.map

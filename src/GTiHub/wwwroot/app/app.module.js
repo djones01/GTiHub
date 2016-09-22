@@ -9,18 +9,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
 var platform_browser_1 = require('@angular/platform-browser');
+var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
-var source_component_1 = require('./components/source/source.component');
-var project_detail_component_1 = require('./components/project/project-detail.component');
+var app_constants_1 = require('./app.constants');
+var app_routes_1 = require('./app.routes');
+var http_1 = require('@angular/http');
+var dataService_1 = require('./services/dataService');
+var home_component_1 = require('./home/home.component');
+var about_component_1 = require('./about/about.component');
+var project_detail_component_1 = require('./project/project-detail.component');
+var client_addedit_component_1 = require('./client/client-addedit.component');
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, http_1.HttpModule],
-            declarations: [app_component_1.AppComponent, source_component_1.SourceComponent, project_detail_component_1.ProjectDetailComponent],
+            imports: [
+                platform_browser_1.BrowserModule,
+                app_routes_1.routing,
+                http_1.HttpModule,
+                http_1.JsonpModule,
+                forms_1.FormsModule
+            ],
+            declarations: [app_component_1.AppComponent,
+                home_component_1.HomeComponent,
+                about_component_1.AboutComponent,
+                project_detail_component_1.ProjectDetailComponent,
+                client_addedit_component_1.ClientAddEditComponent
+            ],
+            providers: [
+                app_routes_1.appRoutingProviders,
+                app_constants_1.Configuration,
+                dataService_1.DataService
+            ],
             bootstrap: [app_component_1.AppComponent]
         }), 
         __metadata('design:paramtypes', [])

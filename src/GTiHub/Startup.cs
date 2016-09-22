@@ -9,6 +9,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace GTiHub
 {
@@ -59,6 +60,9 @@ namespace GTiHub
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapSpaFallbackRoute(
+                   name: "spa-fallback",
+                   defaults: new { controller = "home", action = "index" });
             });
         }
     }
