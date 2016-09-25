@@ -270,6 +270,8 @@ namespace GTiHub.Migrations
 
                     b.Property<string>("Modified_By");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("SourceId");
 
                     b.ToTable("Sources");
@@ -323,6 +325,8 @@ namespace GTiHub.Migrations
                     b.Property<DateTime>("Effective_Date");
 
                     b.Property<string>("Modified_By");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("TargetId");
 

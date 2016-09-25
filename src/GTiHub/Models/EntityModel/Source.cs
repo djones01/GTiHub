@@ -18,6 +18,7 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SourceId { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public DateTime Effective_Date { get; set; }
         public bool Active { get; set; }

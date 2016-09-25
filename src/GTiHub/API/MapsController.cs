@@ -86,6 +86,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
             dbContext.Maps.Remove(map);
+            dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

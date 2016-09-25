@@ -88,6 +88,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
             dbContext.Users.Remove(user);
+            dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

@@ -27,30 +27,26 @@ var DataService = (function () {
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.GetSingle = function (action, id) {
-        return this._http.get(this.actionUrl + action + id)
+        return this._http.get(this.actionUrl + action + '/' + id)
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.Add = function (action, itemToAdd) {
         var toAdd = JSON.stringify(itemToAdd);
         return this._http.post(this.actionUrl + action, toAdd, { headers: this.headers })
-            .map(this.extractData)
+            .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.Update = function (action, id, itemToUpdate) {
         return this._http
-            .put(this.actionUrl + action + id, JSON.stringify(itemToUpdate), { headers: this.headers })
+            .put(this.actionUrl + action + '/' + id, JSON.stringify(itemToUpdate), { headers: this.headers })
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.Delete = function (action, id) {
-        return this._http.delete(this.actionUrl + action + id)
+        return this._http.delete(this.actionUrl + action + '/' + id)
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
-    };
-    DataService.prototype.extractData = function (res) {
-        var body = res.json();
-        return body[1] || {};
     };
     DataService = __decorate([
         core_1.Injectable(), 

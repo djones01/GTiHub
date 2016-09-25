@@ -16,17 +16,35 @@ var ClientAddEditComponent = (function () {
         this._dataService = _dataService;
         this.addEditClient = new client_1.Client('', '');
         this.clients = [];
+        this.editing = false;
+        this.editId = -1;
         //Reset the form
         this.active = true;
     }
+    ClientAddEditComponent.prototype.deleteClient = function (client, i) {
+        var clientId = client.clientId;
+        this._dataService.Delete('Clients', client.clientId).subscribe(function (client) { }, function (error) { return console.log(error); });
+    };
+    ClientAddEditComponent.prototype.editClient = function (client, i) {
+        this.addEditClient = client;
+        this.editId = this.addEditClient['clientId'];
+        this.editing = true;
+    };
     ClientAddEditComponent.prototype.onSubmit = function () {
         var _this = this;
-        this._dataService.Add('Clients/', this.addEditClient).subscribe(function (client) { _this.clients.push(client); });
+        if (this.editing) {
+            this._dataService.Update('Clients', this.editId, this.addEditClient).subscribe(function (client) { }, function (error) { return console.log(error); });
+        }
+        else {
+            this._dataService.Add('Clients/', this.addEditClient).subscribe(function (client) { _this.clients.push(client); }, function (error) { return console.log(error); });
+        }
+        this.newClient();
+        this.editing = false;
         return false;
     };
     ClientAddEditComponent.prototype.getClients = function () {
         var _this = this;
-        this._dataService.GetAll('Clients/').subscribe(function (clients) { return _this.clients = clients; });
+        this._dataService.GetAll('Clients').subscribe(function (clients) { return _this.clients = clients; });
     };
     ClientAddEditComponent.prototype.newClient = function () {
         var _this = this;

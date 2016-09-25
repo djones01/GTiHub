@@ -67,6 +67,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
 
+            updatedTarget.Name = target.Name;
             updatedTarget.Description = target.Description;
             updatedTarget.Effective_Date = target.Effective_Date;
             updatedTarget.Active = target.Active;
@@ -88,6 +89,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
             dbContext.Targets.Remove(target);
+            dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

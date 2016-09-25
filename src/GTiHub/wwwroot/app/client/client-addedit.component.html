@@ -9,7 +9,7 @@
                            [(ngModel)]="addEditClient.name" name="name"
                            #name="ngModel"
                            required>
-                    <div [hidden]="name.valid || name.pristine"
+                    <div *ngIf="!name.valid && !name.pristine"
                          class="alert alert-danger">
                         Name is required
                     </div>
@@ -38,7 +38,7 @@
                         <option>Public Administration</option>
                         <option>Nonclassifiable</option>
                     </select>
-                    <div [hidden]="industry.valid || industry.pristine" class="alert alert-danger">
+                    <div *ngIf="!industry.valid && !industry.pristine" class="alert alert-danger">
                         Industry is required
                     </div>
                 </div>
@@ -46,7 +46,7 @@
             </form>
         </div>
         <div class="col-lg-9">
-            <table class="table table-responsive">
+            <table class="table table-responsive center-cells">
                 <thead>
                     <tr>
                         <td>Name</td>
@@ -57,16 +57,23 @@
                         <td>Modified Date</td>
                     </tr>
                 </thead>
-                <tr *ngFor="let client  of clients; let i=index">
+                <tr *ngFor="let client  of clients | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
                     <td>{{client.name}}</td>
                     <td>{{client.industry}}</td>
                     <td>{{client.created_By}}</td>
                     <td>{{client.creation_Date | date}}</td>
                     <td>{{client.modified_By}}</td>
                     <td>{{client.date_Modified | date}}</td>
-                    <td><button class="btn btn-primary" (click)="clientClicked(client)">Edit</button></td>
+                    <td><button class="btn btn-primary" (click)="editClient(client, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+                    <td><button class="btn btn-primary" (click)="deleteClient(client, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
                 </tr>
-            </table>
+                <tr>
+                    <td class="align-center" colspan="7" *ngIf="clients && clients.length >= 5">
+                        <pagination-controls (pageChange)="p = $event" #api>
+                        </pagination-controls>
+                    </td>
+                </tr>  
+            </table>   
         </div>
     </div>
    

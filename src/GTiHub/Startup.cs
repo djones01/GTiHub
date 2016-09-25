@@ -31,9 +31,10 @@ namespace GTiHub
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
             services.AddMemoryCache();
             services.AddSession();
+            services.AddMvc();
+            
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -47,6 +48,7 @@ namespace GTiHub
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseStaticFiles(new StaticFileOptions
@@ -60,6 +62,9 @@ namespace GTiHub
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapWebApiRoute(
+                    name: "api-with-action",
+                    template: "api/{controller}/{action}");
                 routes.MapSpaFallbackRoute(
                    name: "spa-fallback",
                    defaults: new { controller = "home", action = "index" });

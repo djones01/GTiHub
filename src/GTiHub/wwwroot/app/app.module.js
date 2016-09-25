@@ -16,10 +16,12 @@ var app_constants_1 = require('./app.constants');
 var app_routes_1 = require('./app.routes');
 var http_1 = require('@angular/http');
 var dataService_1 = require('./services/dataService');
+var ng2_pagination_1 = require('ng2-pagination');
 var home_component_1 = require('./home/home.component');
 var about_component_1 = require('./about/about.component');
 var project_detail_component_1 = require('./project/project-detail.component');
 var client_addedit_component_1 = require('./client/client-addedit.component');
+var source_addedit_component_1 = require('./source/source-addedit.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -27,15 +29,17 @@ var AppModule = (function () {
         core_1.NgModule({
             imports: [
                 platform_browser_1.BrowserModule,
-                app_routes_1.routing,
                 http_1.HttpModule,
                 http_1.JsonpModule,
-                forms_1.FormsModule
+                forms_1.FormsModule,
+                ng2_pagination_1.Ng2PaginationModule,
+                app_routes_1.routing
             ],
             declarations: [app_component_1.AppComponent,
                 home_component_1.HomeComponent,
                 about_component_1.AboutComponent,
                 project_detail_component_1.ProjectDetailComponent,
+                source_addedit_component_1.SourceAddEditComponent,
                 client_addedit_component_1.ClientAddEditComponent
             ],
             providers: [

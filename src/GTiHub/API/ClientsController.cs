@@ -65,7 +65,6 @@ namespace GTiHub.Controllers.API
 
             updatedClient.Name = client.Name;
             updatedClient.Industry = client.Industry;
-            updatedClient.Projects = client.Projects;
 
             dbContext.SaveChanges();
 
@@ -82,6 +81,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
             dbContext.Clients.Remove(client);
+            dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

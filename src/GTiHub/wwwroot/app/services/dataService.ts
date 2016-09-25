@@ -25,7 +25,7 @@ export class DataService {
     }
 
     public GetSingle (action: string, id: number): Observable<any> {
-        return this._http.get(this.actionUrl + action + id)
+        return this._http.get(this.actionUrl + action + '/' + id)
             .map(res => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
     }
@@ -34,25 +34,20 @@ export class DataService {
         var toAdd = JSON.stringify(itemToAdd);
 
         return this._http.post(this.actionUrl + action, toAdd, { headers: this.headers })
-            .map(this.extractData)
+            .map(res => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
     }
 
     public Update (action: string, id: number, itemToUpdate: any): Observable<any> {
         return this._http
-            .put(this.actionUrl + action + id, JSON.stringify(itemToUpdate), { headers: this.headers })
+            .put(this.actionUrl + action + '/' + id, JSON.stringify(itemToUpdate), { headers: this.headers })
             .map(res => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
     }
 
     public Delete (action: string, id: number): Observable<any> {
-        return this._http.delete(this.actionUrl + action + id)
+        return this._http.delete(this.actionUrl + action + '/' + id)
             .map(res => res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
-    }
-
-    private extractData(res: Response) {
-        let body = res.json();
-        return body[1] || {};
     }
 }

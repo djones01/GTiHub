@@ -13,7 +13,7 @@ export class ProjectDetailComponent implements OnInit{
     }
 
     getProjects(): void {
-        this._dataService.GetAll('projects').subscribe(projects => this.projects = projects);
+        this._dataService.GetAll('Projects').subscribe(projects => this.projects = projects);
     }
     ngOnInit(): void {
         this.getProjects();

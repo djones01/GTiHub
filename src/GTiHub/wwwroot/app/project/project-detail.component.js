@@ -16,7 +16,7 @@ var ProjectDetailComponent = (function () {
     }
     ProjectDetailComponent.prototype.getProjects = function () {
         var _this = this;
-        this._dataService.GetAll('projects').subscribe(function (projects) { return _this.projects = projects; });
+        this._dataService.GetAll('Projects').subscribe(function (projects) { return _this.projects = projects; });
     };
     ProjectDetailComponent.prototype.ngOnInit = function () {
         this.getProjects();

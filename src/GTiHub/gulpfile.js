@@ -44,4 +44,9 @@ gulp.task("copy-deps:typescript", function () {
          .pipe(gulp.dest(paths.npmLibs + '/typescript/'));
 });
 
+gulp.task("copy-deps:ng2-file-upload", function () {
+    return gulp.src(paths.npmSrc + '/ng2-file-upload/**/*.js', { base: paths.npmSrc + '/ng2-file-upload/' })
+         .pipe(gulp.dest(paths.npmLibs + '/ng2-file-upload/'));
+});
+
 gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:reflect-metadata', 'copy-deps:corejs', 'copy-deps:typescript', 'copy-deps:zonejs']);

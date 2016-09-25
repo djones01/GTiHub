@@ -65,6 +65,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
 
+            updatedSource.Name = source.Name;
             updatedSource.Description = source.Description;
             updatedSource.Effective_Date = source.Effective_Date;
             updatedSource.Active = source.Active;
@@ -86,6 +87,7 @@ namespace GTiHub.Controllers.API
                 return NotFound();
             }
             dbContext.Sources.Remove(source);
+            dbContext.SaveChanges();
             return new NoContentResult();
         }
     }
