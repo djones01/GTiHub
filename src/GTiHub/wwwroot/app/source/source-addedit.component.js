@@ -11,11 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var source_1 = require('./source');
 var dataService_1 = require('../services/dataService');
+var ng2_file_upload_1 = require('ng2-file-upload');
 var SourceAddEditComponent = (function () {
     function SourceAddEditComponent(_dataService) {
         this._dataService = _dataService;
+        //Control the template / manual header boxes
+        this.sopt = true;
+        this.sfieldCount = 0;
         this.sources = [];
         this.addEditSource = new source_1.Source('', '', '', true);
+        this.uploader = new ng2_file_upload_1.FileUploader({ url: 'api/File/ExtractHeaders' });
         //Reset the form
         this.active = true;
     }
@@ -36,7 +41,7 @@ var SourceAddEditComponent = (function () {
         core_1.Component({
             selector: 'source-addedit',
             templateUrl: 'app/source/source-addedit.component.html',
-            providers: [dataService_1.DataService]
+            providers: [dataService_1.DataService],
         }), 
         __metadata('design:paramtypes', [dataService_1.DataService])
     ], SourceAddEditComponent);

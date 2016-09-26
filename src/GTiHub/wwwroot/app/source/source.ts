@@ -6,3 +6,12 @@
         public active: boolean
     ) { }
 }
+
+export class SourceField {
+    constructor(
+        public Name: string,
+        public Datatype: string,
+        public Active: string,
+        public SeqNum: number
+    ) { }
+}

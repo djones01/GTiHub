@@ -49,4 +49,9 @@ gulp.task("copy-deps:ng2-file-upload", function () {
          .pipe(gulp.dest(paths.npmLibs + '/ng2-file-upload/'));
 });
 
+gulp.task("copy-deps:es6-shim", function () {
+    return gulp.src(paths.npmSrc + '/es6-shim/es6-sh*', { base: paths.npmSrc + '/es6-shim/' })
+         .pipe(gulp.dest(paths.npmLibs + '/es6-shim/'));
+});
+
 gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:reflect-metadata', 'copy-deps:corejs', 'copy-deps:typescript', 'copy-deps:zonejs']);

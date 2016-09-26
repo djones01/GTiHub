@@ -24,6 +24,7 @@
             // other libraries
             'rxjs': 'npm:rxjs',
             'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
+            'ng2-file-upload': 'npm:ng2-file-upload/ng2-file-upload.js',
             'services': 'app/services'
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -33,6 +34,10 @@
                 defaultExtension: 'js'
             },
             rxjs: {
+                defaultExtension: 'js'
+            },
+            'node_modules/ng2-file-upload': {
+                format: 'cjs',
                 defaultExtension: 'js'
             }
         }

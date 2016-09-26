@@ -9,4 +9,14 @@ var Source = (function () {
     return Source;
 }());
 exports.Source = Source;
+var SourceField = (function () {
+    function SourceField(Name, Datatype, Active, SeqNum) {
+        this.Name = Name;
+        this.Datatype = Datatype;
+        this.Active = Active;
+        this.SeqNum = SeqNum;
+    }
+    return SourceField;
+}());
+exports.SourceField = SourceField;
 //# sourceMappingURL=source.js.map

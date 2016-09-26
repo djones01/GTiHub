@@ -62,9 +62,6 @@ namespace GTiHub
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-                routes.MapWebApiRoute(
-                    name: "api-with-action",
-                    template: "api/{controller}/{action}");
                 routes.MapSpaFallbackRoute(
                    name: "spa-fallback",
                    defaults: new { controller = "home", action = "index" });

@@ -12,6 +12,7 @@ namespace GTiHub.API.File_Handling
     [Route("api/[controller]")]
     public class FileController : Controller
     {
+        [Route("ExtractHeaders")]
         [HttpPost]
         public async Task<IActionResult> ExtractHeaders(ICollection<IFormFile> files)
         {

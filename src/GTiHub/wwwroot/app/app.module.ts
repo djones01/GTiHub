@@ -7,12 +7,14 @@ import { routing, appRoutingProviders } from './app.routes';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { DataService } from './services/dataService';
 import { Ng2PaginationModule } from 'ng2-pagination';
+import { FileUploader, FileSelectDirective } from 'ng2-file-upload';
 
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ProjectDetailComponent } from './project/project-detail.component';
 import { ClientAddEditComponent } from './client/client-addedit.component';
 import { SourceAddEditComponent } from './source/source-addedit.component';
+import { SourceFieldListComponent } from './source/sourcefield.list.component';
 
 @NgModule({
     imports: [
@@ -29,7 +31,9 @@ import { SourceAddEditComponent } from './source/source-addedit.component';
         AboutComponent,
         ProjectDetailComponent,
         SourceAddEditComponent,
-        ClientAddEditComponent
+        ClientAddEditComponent,
+        SourceFieldListComponent,
+        FileSelectDirective
     ],
 
     providers: [
