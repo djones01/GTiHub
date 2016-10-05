@@ -35,7 +35,7 @@ export class ClientAddEditComponent implements OnInit {
                 error => console.log(error));
         }
         else {
-            this._dataService.Add('Clients/', this.addEditClient).subscribe(client => { this.clients.push(client) },
+            this._dataService.Add('Clients', this.addEditClient).subscribe(client => { this.clients.push(client) },
                 error => console.log(error));
         }
 

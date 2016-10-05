@@ -36,7 +36,7 @@ var ClientAddEditComponent = (function () {
             this._dataService.Update('Clients', this.editId, this.addEditClient).subscribe(function (client) { }, function (error) { return console.log(error); });
         }
         else {
-            this._dataService.Add('Clients/', this.addEditClient).subscribe(function (client) { _this.clients.push(client); }, function (error) { return console.log(error); });
+            this._dataService.Add('Clients', this.addEditClient).subscribe(function (client) { _this.clients.push(client); }, function (error) { return console.log(error); });
         }
         this.newClient();
         this.editing = false;

@@ -17,7 +17,7 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransformationId { get; set; }
-        public string Note { get; set; }
+        public string Description { get; set; }
 
         public int MapId { get; set; }
         public virtual Map Map { get; set; }

@@ -53,11 +53,14 @@
                                 <div *ngIf="sopt" class="form-group">
                                     <label for="templateFile">Select Template File</label>
                                     <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" /><br />
-                                    <button type="button" class="btn btn-primary">Extract Fields</button>
+                                    <button type="button" class="btn btn-primary"
+                                            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                                        <span class="glyphicon glyphicon-upload"></span> Extract Fields
+                                    </button>
                                 </div>
                                 <div *ngIf="!sopt" class="form-group">
                                     <label for="name">Number of Fields (max of 300)</label>
-                                    <input type="number" min="1" max="300" class="form-control" id="sfieldCount" name="sfieldCount" [(ngModel)]="sfieldCount" (ngModelChange)="onFieldCountChange()" />
+                                    <input type="number" value="0" min="0" max="300" class="form-control" id="sfieldCount" name="sfieldCount" [(ngModel)]="sfieldCount" (change)="onFieldCountChange()" />
                                 </div>
                             </div>
                         </div>
@@ -72,7 +75,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-default" [disabled]="!sourceform.form.valid"><span class="glyphicon glyphicon-plus"></span> Submit</button>
+                    <button type="submit" class="btn btn-default" [disabled]="sourceFieldsCount == 0 || !sourceform.form.valid"><span class="glyphicon glyphicon-plus"></span> Submit</button>
                 </form>
             </div>
         </div>     
@@ -114,6 +117,38 @@
                 </div>
             </div>   
         <hr />
-        <sourcefield-list></sourcefield-list>
+        <div class="panel panel-default">
+            <div class="panel-heading">Source Fields</div>
+            <div *ngIf="sourceFields.length > 0" class="panel-body">
+                <form #sourceFieldForm="ngForm">
+                    <table class="table center-cells">
+                        <thead>
+                            <tr>
+                                <td>Sequence Number</td>
+                                <td>Name</td>
+                                <td>Datatype</td>
+                                <td>Active</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sourceField of sourceFields; let i=index">
+                                <td>{{sourceField.seqNum}}</td>
+                                <td><input class="form-control" type="text" [(ngModel)]="sourceField.name" name="sFieldName" #sFieldName="ngModel" id="sFieldName" /></td>
+                                <td>
+                                    <select class="form-control" [(ngModel)]="sourceField.datatype" name="sFieldDatatype" #sFieldDatatype="ngModel" id="sFieldDatatype">
+                                        <option *ngFor="let option of options" [ngValue]="option.value">{{option.display}}</option>
+                                    </select>
+                                </td>
+                                <td><input type="checkbox" [(ngModel)]="sourceField.active" name="sFieldActive" #sFieldActive="ngModel" id="sFieldDatatype" /></td>
+                                <td><button class="btn btn-primary" (click)="removeSourceField(sourceField, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div *ngIf="sourceFields.length == 0" class="panel-body">
+                No Source Fields to Show
+            </div>
+        </div>
     </div>
 </div>

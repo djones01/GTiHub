@@ -23,7 +23,7 @@ var about_component_1 = require('./about/about.component');
 var project_detail_component_1 = require('./project/project-detail.component');
 var client_addedit_component_1 = require('./client/client-addedit.component');
 var source_addedit_component_1 = require('./source/source-addedit.component');
-var sourcefield_list_component_1 = require('./source/sourcefield.list.component');
+var map_addedit_component_1 = require('./map/map-addedit.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -43,7 +43,7 @@ var AppModule = (function () {
                 project_detail_component_1.ProjectDetailComponent,
                 source_addedit_component_1.SourceAddEditComponent,
                 client_addedit_component_1.ClientAddEditComponent,
-                sourcefield_list_component_1.SourceFieldListComponent,
+                map_addedit_component_1.MapAddEditComponent,
                 ng2_file_upload_1.FileSelectDirective
             ],
             providers: [

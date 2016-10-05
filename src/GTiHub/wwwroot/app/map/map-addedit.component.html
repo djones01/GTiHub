@@ -1,0 +1,85 @@
+﻿<div class="container">
+    <div *ngIf="!addingTransform">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Add / Edit Map
+            </div>
+            <div class="panel-body">
+                <form *ngIf="active" (ngSubmit)="onSubmit()" #mapForm="ngForm">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" class="form-control" id="description"
+                               [(ngModel)]="addEditMap.description" name="description"
+                               #description="ngModel"
+                               required>
+                        <div *ngIf="!description.valid && !description.pristine"
+                             class="alert alert-danger">
+                            Description is required
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="effective_Date">Effective Date</label>
+                        <input type="date" class="form-control" id="effective_Date"
+                               [(ngModel)]="addEditMap.effective_Date" name="effective_Date"
+                               #effective_Date="ngModel"
+                               required>
+                        <div *ngIf="!effective_Date.valid && !effective_Date.pristine"
+                             class="alert alert-danger">
+                            Effective Date is required
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label for="active">
+                                <input type="checkbox" checked="checked" id="active"
+                                       [(ngModel)]="addEditSource.active" name="active"
+                                       #active="ngModel">Active
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default" [disabled]="!mapForm.form.valid"><span class="glyphicon glyphicon-plus"></span> Submit</button>
+                </form>
+            </div>
+        </div>
+        <!-- Area to add Transforms -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Add / Edit Attached Transformations
+            </div>
+            <div class="panel-body">
+                <div *ngIf="transforms.length > 0">
+                    <form #transformForm="ngForm">
+                        <table class="table center-cells">
+                            <thead>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>Created By</td>
+                                    <td>Datatype</td>
+                                    <td>Active</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let transform of transforms; let i=index">
+                                    <td>{{transform.description}}</td>
+                                    <td>{{transform.created_By}}</td>
+                                    <td>{{transform.creation_Date | date}}</td>
+                                    <td>{{transform.modified_By}}</td>
+                                    <td>{{transform.date_Modified | date}}</td>
+                                    <td><button class="btn btn-primary" (click)="removeTransform(transform, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div *ngIf="transforms.length == 0">
+                    No Transformations to Show
+                </div>
+                <button class="btn btn-primary" (click)="addNewTransform()"><span class="glyphicon glyphicon-plus"></span> Add New Transformation</button>
+                <button class="btn btn-primary" (click)="addExistingTransform()"><span class="glyphicon glyphicon-plus"></span> Add Existing Transformation</button>
+            </div>
+        </div>
+    </div>
+   <div *ngIf="addingTransform">
+
+   </div>
+</div>

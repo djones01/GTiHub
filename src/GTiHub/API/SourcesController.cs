@@ -45,6 +45,10 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
             dbContext.Sources.Add(source);
+            foreach(SourceField sfield in source.SourceFields)
+            {
+                dbContext.SourceFields.Add(sfield);
+            }  
             dbContext.SaveChanges();
             return CreatedAtRoute("GetSource", new { id = source.SourceId }, source);
         }

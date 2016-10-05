@@ -9,18 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var SourceFieldListComponent = (function () {
-    function SourceFieldListComponent() {
-        this.sourceFields = [];
+var dataService_1 = require('../services/dataService');
+var MapAddEditComponent = (function () {
+    function MapAddEditComponent(_dataService) {
+        this._dataService = _dataService;
+        //Toggles whether or not to show the Transformation components
+        this.addingTransform = false;
+        this.active = true;
     }
-    SourceFieldListComponent = __decorate([
+    MapAddEditComponent.prototype.ngOnInit = function () {
+    };
+    MapAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'sourcefield-list',
-            templateUrl: 'app/source/sourcefield.list.component.html'
+            selector: 'map-addedit',
+            templateUrl: 'app/map/map-addedit.component.html',
+            providers: [dataService_1.DataService],
         }), 
-        __metadata('design:paramtypes', [])
-    ], SourceFieldListComponent);
-    return SourceFieldListComponent;
+        __metadata('design:paramtypes', [dataService_1.DataService])
+    ], MapAddEditComponent);
+    return MapAddEditComponent;
 }());
-exports.SourceFieldListComponent = SourceFieldListComponent;
-//# sourceMappingURL=sourcefield.list.component.js.map
+exports.MapAddEditComponent = MapAddEditComponent;
+//# sourceMappingURL=map-addedit.component.js.map

@@ -14,7 +14,7 @@ import { AboutComponent } from './about/about.component';
 import { ProjectDetailComponent } from './project/project-detail.component';
 import { ClientAddEditComponent } from './client/client-addedit.component';
 import { SourceAddEditComponent } from './source/source-addedit.component';
-import { SourceFieldListComponent } from './source/sourcefield.list.component';
+import { MapAddEditComponent } from './map/map-addedit.component';
 
 @NgModule({
     imports: [
@@ -32,7 +32,7 @@ import { SourceFieldListComponent } from './source/sourcefield.list.component';
         ProjectDetailComponent,
         SourceAddEditComponent,
         ClientAddEditComponent,
-        SourceFieldListComponent,
+        MapAddEditComponent,
         FileSelectDirective
     ],
 

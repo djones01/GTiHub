@@ -14,6 +14,16 @@ namespace GTiHub.Models.EntityModel
             this.Conditions = new List<Condition>();
             this.RuleSourceFields = new List<RuleSourceField>();
         }
+        
+        public SourceField(string name, string datatype, bool active, int seqnum)
+        {
+            this.Name = name;
+            this.Datatype = datatype;
+            this.Active = active;
+            this.SeqNum = seqnum;
+            this.Conditions = new List<Condition>();
+            this.RuleSourceFields = new List<RuleSourceField>();
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
