@@ -1,6 +1,6 @@
-﻿<div class="container">
+﻿<div class="container-fluid custom-container">
     <div *ngIf="!addingTransform">
-        <div class="panel panel-default">
+        <div class="panel panel-default input-container">
             <div class="panel-heading">
                 Add / Edit Map
             </div>
@@ -32,7 +32,7 @@
                         <div class="checkbox">
                             <label for="active">
                                 <input type="checkbox" checked="checked" id="active"
-                                       [(ngModel)]="addEditSource.active" name="active"
+                                       [(ngModel)]="addEditMap.active" name="active"
                                        #active="ngModel">Active
                             </label>
                         </div>
@@ -47,8 +47,8 @@
                 Add / Edit Attached Transformations
             </div>
             <div class="panel-body">
-                <div *ngIf="transforms.length > 0">
-                    <form #transformForm="ngForm">
+                <div class="margin-add-bottom">
+                    <div *ngIf="transformations.length > 0">
                         <table class="table center-cells">
                             <thead>
                                 <tr>
@@ -59,27 +59,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let transform of transforms; let i=index">
+                                <tr *ngFor="let transform of transformations; let i=index">
                                     <td>{{transform.description}}</td>
                                     <td>{{transform.created_By}}</td>
                                     <td>{{transform.creation_Date | date}}</td>
                                     <td>{{transform.modified_By}}</td>
                                     <td>{{transform.date_Modified | date}}</td>
-                                    <td><button class="btn btn-primary" (click)="removeTransform(transform, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                                    <td><button class="btn btn-default" (click)="removeTransform(transform, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </form>
-                </div>
-                <div *ngIf="transforms.length == 0">
-                    No Transformations to Show
-                </div>
-                <button class="btn btn-primary" (click)="addNewTransform()"><span class="glyphicon glyphicon-plus"></span> Add New Transformation</button>
-                <button class="btn btn-primary" (click)="addExistingTransform()"><span class="glyphicon glyphicon-plus"></span> Add Existing Transformation</button>
+                    </div>
+                    <div *ngIf="transformations.length == 0" class="pad-content">
+                        No Transformations to Show
+                    </div>
+                </div>         
+                <button class="btn btn-default" (click)="addNewTransform()"><span class="glyphicon glyphicon-plus"></span> Add New Transformation</button>
+                <button class="btn btn-default" (click)="addExistingTransform()"><span class="glyphicon glyphicon-plus"></span> Add Existing Transformation</button>
             </div>
         </div>
     </div>
    <div *ngIf="addingTransform">
-
+       <transform-addedit></transform-addedit>
    </div>
 </div>

@@ -1,10 +1,23 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<div class="container-fluid">
+    <div class="panel panel-default input-container">
+        <div class="panel-heading">
+            Add / Edit Transformation
+        </div>
+        <div class="panel-body">
+            <form #transformForm="ngForm">
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control textarea-resize" id="description"
+                           [(ngModel)]="addEditTransform.description" name="description"
+                           #description="ngModel"
+                           required></textarea>
+                    <div *ngIf="!description.valid && !description.pristine"
+                         class="alert alert-danger">
+                        Description is required
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <condition-addedit></condition-addedit>
+</div>

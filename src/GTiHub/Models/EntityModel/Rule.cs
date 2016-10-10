@@ -20,6 +20,10 @@ namespace GTiHub.Models.EntityModel
 
         public string Rule_Value { get; set; }
 
+        public string Alt_Value { get; set; }
+
+        public string Rule_Operation { get; set; }
+
         public int TargetFieldId { get; set; }
         public virtual TargetField TargetField { get; set; }
 

@@ -10,13 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var dataService_1 = require('../services/dataService');
+var map_1 = require('./map');
 var MapAddEditComponent = (function () {
     function MapAddEditComponent(_dataService) {
         this._dataService = _dataService;
+        //Map which is being added or edited
+        this.addEditMap = new map_1.Map('', '', true, null);
+        //List of Transformations for the map
+        this.transformations = [];
         //Toggles whether or not to show the Transformation components
         this.addingTransform = false;
         this.active = true;
     }
+    //Sets the visible component to the transform add/edit component
+    MapAddEditComponent.prototype.addNewTransform = function () {
+        this.addingTransform = true;
+    };
     MapAddEditComponent.prototype.ngOnInit = function () {
     };
     MapAddEditComponent = __decorate([

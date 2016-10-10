@@ -43,6 +43,8 @@ namespace GTiHub.Migrations
                     b.Property<int>("ConditionId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Chain_Operation");
+
                     b.Property<string>("Cond_Value");
 
                     b.Property<string>("Created_By");
@@ -58,6 +60,8 @@ namespace GTiHub.Migrations
                     b.Property<string>("Operation");
 
                     b.Property<string>("Right_Paren");
+
+                    b.Property<int>("SeqNum");
 
                     b.Property<int>("SourceFieldId");
 
@@ -198,6 +202,8 @@ namespace GTiHub.Migrations
                     b.Property<int>("RuleId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Alt_Value");
+
                     b.Property<string>("Created_By");
 
                     b.Property<DateTime?>("Creation_Date");
@@ -205,6 +211,8 @@ namespace GTiHub.Migrations
                     b.Property<DateTime?>("Date_Modified");
 
                     b.Property<string>("Modified_By");
+
+                    b.Property<string>("Rule_Operation");
 
                     b.Property<string>("Rule_Value");
 
@@ -374,11 +382,11 @@ namespace GTiHub.Migrations
 
                     b.Property<DateTime?>("Date_Modified");
 
+                    b.Property<string>("Description");
+
                     b.Property<int>("MapId");
 
                     b.Property<string>("Modified_By");
-
-                    b.Property<string>("Note");
 
                     b.Property<int>("RuleId");
 

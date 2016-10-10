@@ -12,6 +12,8 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ConditionId { get; set; }
+        public int SeqNum { get; set; }
+        public string Chain_Operation { get; set; }
         public string Left_Paren { get; set; }
         public string Operation { get; set; }
         public string Cond_Value { get; set; }

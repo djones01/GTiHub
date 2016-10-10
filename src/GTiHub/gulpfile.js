@@ -54,4 +54,9 @@ gulp.task("copy-deps:es6-shim", function () {
          .pipe(gulp.dest(paths.npmLibs + '/es6-shim/'));
 });
 
+gulp.task("copy-deps:ng-bootstrap", function () {
+    return gulp.src(paths.npmSrc + '/@ng-bootstrap/ng-bootstrap/bundles/*.js', { base: paths.npmSrc + '/@ng-bootstrap/' })
+         .pipe(gulp.dest(paths.npmLibs + '/@ng-bootstrap/'));
+});
+
 gulp.task("copy-deps", ["copy-deps:rxjs", 'copy-deps:angular2', 'copy-deps:systemjs', 'copy-deps:reflect-metadata', 'copy-deps:corejs', 'copy-deps:typescript', 'copy-deps:zonejs']);

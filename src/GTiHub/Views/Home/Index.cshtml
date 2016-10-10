@@ -3,6 +3,7 @@
 
 <head>
     <base href="~/" />
+    <link rel="shortcut icon" href="~/images/gt.png" />
     <title>GT iHub</title>
 
     <!-- inject:css -->
@@ -13,11 +14,24 @@
 </head>
 
 <body>
-    <app-route>Loading...</app-route>
+    <app-route>
+        <div class="load-container">
+            <div>
+                <img src="~/images/gti_logo.png" />
+            </div>
+            <div>
+                <div class="cssload-loader">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
+                </div>
+            </div>   
+        </div>   
+    </app-route>
 
     <!-- 1. Load libraries -->
     <script src="node_modules/es6-shim/es6-shim.js"></script>
-    <script src="node_modules/systemjs/system-polyfills.src.js"></script>
+    <script src="node_modules/systemjs/dist/system-polyfills.src.js"></script>
 
     <script src="node_modules/core-js/client/shim.min.js"></script>
     <script src="node_modules/zone.js/dist/zone.js"></script>
@@ -25,10 +39,10 @@
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="node_modules/typescript/lib/typescript.js"></script>
     <script src="node_modules/ng2-pagination/dist/ng2-pagination-bundle.js"></script>
+    <script src="node_modules/@@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js"></script>
 
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script src="systemjs.config.js"></script>
 

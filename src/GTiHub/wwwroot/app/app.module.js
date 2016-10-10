@@ -18,12 +18,17 @@ var http_1 = require('@angular/http');
 var dataService_1 = require('./services/dataService');
 var ng2_pagination_1 = require('ng2-pagination');
 var ng2_file_upload_1 = require('ng2-file-upload');
+var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var home_component_1 = require('./home/home.component');
 var about_component_1 = require('./about/about.component');
 var project_detail_component_1 = require('./project/project-detail.component');
 var client_addedit_component_1 = require('./client/client-addedit.component');
 var source_addedit_component_1 = require('./source/source-addedit.component');
 var map_addedit_component_1 = require('./map/map-addedit.component');
+var transform_addedit_component_1 = require('./transformation/transform-addedit.component');
+var condition_addedit_component_1 = require('./transformation/condition/condition-addedit.component');
+var source_list_component_1 = require('./source/selection/source-list.component');
+var sourcefield_list_component_1 = require('./source/selection/sourcefield-list.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -35,6 +40,7 @@ var AppModule = (function () {
                 http_1.JsonpModule,
                 forms_1.FormsModule,
                 ng2_pagination_1.Ng2PaginationModule,
+                ng_bootstrap_1.NgbModule,
                 app_routes_1.routing
             ],
             declarations: [app_component_1.AppComponent,
@@ -44,6 +50,10 @@ var AppModule = (function () {
                 source_addedit_component_1.SourceAddEditComponent,
                 client_addedit_component_1.ClientAddEditComponent,
                 map_addedit_component_1.MapAddEditComponent,
+                transform_addedit_component_1.TransformAddEditComponent,
+                condition_addedit_component_1.ConditionAddEditComponent,
+                source_list_component_1.SourceListComponent,
+                sourcefield_list_component_1.SourceFieldListComponent,
                 ng2_file_upload_1.FileSelectDirective
             ],
             providers: [

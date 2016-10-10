@@ -53,7 +53,7 @@
                                 <div *ngIf="sopt" class="form-group">
                                     <label for="templateFile">Select Template File</label>
                                     <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" /><br />
-                                    <button type="button" class="btn btn-primary"
+                                    <button type="button" class="btn btn-default"
                                             (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                                         <span class="glyphicon glyphicon-upload"></span> Extract Fields
                                     </button>
@@ -103,8 +103,8 @@
                                 <td>{{source.creation_Date | date}}</td>
                                 <td>{{source.modified_By}}</td>
                                 <td>{{source.date_Modified | date}}</td>
-                                <td><button class="btn btn-primary" (click)="editSource(source, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
-                                <td><button class="btn btn-primary" (click)="deleteSource(source, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                                <td><button class="btn btn-default" (click)="editSource(source, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+                                <td><button class="btn btn-default" (click)="deleteSource(source, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
                             </tr>
                             <tr>
                                 <td class="align-center" colspan="7" *ngIf="sources && sources.length >= 5">
@@ -140,7 +140,7 @@
                                     </select>
                                 </td>
                                 <td><input type="checkbox" [(ngModel)]="sourceField.active" name="sFieldActive" #sFieldActive="ngModel" id="sFieldDatatype" /></td>
-                                <td><button class="btn btn-primary" (click)="removeSourceField(sourceField, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                                <td><button class="btn btn-default" (click)="removeSourceField(sourceField, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
                             </tr>
                         </tbody>
                     </table>

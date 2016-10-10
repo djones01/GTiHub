@@ -1,6 +1,6 @@
 ﻿<div class="container">
     <div>
-        <div class="client-input-container">
+        <div class="input-container">
             <div class="panel panel-default">
                 <div class="panel-heading">Add / Edit Clients</div>
                 <div class="panel-body">
@@ -72,8 +72,8 @@
                                 <td>{{client.creation_Date | date}}</td>
                                 <td>{{client.modified_By}}</td>
                                 <td>{{client.date_Modified | date}}</td>
-                                <td><button class="btn btn-primary" (click)="editClient(client, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
-                                <td><button class="btn btn-primary" (click)="deleteClient(client, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+                                <td><button class="btn btn-default" (click)="editClient(client, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
+                                <td><button class="btn btn-default" (click)="deleteClient(client, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
                             </tr>
                             <tr>
                                 <td class="align-center" colspan="7" *ngIf="clients && clients.length >= 5">
