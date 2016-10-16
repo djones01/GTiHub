@@ -7,9 +7,8 @@
             <h4 class="list-group-item-heading">{{source.name}}</h4>
             <p class="list-group-item-text">{{source.description}}</p>
         </a>
-
     </div>
-    <div class="align-center" *ngIf="sources && sources.length >= 5">
+    <div class="align-center" *ngIf="sources && sources.length > 5">
         <pagination-controls (pageChange)="p = $event" #api>
         </pagination-controls>
     </div>

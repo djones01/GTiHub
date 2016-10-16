@@ -32,10 +32,12 @@ var DataService = (function () {
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.Add = function (action, itemToAdd) {
-        var toAdd = JSON.stringify(itemToAdd);
-        return this._http.post(this.actionUrl + action, toAdd, { headers: this.headers })
-            .map(function (res) { return res.json(); })
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+        var body = JSON.stringify(itemToAdd);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http.post(this.actionUrl + action, body, options)
+            .map(this.extractData)
+            .catch(this.handleError);
     };
     DataService.prototype.Update = function (action, id, itemToUpdate) {
         return this._http
@@ -45,8 +47,17 @@ var DataService = (function () {
     };
     DataService.prototype.Delete = function (action, id) {
         return this._http.delete(this.actionUrl + action + '/' + id)
-            .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+    };
+    DataService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body || {};
+    };
+    DataService.prototype.handleError = function (error) {
+        var errMsg = (error.message) ? error.message :
+            error.status ? error.status + " - " + error.statusText : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Rx_1.Observable.throw(errMsg);
     };
     DataService = __decorate([
         core_1.Injectable(), 
@@ -55,4 +66,4 @@ var DataService = (function () {
     return DataService;
 }());
 exports.DataService = DataService;
-//# sourceMappingURL=dataService.js.map
+//# sourceMappingURL=data.service.js.map

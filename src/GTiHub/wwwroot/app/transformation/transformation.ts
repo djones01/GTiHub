@@ -29,7 +29,18 @@ export class Rule {
         public rule_Value: string,
         public alt_Value: string,
         public rule_Operation: string,
-        public targetField: TargetField
+        public targetField: TargetField,
+        public ruleSourceFields: RuleSourceField[]
+    ) { }
+}
+
+export class RuleSourceField {
+    constructor(
+        public seqNum: number,
+        public append: string,
+        public prepend: string, 
+        public custom_Format: string,
+        public sourceField: SourceField
     ) { }
 }
 

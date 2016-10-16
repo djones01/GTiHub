@@ -7,4 +7,7 @@
             <div class="align-center"><button class="btn btn-default" (click)="projectClicked(project, i)">View Project</button></div>            
         </div>
     </div>
+    <div *ngIf="projects.length == 0">
+        No Projects to show
+    </div>
 </div>

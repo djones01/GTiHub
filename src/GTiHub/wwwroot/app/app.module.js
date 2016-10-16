@@ -15,20 +15,28 @@ var app_component_1 = require('./app.component');
 var app_constants_1 = require('./app.constants');
 var app_routes_1 = require('./app.routes');
 var http_1 = require('@angular/http');
-var dataService_1 = require('./services/dataService');
+var data_service_1 = require('./services/data.service');
 var ng2_pagination_1 = require('ng2-pagination');
 var ng2_file_upload_1 = require('ng2-file-upload');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+//Component imports
 var home_component_1 = require('./home/home.component');
 var about_component_1 = require('./about/about.component');
 var project_detail_component_1 = require('./project/project-detail.component');
 var client_addedit_component_1 = require('./client/client-addedit.component');
 var source_addedit_component_1 = require('./source/source-addedit.component');
+var sourcefield_addedit_component_1 = require('./source/sourcefield-addedit.component');
+var source_list_component_1 = require('./source/selection/source-list.component');
+var sourcefield_list_component_1 = require('./source/selection/sourcefield-list.component');
+var target_addedit_component_1 = require('./target/target-addedit.component');
+var targetfield_addedit_component_1 = require('./target/targetfield-addedit.component');
+var target_list_component_1 = require('./target/selection/target-list.component');
+var targetfield_list_component_1 = require('./target/selection/targetfield-list.component');
 var map_addedit_component_1 = require('./map/map-addedit.component');
 var transform_addedit_component_1 = require('./transformation/transform-addedit.component');
 var condition_addedit_component_1 = require('./transformation/condition/condition-addedit.component');
-var source_list_component_1 = require('./source/selection/source-list.component');
-var sourcefield_list_component_1 = require('./source/selection/sourcefield-list.component');
+var rule_addedit_component_1 = require('./transformation/rule/rule-addedit.component');
+var rulesourcefield_addedit_component_1 = require('./transformation/rule/rulesourcefield-addedit.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -47,19 +55,26 @@ var AppModule = (function () {
                 home_component_1.HomeComponent,
                 about_component_1.AboutComponent,
                 project_detail_component_1.ProjectDetailComponent,
-                source_addedit_component_1.SourceAddEditComponent,
                 client_addedit_component_1.ClientAddEditComponent,
+                source_addedit_component_1.SourceAddEditComponent,
+                sourcefield_addedit_component_1.SourceFieldAddEditComponent,
+                source_list_component_1.SourceListComponent,
+                sourcefield_list_component_1.SourceFieldListComponent,
+                target_addedit_component_1.TargetAddEditComponent,
+                targetfield_addedit_component_1.TargetFieldAddEditComponent,
+                target_list_component_1.TargetListComponent,
+                targetfield_list_component_1.TargetFieldListComponent,
                 map_addedit_component_1.MapAddEditComponent,
                 transform_addedit_component_1.TransformAddEditComponent,
                 condition_addedit_component_1.ConditionAddEditComponent,
-                source_list_component_1.SourceListComponent,
-                sourcefield_list_component_1.SourceFieldListComponent,
+                rule_addedit_component_1.RuleAddEditComponent,
+                rulesourcefield_addedit_component_1.RuleSourceFieldAddEditComponent,
                 ng2_file_upload_1.FileSelectDirective
             ],
             providers: [
                 app_routes_1.appRoutingProviders,
                 app_constants_1.Configuration,
-                dataService_1.DataService
+                data_service_1.DataService
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

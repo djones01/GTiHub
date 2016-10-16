@@ -14,10 +14,14 @@
                     <div *ngIf="!description.valid && !description.pristine"
                          class="alert alert-danger">
                         Description is required
-                    </div>
+                    </div>                
                 </div>
+                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> Submit</button>
+                <button type="button" class="btn btn-default" (click)="newTransform()"><span class="glyphicon glyphicon-repeat"></span> Clear</button>
+                <button type="button" class="btn btn-default" (click)="cancelTransform()"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
             </form>
         </div>
     </div>
+    <rule-addedit></rule-addedit>
     <condition-addedit></condition-addedit>
 </div>

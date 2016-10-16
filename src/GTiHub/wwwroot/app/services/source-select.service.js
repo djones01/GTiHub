@@ -9,28 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var Subject_1 = require('rxjs/Subject');
-var dataService_1 = require('./dataService');
+var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
+var data_service_1 = require('./data.service');
 var SFieldSelectService = (function () {
     function SFieldSelectService(_dataService) {
         this._dataService = _dataService;
-        this.selectedSource = null;
-        this.selectedSourceField = null;
-        this.filteredSourceFields = [];
-        this.selectedSourceSubj = new Subject_1.Subject();
-        this.selectedSourceFieldSubj = new Subject_1.Subject();
-        this.filteredSourceFieldsSubj = new Subject_1.Subject();
-        this.hasSourceFieldSubj = new Subject_1.Subject();
+        this.sourcesSubj = new BehaviorSubject_1.BehaviorSubject([]);
+        this.selectedSourceSubj = new BehaviorSubject_1.BehaviorSubject(null);
+        this.hasSelectedSourceSubj = new BehaviorSubject_1.BehaviorSubject(false);
+        this.selectedSourceFieldSubj = new BehaviorSubject_1.BehaviorSubject(null);
+        this.filteredSourceFieldsSubj = new BehaviorSubject_1.BehaviorSubject([]);
+        this.hasSourceFieldSubj = new BehaviorSubject_1.BehaviorSubject(false);
     }
     //Source methods
     SFieldSelectService.prototype.setSelectedSource = function (source) {
         var _this = this;
-        this.selectedSource = source;
         this.selectedSourceSubj.next(source);
-        //Set the availabel source fields
-        this._dataService.GetSingle('SourceSelect', this.selectedSource["sourceId"])
+        this.hasSelectedSourceSubj.next(true);
+        //Set the available source fields
+        this._dataService.GetSingle('SourceSelect', this.selectedSourceSubj.getValue()["sourceId"])
             .subscribe(function (sourceFields) {
-            _this.filteredSourceFields = sourceFields;
             _this.filteredSourceFieldsSubj.next(sourceFields);
         });
         this.hasSourceFieldSubj.next(false);
@@ -38,9 +36,25 @@ var SFieldSelectService = (function () {
     SFieldSelectService.prototype.getSelectedSource = function () {
         return this.selectedSourceSubj.asObservable();
     };
+    SFieldSelectService.prototype.hasSelectedSource = function () {
+        return this.hasSelectedSourceSubj.asObservable();
+    };
+    SFieldSelectService.prototype.getSources = function () {
+        return this.sourcesSubj.asObservable();
+    };
+    SFieldSelectService.prototype.setSources = function (sources) {
+        this.sourcesSubj.next(sources);
+    };
+    SFieldSelectService.prototype.addSource = function (source) {
+        //Use concat here since push would return the length of the array post push
+        this.sourcesSubj.next(this.sourcesSubj.getValue().concat(source));
+    };
+    SFieldSelectService.prototype.initSources = function () {
+        var _this = this;
+        this._dataService.GetAll('Sources').subscribe(function (sources) { return _this.sourcesSubj.next(sources); }, function (error) { return console.log(error); });
+    };
     //Sourcefield methods
     SFieldSelectService.prototype.setSelectedSourceField = function (sourceField) {
-        this.selectedSourceField = sourceField;
         this.selectedSourceFieldSubj.next(sourceField);
         this.hasSourceFieldSubj.next(true);
     };
@@ -57,7 +71,7 @@ var SFieldSelectService = (function () {
     };
     SFieldSelectService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [dataService_1.DataService])
+        __metadata('design:paramtypes', [data_service_1.DataService])
     ], SFieldSelectService);
     return SFieldSelectService;
 }());

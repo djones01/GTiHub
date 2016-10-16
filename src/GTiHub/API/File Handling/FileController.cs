@@ -38,5 +38,28 @@ namespace GTiHub.API.File_Handling
 
             return new ObjectResult(sfields);    
         }
+
+        [Route("RunMapping")]
+        [HttpPost]
+        public async Task<IActionResult> RunMapping(IFormCollection form)
+        {
+            if (!Request.ContentType.Contains("multipart/form-data"))
+            {
+                return new UnsupportedMediaTypeResult();
+            }
+
+            //Get the MappingID
+            int mappingID = Convert.ToInt32(form["MappingID"]);
+            //Get the list of sourceIds
+            List<int> sourceIds = new List<int>();
+            for(int i = 1; i < form.Keys.Count; ++i)
+            {
+                string key = "SourceID" + i.ToString();
+                sourceIds.Add(Convert.ToInt32(form[key]));
+            }
+
+
+            return new NoContentResult();
+        }
     }
 }

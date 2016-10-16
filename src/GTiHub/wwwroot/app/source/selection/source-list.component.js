@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var dataService_1 = require('../../services/dataService');
+var data_service_1 = require('../../services/data.service');
 var source_select_service_1 = require('../../services/source-select.service');
 var SourceListComponent = (function () {
     function SourceListComponent(_dataService, selectService) {
@@ -22,19 +22,21 @@ var SourceListComponent = (function () {
     };
     SourceListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._dataService.GetAll('Sources').subscribe(function (sources) { return _this.sources = sources; }, function (error) { return console.log(error); });
         this.selectedSubscription = this.selectService.getSelectedSource().subscribe(function (selectedSource) { _this.selectedSource = selectedSource; });
+        this.sourcesSubscription = this.selectService.getSources().subscribe(function (sources) { return _this.sources = sources; });
+        this.selectService.initSources();
     };
     SourceListComponent.prototype.ngOnDestroy = function () {
         this.selectedSubscription.unsubscribe();
+        this.sourcesSubscription.unsubscribe();
     };
     SourceListComponent = __decorate([
         core_1.Component({
             selector: 'source-list',
             templateUrl: 'app/source/selection/source-list.component.html',
-            providers: [dataService_1.DataService],
+            providers: [data_service_1.DataService],
         }), 
-        __metadata('design:paramtypes', [dataService_1.DataService, source_select_service_1.SFieldSelectService])
+        __metadata('design:paramtypes', [data_service_1.DataService, source_select_service_1.SFieldSelectService])
     ], SourceListComponent);
     return SourceListComponent;
 }());

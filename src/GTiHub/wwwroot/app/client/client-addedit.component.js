@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var client_1 = require('./client');
-var dataService_1 = require('../services/dataService');
+var data_service_1 = require('../services/data.service');
 var ClientAddEditComponent = (function () {
     function ClientAddEditComponent(_dataService) {
         this._dataService = _dataService;
@@ -21,11 +21,13 @@ var ClientAddEditComponent = (function () {
         //Reset the form
         this.active = true;
     }
-    ClientAddEditComponent.prototype.deleteClient = function (client, i) {
-        var clientId = client.clientId;
-        this._dataService.Delete('Clients', client.clientId).subscribe(function (client) { }, function (error) { return console.log(error); });
+    ClientAddEditComponent.prototype.deleteClient = function (client) {
+        var _this = this;
+        this._dataService.Delete('Clients', client.clientId).subscribe(function () {
+            _this.removeClient(client);
+        }, function (error) { return console.log(error); });
     };
-    ClientAddEditComponent.prototype.editClient = function (client, i) {
+    ClientAddEditComponent.prototype.editClient = function (client) {
         this.addEditClient = client;
         this.editId = this.addEditClient['clientId'];
         this.editing = true;
@@ -52,6 +54,10 @@ var ClientAddEditComponent = (function () {
         this.active = false;
         setTimeout(function () { return _this.active = true; }, 0);
     };
+    ClientAddEditComponent.prototype.removeClient = function (client) {
+        var index = this.clients.indexOf(client);
+        this.clients.splice(index, 1);
+    };
     ClientAddEditComponent.prototype.ngOnInit = function () {
         this.getClients();
     };
@@ -59,9 +65,9 @@ var ClientAddEditComponent = (function () {
         core_1.Component({
             selector: 'client-addedit',
             templateUrl: 'app/client/client-addedit.component.html',
-            providers: [dataService_1.DataService]
+            providers: [data_service_1.DataService]
         }), 
-        __metadata('design:paramtypes', [dataService_1.DataService])
+        __metadata('design:paramtypes', [data_service_1.DataService])
     ], ClientAddEditComponent);
     return ClientAddEditComponent;
 }());

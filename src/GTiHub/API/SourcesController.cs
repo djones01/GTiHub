@@ -44,11 +44,12 @@ namespace GTiHub.Controllers.API
             {
                 return BadRequest();
             }
-            dbContext.Sources.Add(source);
-            foreach(SourceField sfield in source.SourceFields)
+            if (!ModelState.IsValid)
             {
-                dbContext.SourceFields.Add(sfield);
-            }  
+                return BadRequest(ModelState);
+            }
+
+            dbContext.Sources.Add(source);
             dbContext.SaveChanges();
             return CreatedAtRoute("GetSource", new { id = source.SourceId }, source);
         }

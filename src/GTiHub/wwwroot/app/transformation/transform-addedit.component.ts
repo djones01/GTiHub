@@ -1,7 +1,9 @@
 ﻿import { Component, ViewChild, OnInit } from '@angular/core';
-import { DataService } from '../services/dataService';
+import { DataService } from '../services/data.service';
 import { Response, Headers } from '@angular/http';
 import { Transformation } from './transformation';
+import { Subscription }   from 'rxjs/Subscription';
+import { MapAddEditService } from '../services/map-addedit.service';
 
 @Component({
     selector: 'transform-addedit',
@@ -16,7 +18,11 @@ export class TransformAddEditComponent implements OnInit {
     addingTransform: boolean = false;
     active: boolean = true;
 
-    constructor(private _dataService: DataService) {
+    cancelTransform() {
+        this.mapAddEditService.setAddingTransform(false);
+    }
+
+    constructor(private _dataService: DataService, private mapAddEditService: MapAddEditService) {
     }
     ngOnInit(): void {
 

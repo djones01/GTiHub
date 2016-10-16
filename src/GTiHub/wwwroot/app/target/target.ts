@@ -2,9 +2,9 @@
     constructor(
         public name: string,
         public description: string,
-        public effective_Date: string,
+        public effective_Date: string,     
         public active: boolean,
-        public targetFields: TargetField[]
+        public targetFields: TargetField[]    
     ) { }
 }
 

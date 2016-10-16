@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { DataService } from '../services/dataService';
+import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'project-detail',
@@ -7,7 +7,7 @@ import { DataService } from '../services/dataService';
     providers: [DataService]
 })
 export class ProjectDetailComponent implements OnInit{
-    projects: Object[];
+    projects: Object[] = [];
 
     constructor(private _dataService: DataService) {
     }

@@ -1,5 +1,5 @@
 ﻿import { Component, ViewChild, OnInit, Input, OnDestroy } from '@angular/core';
-import { DataService } from '../../services/dataService';
+import { DataService } from '../../services/data.service';
 import { Response, Headers } from '@angular/http';
 import { SourceField, Source } from '../source';
 import { Subscription }   from 'rxjs/Subscription';

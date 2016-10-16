@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var dataService_1 = require('../../services/dataService');
+var data_service_1 = require('../../services/data.service');
 var source_select_service_1 = require('../../services/source-select.service');
 var SourceFieldListComponent = (function () {
     function SourceFieldListComponent(_dataService, selectService) {
@@ -33,9 +33,9 @@ var SourceFieldListComponent = (function () {
         core_1.Component({
             selector: 'sourcefield-list',
             templateUrl: 'app/source/selection/sourcefield-list.component.html',
-            providers: [dataService_1.DataService],
+            providers: [data_service_1.DataService],
         }), 
-        __metadata('design:paramtypes', [dataService_1.DataService, source_select_service_1.SFieldSelectService])
+        __metadata('design:paramtypes', [data_service_1.DataService, source_select_service_1.SFieldSelectService])
     ], SourceFieldListComponent);
     return SourceFieldListComponent;
 }());

@@ -248,6 +248,8 @@ namespace GTiHub.Migrations
 
                     b.Property<int>("RuleId");
 
+                    b.Property<int>("SeqNum");
+
                     b.Property<int>("SourceFieldId");
 
                     b.HasKey("RuleSourceFieldId");

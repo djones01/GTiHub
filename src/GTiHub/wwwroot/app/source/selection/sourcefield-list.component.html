@@ -23,7 +23,7 @@
         <div *ngIf="sourceFields.length == 0">
             No Source Fields to show
         </div>
-        <div class="align-center" *ngIf="sourceFields && sourceFields.length >= 5">
+        <div class="align-center" *ngIf="sourceFields && sourceFields.length > 5">
             <pagination-controls (pageChange)="z = $event" #api>
             </pagination-controls>
         </div>

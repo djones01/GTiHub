@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Session;
+using System.Threading.Tasks;
+using System.Data;
+using System.Threading;
 
 namespace GTiHub.Models.EntityModel
 {
@@ -45,6 +47,13 @@ namespace GTiHub.Models.EntityModel
             LogCreationAndUser();
             return base.SaveChanges();
         }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            LogCreationAndUser();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
 
         private void LogCreationAndUser()
         {

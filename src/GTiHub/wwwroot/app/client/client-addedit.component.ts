@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Client } from './client';
-import { DataService } from '../services/dataService';
+import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'client-addedit',
@@ -16,14 +16,14 @@ export class ClientAddEditComponent implements OnInit {
     constructor(private _dataService: DataService) {
     }
 
-    deleteClient(client, i) {
-        var clientId = client.clientId;
-        this._dataService.Delete('Clients', client.clientId).subscribe(client => { },
+    deleteClient(client) {
+        this._dataService.Delete('Clients', client.clientId).subscribe(() => {
+            this.removeClient(client);
+        },
             error => console.log(error));  
-
     }
 
-    editClient(client, i) {
+    editClient(client) {
         this.addEditClient = client;
         this.editId = this.addEditClient['clientId'];
         this.editing = true;
@@ -35,7 +35,7 @@ export class ClientAddEditComponent implements OnInit {
                 error => console.log(error));
         }
         else {
-            this._dataService.Add('Clients', this.addEditClient).subscribe(client => { this.clients.push(client) },
+           this._dataService.Add('Clients', this.addEditClient).subscribe(client => { this.clients.push(client) },
                 error => console.log(error));
         }
 
@@ -55,6 +55,11 @@ export class ClientAddEditComponent implements OnInit {
         this.addEditClient = new Client('', '');
         this.active = false;
         setTimeout(() => this.active = true, 0);
+    }
+
+    removeClient(client) {
+        var index = this.clients.indexOf(client);
+        this.clients.splice(index, 1);
     }
 
     ngOnInit(): void {

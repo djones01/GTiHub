@@ -1,154 +1,104 @@
 ﻿<div class="container">
-    <div class="col-lg-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">Add / Edit Sources</div>
-            <div class="panel-body">
-                <form *ngIf="active" (ngSubmit)="onSubmit()" #sourceform="ngForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name"
-                                [(ngModel)]="addEditSource.name" name="name"
-                                #name="ngModel"
-                                required>
-                        <div *ngIf="!name.valid && !name.pristine"
-                                class="alert alert-danger">
-                            Name is required
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control textarea-resize" id="description"
-                                    [(ngModel)]="addEditSource.description" name="description"
-                                    #description="ngModel"
-                                    required></textarea>
-                        <div *ngIf="!description.valid && !description.pristine"
-                                class="alert alert-danger">
-                            Description is required
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="effective_Date">Effective Date</label>
-                        <input type="date" class="form-control" id="effective_Date"
-                                [(ngModel)]="addEditSource.effective_Date" name="effective_Date"
-                                #effective_Date="ngModel"
-                                required>
-                        <div *ngIf="!effective_Date.valid && !effective_Date.pristine"
-                                class="alert alert-danger">
-                            Effective Date is required
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Field Generation Options
+    <div class="panel panel-default">
+        <div class="panel-heading">Add / Edit Sources</div>
+        <div class="panel-body">
+            <form *ngIf="active" (ngSubmit)="onSubmit()" #sourceform="ngForm">             
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name"
+                                   [(ngModel)]="source.name" name="name"
+                                   #name="ngModel"
+                                   required>
+                            <div *ngIf="!name.valid && !name.pristine"
+                                 class="alert alert-danger">
+                                Name is required
                             </div>
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="sfieldOptMan">Manual Headers</label>
-                                    <input type="radio" name="sfieldOptMan" [(ngModel)]="sopt" [value]="false" /><br />
-                                    <label for="sfieldOptTemplate">From Template</label>
-                                    <input type="radio" name="sFieldOptTemplate" [(ngModel)]="sopt" [value]="true" checked />
-                                </div>
-                                <hr />
-                                <div *ngIf="sopt" class="form-group">
-                                    <label for="templateFile">Select Template File</label>
-                                    <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" /><br />
-                                    <button type="button" class="btn btn-default"
-                                            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                                        <span class="glyphicon glyphicon-upload"></span> Extract Fields
-                                    </button>
-                                </div>
-                                <div *ngIf="!sopt" class="form-group">
-                                    <label for="name">Number of Fields (max of 300)</label>
-                                    <input type="number" value="0" min="0" max="300" class="form-control" id="sfieldCount" name="sfieldCount" [(ngModel)]="sfieldCount" (change)="onFieldCountChange()" />
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control textarea-resize" id="description"
+                                      [(ngModel)]="source.description" name="description"
+                                      #description="ngModel"
+                                      required></textarea>
+                            <div *ngIf="!description.valid && !description.pristine"
+                                 class="alert alert-danger">
+                                Description is required
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="effective_Date">Effective Date</label>
+                            <input type="date" class="form-control" id="effective_Date"
+                                   [(ngModel)]="source.effective_Date" name="effective_Date"
+                                   #effective_Date="ngModel"
+                                   required>
+                            <div *ngIf="!effective_Date.valid && !effective_Date.pristine"
+                                 class="alert alert-danger">
+                                Effective Date is required
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label for="active">
+                                    <input type="checkbox" checked="checked" id="active"
+                                           [(ngModel)]="source.active" name="active"
+                                           #active="ngModel">Active
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label for="active">
-                                <input type="checkbox" checked="checked" id="active"
-                                        [(ngModel)]="addEditSource.active" name="active"
-                                        #active="ngModel">Active
-                            </label>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Field Generation Options
+                                </div>
+                                <div class="panel-body">
+                                    <div class="radio">
+                                        <label><input type="radio" name="sfieldOptMan" [(ngModel)]="sopt" [value]="false" />Manual Fields</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="sFieldOptTemplate" [(ngModel)]="sopt" [value]="true" checked />Extract From File</label>
+                                    </div>
+                                    <div *ngIf="sopt" class="form-group">
+                                        <label for="templateFile">Select Template File</label>
+                                        <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" /><br />
+                                        <button type="button" class="btn btn-default"
+                                                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                                            <span class="glyphicon glyphicon-upload"></span> Extract Fields
+                                        </button>
+                                    </div>
+                                    <div *ngIf="!sopt" class="form-group">
+                                        <label for="name">Number of Fields (max of 300)</label>
+                                        <input type="number" value="0" min="0" max="300" class="form-control" id="sfieldCount" name="sfieldCount" [(ngModel)]="sfieldCount" (change)="onFieldCountChange()" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-default" [disabled]="sourceFieldsCount == 0 || !sourceform.form.valid"><span class="glyphicon glyphicon-plus"></span> Submit</button>
-                </form>
-            </div>
-        </div>     
-    </div>
-    <div class="col-lg-9"> 
-            <div class="panel panel-default">
-                <div class="panel-heading">Sources</div>
-                <div class="panel-body">
-                    <table class="table center-cells">
-                        <thead>
-                            <tr>
-                                <td>Name</td>
-                                <td>Description</td>
-                                <td>Created By</td>
-                                <td>Creation Date</td>
-                                <td>Last Modified By</td>
-                                <td>Modified Date</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let source  of sources | paginate: { itemsPerPage: 5, currentPage: p }; let i=index">
-                                <td>{{source.name}}</td>
-                                <td>{{source.description}}</td>
-                                <td>{{source.created_By}}</td>
-                                <td>{{source.creation_Date | date}}</td>
-                                <td>{{source.modified_By}}</td>
-                                <td>{{source.date_Modified | date}}</td>
-                                <td><button class="btn btn-default" (click)="editSource(source, i)"><span class="glyphicon glyphicon-edit"></span> Edit</button></td>
-                                <td><button class="btn btn-default" (click)="deleteSource(source, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
-                            </tr>
-                            <tr>
-                                <td class="align-center" colspan="7" *ngIf="sources && sources.length >= 5">
-                                    <pagination-controls (pageChange)="p = $event" #api>
-                                    </pagination-controls>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>   
-        <hr />
-        <div class="panel panel-default">
-            <div class="panel-heading">Source Fields</div>
-            <div *ngIf="sourceFields.length > 0" class="panel-body">
-                <form #sourceFieldForm="ngForm">
-                    <table class="table center-cells">
-                        <thead>
-                            <tr>
-                                <td>Sequence Number</td>
-                                <td>Name</td>
-                                <td>Datatype</td>
-                                <td>Active</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let sourceField of sourceFields; let i=index">
-                                <td>{{sourceField.seqNum}}</td>
-                                <td><input class="form-control" type="text" [(ngModel)]="sourceField.name" name="sFieldName" #sFieldName="ngModel" id="sFieldName" /></td>
-                                <td>
-                                    <select class="form-control" [(ngModel)]="sourceField.datatype" name="sFieldDatatype" #sFieldDatatype="ngModel" id="sFieldDatatype">
-                                        <option *ngFor="let option of options" [ngValue]="option.value">{{option.display}}</option>
-                                    </select>
-                                </td>
-                                <td><input type="checkbox" [(ngModel)]="sourceField.active" name="sFieldActive" #sFieldActive="ngModel" id="sFieldDatatype" /></td>
-                                <td><button class="btn btn-default" (click)="removeSourceField(sourceField, i)"><span class="glyphicon glyphicon-trash"></span> Delete</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-            <div *ngIf="sourceFields.length == 0" class="panel-body">
-                No Source Fields to Show
-            </div>
+                </div>         
+                <button type="submit" class="btn btn-default" [disabled]="!hasSourceFields || !sourceform.form.valid"><span class="glyphicon glyphicon-plus"></span> Submit</button>
+                <button type="button" class="btn btn-default" (click)="newSource()"><span class="glyphicon glyphicon-repeat"></span> Clear</button>
+                <button type="button" class="btn btn-default" (click)="openSourceSelect(content)">Edit Source</button>
+            </form>
         </div>
-    </div>
+    </div>     
+    <sourcefield-addedit></sourcefield-addedit>
 </div>
+<!-- Modal to contain Source Selection component -->
+<template ngbModalContainer #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Select a Source Field</h4>
+    </div>
+    <div class="modal-body">
+        <source-list></source-list>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="c('Select Source')" [disabled]="!hasSelectedSource">Select Source</button>
+        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+    </div>
+</template>

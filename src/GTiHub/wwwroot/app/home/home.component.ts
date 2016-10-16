@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectDetailComponent } from '../project/project-detail.component';
-import { DataService } from '../services/dataService';
+import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'home',

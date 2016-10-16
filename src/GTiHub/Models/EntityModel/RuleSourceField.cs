@@ -12,6 +12,7 @@ namespace GTiHub.Models.EntityModel
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RuleSourceFieldId { get; set; }
+        public int SeqNum { get; set; }
         public string Append { get; set; }
         public string Prepend { get; set; }
         public string Custom_Format { get; set; }

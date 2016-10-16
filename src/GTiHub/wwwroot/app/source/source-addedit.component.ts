@@ -1,132 +1,87 @@
-﻿import { Component, ViewChild, OnInit } from '@angular/core';
+﻿import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Source, SourceField } from './source';
-import { DataService } from '../services/dataService';
+import { DataService } from '../services/data.service';
+import { SourceAddEditService } from '../services/source-addedit.service';
+import { SFieldSelectService } from '../services/source-select.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload';
 import { Response, Headers } from '@angular/http';
+import { Subscription }   from 'rxjs/Subscription';
 
 @Component({
     selector: 'source-addedit',
     templateUrl: 'app/source/source-addedit.component.html',
-    providers: [DataService],
+    providers: [DataService, SourceAddEditService, SFieldSelectService],
 })
-export class SourceAddEditComponent implements OnInit {
+export class SourceAddEditComponent implements OnInit, OnDestroy {
     //Control the template / manual header boxes
     sopt: boolean = true;
     //Reset the form
     active = true;
-
     //Used for editing source
     editing = false;
-    private editId = -1;
-
-    //Source Field count from number picker
-    sfieldCount: number;
-    //Store the actual number of source fields - comparison purposes
-    sourceFieldsCount: number = 0;
-    private sources: Source[] = [];
-    private addEditSource: Source = new Source('', '', '', true, null);
+    editId = -1;
+    //Source which is being worked on
+    source: Source;
     public uploader: FileUploader;
+    sfieldCount = 0;
+    hasSourceFields = false;
+    hasSelectedSource = true;
 
-    public sourceFields: SourceField[] = [];
-    private sFieldSeqNumCount: number = 1;
-    private options = [
-        { value: 'url', display: 'URL' },
-        { value: 'text', display: 'Text' },
-        { value: 'bool', display: 'Boolean' },
-        { value: 'decimal', display: 'Decimal' },
-        { value: 'currency', display: 'Currency' },
-        { value: 'email', display: 'Email' }
-    ];
-
-
-    constructor(private _dataService: DataService) {
-        this.uploader = new FileUploader({ url: 'api/File/ExtractHeaders' });
-        this.uploader.onCompleteItem = (item: any, response: string, status: number, headers: any) => {
-            var res = JSON.parse(response);
-            this.setSourceFields(res);
-        };
-    }
-
-    //------------------------------------------------------------------------------------------------------------------------  
-
-    onSubmit() {
-        if (this.editing) {
-            this._dataService.Update('Sources', this.editId, this.addEditSource).subscribe(client => { },
-                error => console.log(error));
-        }
-        else {
-            this.addEditSource.sourceFields = this.sourceFields;
-            this._dataService.Add('Sources', this.addEditSource).subscribe((source) => {
-                this.sources.push(source);
-                this.sourceFields = null;
-            },
-                error => console.log(error));
-        }
-
-        this.newSource();
-        this.editing = false;
-        return false;
-    }
+    //Subscriptions for source adding / editing service
+    sourceSubscription: Subscription;
+    hasSourceFieldsSubscription: Subscription;
+    hasSelectedSourceSubscription: Subscription;
     
+    onFieldCountChange() {
+        this.sourceAddEditService.modifySFields(this.sfieldCount);
+    }
 
-    getSources() {
-        this._dataService.GetAll('Sources').subscribe(sources => this.sources = sources);
+    onSubmit()
+    {
+        this.sourceAddEditService.createOrUpdateSource();
+        //Refresh sources in modal
+        this.selectService.initSources();
+        this.newSource();
     }
 
     newSource() {
-        this.addEditSource = new Source('', '', '', true, null);
+        this.sourceAddEditService.clear();
         this.active = false;
         setTimeout(() => this.active = true, 0);
     }
 
-    //---------------------------------------------------------------------------------------------------------------------------
-    //Source Field functions
-
-    onFieldCountChange(newVal: number): void {
-        if (this.sfieldCount > this.sourceFieldsCount) {
-            this.addSourceFields(this.sfieldCount - this.sourceFieldsCount);
-        }
-        else if (this.sfieldCount < this.sourceFieldsCount) {
-            this.removeSourceFields(this.sourceFieldsCount - this.sfieldCount);
-        }
-        else { // Do Nothing 
-        }
+    //Modal Functions
+    openSourceSelect(content) {
+        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+            //User selected source field in modal
+            if (result == 'Select Source') {
+                this.selectService.getSelectedSource().subscribe(source => this.source = source);
+                this._dataService.GetSingle('SourceSelect', this.source["sourceId"])
+                    .subscribe(sourceFields => {
+                        this.sourceAddEditService.setSourceFields(sourceFields);
+                    });   
+            }
+        }, (reason) => { });
     }
 
-    addSourceFields(addCount: number) {
-        var newSourceField;
-        for (var i = 0; i < addCount; i++) {
-            newSourceField = new SourceField('N/A', 'text', true, this.sFieldSeqNumCount++);
-            this.sourceFields.push(newSourceField);
-        }
-        this.sourceFieldsCount = this.sourceFields.length;
+    constructor(private _dataService: DataService, private modalService: NgbModal, private sourceAddEditService: SourceAddEditService, private selectService: SFieldSelectService ) {
+        this.uploader = new FileUploader({ url: 'api/File/ExtractHeaders' });
+        this.uploader.onCompleteItem = (item: any, response: string, status: number, headers: any) => {
+            var res = JSON.parse(response);
+            this.sourceAddEditService.setSourceFields(res);
+        };
     }
-
-    //Mass removal for use with number picker
-    removeSourceFields(removeCount: number) {
-        this.sourceFields = this.sourceFields.splice(0, this.sourceFields.length - removeCount);
-        this.sFieldSeqNumCount -= removeCount;
-    }
-
-    //Targeted removal
-    removeSourceField(sourceField, i) {
-        this.sourceFields = this.sourceFields.filter(function (el) {
-            return el != sourceField;
-        });
-        //Update sequence numbers of all sourceFields with seq num greater than the deleted one
-        for (var j = i, len = this.sourceFields.length; j < len; j++) {
-            this.sourceFields[j].seqNum--;
-        }
-        this.sFieldSeqNumCount--;
-    }
-
-    setSourceFields(sfields: SourceField[]) {
-        this.sourceFields = sfields;
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------------
 
     ngOnInit(): void {
-        this.getSources();
+        this.sourceSubscription = this.sourceAddEditService.getSource().subscribe(source => this.source = source); 
+        this.hasSourceFieldsSubscription = this.sourceAddEditService.hasSourceFields().subscribe(hasSourceFields => this.hasSourceFields = hasSourceFields);
+        this.hasSelectedSourceSubscription = this.selectService.hasSelectedSource().subscribe(hasSelectedSource => this.hasSelectedSource = hasSelectedSource);
     }
+    ngOnDestroy(): void {
+        this.sourceSubscription.unsubscribe();
+        this.hasSourceFieldsSubscription.unsubscribe();
+        this.hasSelectedSourceSubscription.unsubscribe();
+    }
+
 }
