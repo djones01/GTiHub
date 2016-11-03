@@ -26,16 +26,18 @@ var DataService = (function () {
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
+    DataService.prototype.GetAllWithId = function (action, id) {
+        return this._http.get(this.actionUrl + action + '/' + id)
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+    };
     DataService.prototype.GetSingle = function (action, id) {
         return this._http.get(this.actionUrl + action + '/' + id)
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
     };
     DataService.prototype.Add = function (action, itemToAdd) {
-        var body = JSON.stringify(itemToAdd);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        return this._http.post(this.actionUrl + action, body, options)
+        return this._http.post(this.actionUrl + action, JSON.stringify(itemToAdd), { headers: this.headers })
             .map(this.extractData)
             .catch(this.handleError);
     };

@@ -27,6 +27,7 @@ export class SourceAddEditComponent implements OnInit, OnDestroy {
     sfieldCount = 0;
     hasSourceFields = false;
     hasSelectedSource = true;
+    delimiter: string;
 
     //Subscriptions for source adding / editing service
     sourceSubscription: Subscription;
@@ -45,6 +46,14 @@ export class SourceAddEditComponent implements OnInit, OnDestroy {
         this.newSource();
     }
 
+    extractFile() {
+        this.uploader.onBuildItemForm = (item, form) => {
+            form.append("delimiter", this.delimiter);
+        };
+        this.uploader.uploadAll();
+        this.delimiter = '';
+    }
+
     newSource() {
         this.sourceAddEditService.clear();
         this.active = false;
@@ -57,7 +66,7 @@ export class SourceAddEditComponent implements OnInit, OnDestroy {
             //User selected source field in modal
             if (result == 'Select Source') {
                 this.selectService.getSelectedSource().subscribe(source => this.source = source);
-                this._dataService.GetSingle('SourceSelect', this.source["sourceId"])
+                this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', this.source["sourceId"])
                     .subscribe(sourceFields => {
                         this.sourceAddEditService.setSourceFields(sourceFields);
                     });   

@@ -35,7 +35,7 @@ var TargetAddEditService = (function () {
         return this.targetSubj.asObservable();
     };
     //Target's targetfield methods
-    TargetAddEditService.prototype.modifySFields = function (sFieldCount) {
+    TargetAddEditService.prototype.modifyTFields = function (sFieldCount) {
         var targetFieldsCount = this.targetFieldsSubj.getValue().length;
         //Need to add target fields
         if (sFieldCount > targetFieldsCount) {

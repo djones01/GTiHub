@@ -8,6 +8,9 @@
             <p class="list-group-item-text">{{target.description}}</p>
         </a>
     </div>
+    <div *ngIf="targets.length == 0" class="panel-body">
+        No Targets to show
+    </div>
     <div class="align-center" *ngIf="targets && targets.length > 5">
         <pagination-controls (pageChange)="p = $event" #api>
         </pagination-controls>

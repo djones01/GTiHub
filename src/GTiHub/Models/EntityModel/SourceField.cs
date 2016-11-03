@@ -33,7 +33,9 @@ namespace GTiHub.Models.EntityModel
         public bool Active { get; set; }
         public int SeqNum { get; set; }
 
+        [ForeignKey("SourceFieldId")]
         public virtual ICollection<Condition> Conditions { get; set; }
+        [ForeignKey("SourceFieldId")]
         public virtual ICollection<RuleSourceField> RuleSourceFields { get; set; }
 
         public int SourceId { get; set; }

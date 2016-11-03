@@ -29,7 +29,7 @@ export class TargetAddEditService {
     }
 
     //Target's targetfield methods
-    modifySFields(sFieldCount: number) {
+    modifyTFields(sFieldCount: number) {
         var targetFieldsCount = this.targetFieldsSubj.getValue().length;
         //Need to add target fields
         if (sFieldCount > targetFieldsCount)

@@ -43,13 +43,11 @@ export class RuleSourceFieldAddEditComponent implements OnInit, OnDestroy {
     }
 
     addRuleSourceField() {
-        this.MapAddEditService.addRuleSourceField(new RuleSourceField(this.seqNum++, '', '', '', null));
+        this.MapAddEditService.addRuleSourceField();
     }
 
     removeRuleSourceField(ruleSourceField) {
         this.MapAddEditService.removeRuleSourceField(ruleSourceField);
-        //var index = this.ruleSourceFields.indexOf(ruleSourceField);
-        //this.ruleSourceFields.splice(index, 1);
     }
 
     constructor(private _dataService: DataService, private modalService: NgbModal, private selectService: SFieldSelectService, private MapAddEditService: MapAddEditService) {

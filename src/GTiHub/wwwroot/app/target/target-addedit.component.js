@@ -46,6 +46,14 @@ var TargetAddEditComponent = (function () {
         this.selectService.initTargets();
         this.newTarget();
     };
+    TargetAddEditComponent.prototype.extractFile = function () {
+        var _this = this;
+        this.uploader.onBuildItemForm = function (item, form) {
+            form.append("delimiter", _this.delimiter);
+        };
+        this.uploader.uploadAll();
+        this.delimiter = '';
+    };
     TargetAddEditComponent.prototype.newTarget = function () {
         var _this = this;
         this.targetAddEditService.clear();
@@ -59,7 +67,7 @@ var TargetAddEditComponent = (function () {
             //User selected target field in modal
             if (result == 'Select Target') {
                 _this.selectService.getSelectedTarget().subscribe(function (target) { return _this.target = target; });
-                _this._dataService.GetSingle('TargetSelect', _this.target["targetId"])
+                _this._dataService.GetAllWithId('Targets/GetTargetFieldsByTarget', _this.target["targetId"])
                     .subscribe(function (targetFields) {
                     _this.targetAddEditService.setTargetFields(targetFields);
                 });

@@ -1,8 +1,7 @@
 "use strict";
 var Transformation = (function () {
-    function Transformation(description, map, rule, conditions) {
+    function Transformation(description, rule, conditions) {
         this.description = description;
-        this.map = map;
         this.rule = rule;
         this.conditions = conditions;
     }

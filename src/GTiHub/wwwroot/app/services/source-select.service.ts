@@ -19,7 +19,7 @@ export class SFieldSelectService {
         this.hasSelectedSourceSubj.next(true);
  
         //Set the available source fields
-        this._dataService.GetSingle('SourceSelect', this.selectedSourceSubj.getValue()["sourceId"])
+        this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', this.selectedSourceSubj.getValue()["sourceId"])
             .subscribe(sourceFields => {
                 this.filteredSourceFieldsSubj.next(sourceFields);
             });   

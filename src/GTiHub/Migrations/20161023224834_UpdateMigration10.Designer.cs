@@ -8,8 +8,8 @@ using GTiHub.Models.EntityModel;
 namespace GTiHub.Migrations
 {
     [DbContext(typeof(GTiHubContext))]
-    [Migration("20161010042023_UpdateMigration7")]
-    partial class UpdateMigration7
+    [Migration("20161023224834_UpdateMigration10")]
+    partial class UpdateMigration10
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

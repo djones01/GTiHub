@@ -24,10 +24,15 @@ import { TargetFieldAddEditComponent } from './target/targetfield-addedit.compon
 import { TargetListComponent } from './target/selection/target-list.component';
 import { TargetFieldListComponent } from './target/selection/targetfield-list.component';
 import { MapAddEditComponent } from './map/map-addedit.component';
+import { RunMapComponent } from './map/run-map/map-runmap.component';
+import { MapFileSelectComponent } from './map/run-map/map-fileselect.component';
 import { TransformAddEditComponent } from './transformation/transform-addedit.component';
 import { ConditionAddEditComponent } from './transformation/condition/condition-addedit.component';
 import { RuleAddEditComponent } from './transformation/rule/rule-addedit.component';
 import { RuleSourceFieldAddEditComponent } from './transformation/rule/rulesourcefield-addedit.component';
+
+//Pipes
+import { ExtractFileNamePipe } from './pipes/extract-file-name.pipe';
 
 
 @NgModule({
@@ -55,11 +60,14 @@ import { RuleSourceFieldAddEditComponent } from './transformation/rule/rulesourc
         TargetListComponent,
         TargetFieldListComponent,     
         MapAddEditComponent,
+        RunMapComponent,
+        MapFileSelectComponent,
         TransformAddEditComponent,
         ConditionAddEditComponent,
         RuleAddEditComponent,
         RuleSourceFieldAddEditComponent,
-        FileSelectDirective
+        FileSelectDirective,
+        ExtractFileNamePipe
     ],
 
     providers: [

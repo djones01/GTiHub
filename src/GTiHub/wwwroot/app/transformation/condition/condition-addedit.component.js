@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var data_service_1 = require('../../services/data.service');
-var transformation_1 = require('../transformation');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var source_select_service_1 = require('../../services/source-select.service');
 var map_addedit_service_1 = require('../../services/map-addedit.service');
@@ -21,8 +20,6 @@ var ConditionAddEditComponent = (function () {
         this.selectService = selectService;
         this.mapAddEditService = mapAddEditService;
         this.active = true;
-        //Seq number count for conditions
-        this.condSeqCount = 1;
         this.hasSelectedSourceField = false;
         //List of Conditions currently in the add/edit list
         this.conditions = [];
@@ -39,14 +36,12 @@ var ConditionAddEditComponent = (function () {
             }
         }, function (reason) { });
     };
-    ConditionAddEditComponent.prototype.removeCondition = function (condition, i) {
-        //var index = this.conditions.indexOf(condition);
-        //this.conditions.splice(index, 1);
-        this.mapAddEditService.removeCondition(condition, i);
+    ConditionAddEditComponent.prototype.removeCondition = function (condition) {
+        this.mapAddEditService.removeCondition(condition);
     };
     //Add a new condition to the list of conditions
     ConditionAddEditComponent.prototype.addCondition = function () {
-        this.conditions.push(new transformation_1.Condition(this.condSeqCount++, (this.condSeqCount == 1) ? '' : 'or', '', '', '', '', null));
+        this.mapAddEditService.addCondition();
     };
     ConditionAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;

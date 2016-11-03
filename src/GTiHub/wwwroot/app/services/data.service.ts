@@ -10,9 +10,7 @@ export class DataService {
     private headers: Headers;
 
     constructor(private _http: Http, private _configuration: Configuration) {
-
-        this.actionUrl = _configuration.ApiUrl
-
+        this.actionUrl = _configuration.ApiUrl;
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
@@ -24,6 +22,12 @@ export class DataService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
     }
 
+    public GetAllWithId(action: string, id: number): Observable<any> {
+        return this._http.get(this.actionUrl + action + '/' + id)
+            .map(res => res.json())
+            .catch((error: any) => Observable.throw(error.json().error || 'Server Error'));
+    }
+
     public GetSingle (action: string, id: number): Observable<any> {
         return this._http.get(this.actionUrl + action + '/' + id)
             .map(res => res.json())
@@ -31,11 +35,7 @@ export class DataService {
     }
 
     public Add (action: string, itemToAdd: any): Observable<any> {
-        let body = JSON.stringify( itemToAdd );
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this._http.post(this.actionUrl + action, body, options)
+        return this._http.post(this.actionUrl + action, JSON.stringify(itemToAdd), { headers: this.headers })
             .map(this.extractData)
             .catch(this.handleError);
     }

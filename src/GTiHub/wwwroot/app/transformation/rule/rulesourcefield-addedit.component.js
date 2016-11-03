@@ -12,7 +12,6 @@ var core_1 = require('@angular/core');
 var data_service_1 = require('../../services/data.service');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
 var source_select_service_1 = require('../../services/source-select.service');
-var transformation_1 = require('../transformation');
 var map_addedit_service_1 = require('../../services/map-addedit.service');
 var RuleSourceFieldAddEditComponent = (function () {
     function RuleSourceFieldAddEditComponent(_dataService, modalService, selectService, MapAddEditService) {
@@ -35,12 +34,10 @@ var RuleSourceFieldAddEditComponent = (function () {
         }, function (reason) { });
     };
     RuleSourceFieldAddEditComponent.prototype.addRuleSourceField = function () {
-        this.MapAddEditService.addRuleSourceField(new transformation_1.RuleSourceField(this.seqNum++, '', '', '', null));
+        this.MapAddEditService.addRuleSourceField();
     };
     RuleSourceFieldAddEditComponent.prototype.removeRuleSourceField = function (ruleSourceField) {
         this.MapAddEditService.removeRuleSourceField(ruleSourceField);
-        //var index = this.ruleSourceFields.indexOf(ruleSourceField);
-        //this.ruleSourceFields.splice(index, 1);
     };
     RuleSourceFieldAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;

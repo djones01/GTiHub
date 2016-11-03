@@ -19,7 +19,7 @@ export class TFieldSelectService {
         this.hasSelectedTargetSubj.next(true);
  
         //Set the available target fields
-        this._dataService.GetSingle('TargetSelect', this.selectedTargetSubj.getValue()["targetId"])
+        this._dataService.GetAllWithId('Targets/GetTargetFieldsByTarget', this.selectedTargetSubj.getValue()["targetId"])
             .subscribe(targetFields => {
                 this.filteredTargetFieldsSubj.next(targetFields);
             });   

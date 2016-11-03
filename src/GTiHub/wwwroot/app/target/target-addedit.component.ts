@@ -27,6 +27,7 @@ export class TargetAddEditComponent implements OnInit, OnDestroy {
     tfieldCount = 0;
     hasTargetFields = false;
     hasSelectedTarget = true;
+    delimiter: string;
 
     //Subscriptions for target adding / editing service
     targetSubscription: Subscription;
@@ -45,6 +46,14 @@ export class TargetAddEditComponent implements OnInit, OnDestroy {
         this.newTarget();
     }
 
+    extractFile() {
+        this.uploader.onBuildItemForm = (item, form) => {
+            form.append("delimiter", this.delimiter);
+        };
+        this.uploader.uploadAll();
+        this.delimiter = '';
+    }
+
     newTarget() {
         this.targetAddEditService.clear();
         this.active = false;
@@ -57,7 +66,7 @@ export class TargetAddEditComponent implements OnInit, OnDestroy {
             //User selected target field in modal
             if (result == 'Select Target') {
                 this.selectService.getSelectedTarget().subscribe(target => this.target = target);
-                this._dataService.GetSingle('TargetSelect', this.target["targetId"])
+                this._dataService.GetAllWithId('Targets/GetTargetFieldsByTarget', this.target["targetId"])
                     .subscribe(targetFields => {
                         this.targetAddEditService.setTargetFields(targetFields);
                     });   

@@ -33,10 +33,14 @@ var targetfield_addedit_component_1 = require('./target/targetfield-addedit.comp
 var target_list_component_1 = require('./target/selection/target-list.component');
 var targetfield_list_component_1 = require('./target/selection/targetfield-list.component');
 var map_addedit_component_1 = require('./map/map-addedit.component');
+var map_runmap_component_1 = require('./map/run-map/map-runmap.component');
+var map_fileselect_component_1 = require('./map/run-map/map-fileselect.component');
 var transform_addedit_component_1 = require('./transformation/transform-addedit.component');
 var condition_addedit_component_1 = require('./transformation/condition/condition-addedit.component');
 var rule_addedit_component_1 = require('./transformation/rule/rule-addedit.component');
 var rulesourcefield_addedit_component_1 = require('./transformation/rule/rulesourcefield-addedit.component');
+//Pipes
+var extract_file_name_pipe_1 = require('./pipes/extract-file-name.pipe');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -65,11 +69,14 @@ var AppModule = (function () {
                 target_list_component_1.TargetListComponent,
                 targetfield_list_component_1.TargetFieldListComponent,
                 map_addedit_component_1.MapAddEditComponent,
+                map_runmap_component_1.RunMapComponent,
+                map_fileselect_component_1.MapFileSelectComponent,
                 transform_addedit_component_1.TransformAddEditComponent,
                 condition_addedit_component_1.ConditionAddEditComponent,
                 rule_addedit_component_1.RuleAddEditComponent,
                 rulesourcefield_addedit_component_1.RuleSourceFieldAddEditComponent,
-                ng2_file_upload_1.FileSelectDirective
+                ng2_file_upload_1.FileSelectDirective,
+                extract_file_name_pipe_1.ExtractFileNamePipe
             ],
             providers: [
                 app_routes_1.appRoutingProviders,

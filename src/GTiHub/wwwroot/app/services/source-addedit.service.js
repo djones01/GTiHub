@@ -22,7 +22,7 @@ var SourceAddEditService = (function () {
         this.sourceFieldsSubj = new BehaviorSubject_1.BehaviorSubject([]);
         this.hasSourceFieldsSubj = new BehaviorSubject_1.BehaviorSubject(false);
     }
-    //Source's sourcefield methods
+    //Source's methods
     SourceAddEditService.prototype.createOrUpdateSource = function () {
         var source = this.sourceSubj.getValue();
         source.sourceFields = this.sourceFieldsSubj.getValue();

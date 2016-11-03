@@ -8,8 +8,8 @@ using GTiHub.Models.EntityModel;
 namespace GTiHub.Migrations
 {
     [DbContext(typeof(GTiHubContext))]
-    [Migration("20160918212618_UpdateMigration1")]
-    partial class UpdateMigration1
+    [Migration("20161023220156_UpdateMigration9")]
+    partial class UpdateMigration9
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,8 @@ namespace GTiHub.Migrations
                     b.Property<int>("ConditionId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Chain_Operation");
+
                     b.Property<string>("Cond_Value");
 
                     b.Property<string>("Created_By");
@@ -60,7 +62,9 @@ namespace GTiHub.Migrations
 
                     b.Property<string>("Right_Paren");
 
-                    b.Property<int>("SourceFieldId");
+                    b.Property<int>("SeqNum");
+
+                    b.Property<int?>("SourceFieldId");
 
                     b.Property<int>("TransformationId");
 
@@ -137,13 +141,11 @@ namespace GTiHub.Migrations
 
                     b.Property<DateTime?>("Date_Modified");
 
-                    b.Property<int?>("MapId1");
-
                     b.Property<string>("Modified_By");
 
                     b.HasKey("ProjectId", "MapId");
 
-                    b.HasIndex("MapId1");
+                    b.HasIndex("MapId");
 
                     b.HasIndex("ProjectId");
 
@@ -201,6 +203,8 @@ namespace GTiHub.Migrations
                     b.Property<int>("RuleId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Alt_Value");
+
                     b.Property<string>("Created_By");
 
                     b.Property<DateTime?>("Creation_Date");
@@ -208,6 +212,8 @@ namespace GTiHub.Migrations
                     b.Property<DateTime?>("Date_Modified");
 
                     b.Property<string>("Modified_By");
+
+                    b.Property<string>("Rule_Operation");
 
                     b.Property<string>("Rule_Value");
 
@@ -243,7 +249,9 @@ namespace GTiHub.Migrations
 
                     b.Property<int>("RuleId");
 
-                    b.Property<int>("SourceFieldId");
+                    b.Property<int>("SeqNum");
+
+                    b.Property<int?>("SourceFieldId");
 
                     b.HasKey("RuleSourceFieldId");
 
@@ -272,6 +280,8 @@ namespace GTiHub.Migrations
                     b.Property<DateTime>("Effective_Date");
 
                     b.Property<string>("Modified_By");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("SourceId");
 
@@ -327,6 +337,8 @@ namespace GTiHub.Migrations
 
                     b.Property<string>("Modified_By");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("TargetId");
 
                     b.ToTable("Targets");
@@ -373,11 +385,11 @@ namespace GTiHub.Migrations
 
                     b.Property<DateTime?>("Date_Modified");
 
+                    b.Property<string>("Description");
+
                     b.Property<int>("MapId");
 
                     b.Property<string>("Modified_By");
-
-                    b.Property<string>("Note");
 
                     b.Property<int>("RuleId");
 
@@ -459,8 +471,7 @@ namespace GTiHub.Migrations
                 {
                     b.HasOne("GTiHub.Models.EntityModel.SourceField", "SourceField")
                         .WithMany("Conditions")
-                        .HasForeignKey("SourceFieldId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SourceFieldId");
 
                     b.HasOne("GTiHub.Models.EntityModel.Transformation", "Transformation")
                         .WithMany("Conditions")
@@ -480,7 +491,8 @@ namespace GTiHub.Migrations
                 {
                     b.HasOne("GTiHub.Models.EntityModel.Map", "Map")
                         .WithMany("ProjectMaps")
-                        .HasForeignKey("MapId1");
+                        .HasForeignKey("MapId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GTiHub.Models.EntityModel.Project", "Project")
                         .WithMany("ProjectMaps")
@@ -531,8 +543,7 @@ namespace GTiHub.Migrations
 
                     b.HasOne("GTiHub.Models.EntityModel.SourceField", "SourceField")
                         .WithMany("RuleSourceFields")
-                        .HasForeignKey("SourceFieldId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SourceFieldId");
                 });
 
             modelBuilder.Entity("GTiHub.Models.EntityModel.SourceField", b =>

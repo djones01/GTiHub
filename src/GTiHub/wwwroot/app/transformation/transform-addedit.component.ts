@@ -1,4 +1,4 @@
-﻿import { Component, ViewChild, OnInit } from '@angular/core';
+﻿import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { Response, Headers } from '@angular/http';
 import { Transformation } from './transformation';
@@ -10,21 +10,39 @@ import { MapAddEditService } from '../services/map-addedit.service';
     templateUrl: 'app/transformation/transform-addedit.component.html',
     providers: [DataService],
 })
-export class TransformAddEditComponent implements OnInit {
+export class TransformAddEditComponent implements OnInit, OnDestroy {
     //Transformation which is currently being added or edited
-    public addEditTransform: Transformation = new Transformation('', null, null, []);
+    public transform: Transformation;
+
+    //Subscriptions
+    transformSubscription: Subscription;
 
     //Toggles whether or not to show the Transformation components
-    addingTransform: boolean = false;
     active: boolean = true;
 
-    cancelTransform() {
-        this.mapAddEditService.setAddingTransform(false);
+    onSubmit() {
+        //Create or update the transform currently being worked on
+        this.mapAddEditService.createOrUpdateTransform();
+        this.mapAddEditService.addingOrModifyingTransform(false);
     }
 
-    constructor(private _dataService: DataService, private mapAddEditService: MapAddEditService) {
+    clearTransform() {
+        this.active = false;
+        this.mapAddEditService.resetTransformSubjects();
+        setTimeout(() => this.active = true, 0);
+    }
+
+    cancelTransform() {
+        this.mapAddEditService.addingOrModifyingTransform(false);
+        this.mapAddEditService.resetTransformSubjects();
+    }
+
+    constructor(private _dataService: DataService, private mapAddEditService: MapAddEditService) {    
     }
     ngOnInit(): void {
-
+        this.transformSubscription = this.mapAddEditService.getTransform().subscribe(transform => this.transform = transform);
+    }
+    ngOnDestroy(): void {
+        this.transformSubscription.unsubscribe();
     }
 }

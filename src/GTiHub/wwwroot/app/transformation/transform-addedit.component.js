@@ -10,22 +10,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var data_service_1 = require('../services/data.service');
-var transformation_1 = require('./transformation');
 var map_addedit_service_1 = require('../services/map-addedit.service');
 var TransformAddEditComponent = (function () {
     function TransformAddEditComponent(_dataService, mapAddEditService) {
         this._dataService = _dataService;
         this.mapAddEditService = mapAddEditService;
-        //Transformation which is currently being added or edited
-        this.addEditTransform = new transformation_1.Transformation('', null, null, []);
         //Toggles whether or not to show the Transformation components
-        this.addingTransform = false;
         this.active = true;
     }
+    TransformAddEditComponent.prototype.onSubmit = function () {
+        //Create or update the transform currently being worked on
+        this.mapAddEditService.createOrUpdateTransform();
+        this.mapAddEditService.addingOrModifyingTransform(false);
+    };
+    TransformAddEditComponent.prototype.clearTransform = function () {
+        var _this = this;
+        this.active = false;
+        this.mapAddEditService.resetTransformSubjects();
+        setTimeout(function () { return _this.active = true; }, 0);
+    };
     TransformAddEditComponent.prototype.cancelTransform = function () {
-        this.mapAddEditService.setAddingTransform(false);
+        this.mapAddEditService.addingOrModifyingTransform(false);
+        this.mapAddEditService.resetTransformSubjects();
     };
     TransformAddEditComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.transformSubscription = this.mapAddEditService.getTransform().subscribe(function (transform) { return _this.transform = transform; });
+    };
+    TransformAddEditComponent.prototype.ngOnDestroy = function () {
+        this.transformSubscription.unsubscribe();
     };
     TransformAddEditComponent = __decorate([
         core_1.Component({

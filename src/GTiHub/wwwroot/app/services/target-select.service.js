@@ -27,7 +27,7 @@ var TFieldSelectService = (function () {
         this.selectedTargetSubj.next(target);
         this.hasSelectedTargetSubj.next(true);
         //Set the available target fields
-        this._dataService.GetSingle('TargetSelect', this.selectedTargetSubj.getValue()["targetId"])
+        this._dataService.GetAllWithId('Targets/GetTargetFieldsByTarget', this.selectedTargetSubj.getValue()["targetId"])
             .subscribe(function (targetFields) {
             _this.filteredTargetFieldsSubj.next(targetFields);
         });

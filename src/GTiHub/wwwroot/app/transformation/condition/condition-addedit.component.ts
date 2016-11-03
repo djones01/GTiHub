@@ -16,8 +16,6 @@ import { MapAddEditService } from '../../services/map-addedit.service';
 })
 export class ConditionAddEditComponent implements OnInit, OnDestroy {
     active: boolean = true;
-    //Seq number count for conditions
-    condSeqCount = 1;
     selectingCondition: Condition;
     hasSelectedSourceField: boolean = false;
     selectedSourceField: any;
@@ -43,16 +41,13 @@ export class ConditionAddEditComponent implements OnInit, OnDestroy {
         }, (reason) => {});
     }
 
-    removeCondition(condition, i) {
-        //var index = this.conditions.indexOf(condition);
-        //this.conditions.splice(index, 1);
-        this.mapAddEditService.removeCondition(condition, i);
+    removeCondition(condition) {
+        this.mapAddEditService.removeCondition(condition);
     }
 
     //Add a new condition to the list of conditions
     addCondition() {
-
-        this.conditions.push(new Condition(this.condSeqCount++, (this.condSeqCount == 1) ? '' : 'or', '', '', '', '', null));
+        this.mapAddEditService.addCondition();
     }
 
     constructor(private _dataService: DataService, private modalService: NgbModal, private selectService: SFieldSelectService, private mapAddEditService: MapAddEditService) {}

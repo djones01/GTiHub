@@ -15,7 +15,7 @@ export class SourceAddEditService {
     private sourceFieldsSubj = new BehaviorSubject<Array<SourceField>>([]);
     private hasSourceFieldsSubj = new BehaviorSubject(false);
 
-    //Source's sourcefield methods
+    //Source's methods
     createOrUpdateSource() {
         var source = this.sourceSubj.getValue();
         source.sourceFields = this.sourceFieldsSubj.getValue();

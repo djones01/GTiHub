@@ -5,12 +5,10 @@ import { Map } from '../map/map';
 export class Transformation {
     constructor(
         public description: string,
-        public map: Map,
         public rule: Rule,
         public conditions: Condition[]
     ) { }
 }
-
 
 export class Condition {
     constructor(

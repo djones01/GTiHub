@@ -36,6 +36,13 @@ namespace GTiHub.Controllers.API
             return new ObjectResult(source);
         }
 
+        // GET api/values/5
+        [HttpGet("GetSourceFieldsbySource/{id}")]
+        public IEnumerable<SourceField> GetSourceFieldsBySource(int id)
+        {
+            return dbContext.SourceFields.Where(x => x.SourceId == id).ToList();
+        }
+
         // POST api/Sources
         [HttpPost]
         public IActionResult Post([FromBody]Source source)

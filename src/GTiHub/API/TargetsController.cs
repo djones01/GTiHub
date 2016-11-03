@@ -38,6 +38,13 @@ namespace GTiHub.Controllers.API
             return new ObjectResult(target);
         }
 
+        // GET api/values/5
+        [HttpGet("GetTargetFieldsbyTarget/{id}")]
+        public IEnumerable<TargetField> GetTargetFieldsByTarget(int id)
+        {
+            return dbContext.TargetFields.Where(x => x.TargetId == id).ToList();
+        }
+
         // POST api/Targets
         [HttpPost]
         public IActionResult Post([FromBody]Target target)

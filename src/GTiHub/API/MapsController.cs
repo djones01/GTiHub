@@ -36,6 +36,51 @@ namespace GTiHub.Controllers.API
             return new ObjectResult(map);
         }
 
+        // GET api/Maps/MapSources/5
+        [HttpGet("MapSources/{id}")]
+        public IEnumerable<Source> MapSources(int id)
+        {
+            List<Transformation> mapTransforms = dbContext.Transformations.Where(x => x.MapId == id)
+                 .Include(transform => transform.Conditions)
+                     .ThenInclude(condition => condition.SourceField)
+                         .ThenInclude(sourceField => sourceField.Source)
+                 .Include(transform => transform.Rule)
+                     .ThenInclude(rule => rule.RuleSourceFields)
+                         .ThenInclude(ruleSourceField => ruleSourceField.SourceField)
+                             .ThenInclude(sourceField => sourceField.Source)
+                 .ToList();
+            List<Source> sourcesInMap = new List<Source>();
+            if (mapTransforms != null)
+            {
+                //Iterate through a map and get all of the sources involved
+                foreach (Transformation transform in mapTransforms)
+                {
+                    //Check conditions
+                    foreach (Condition condition in transform.Conditions)
+                    {
+                        if (!sourcesInMap.Any(x => condition.SourceField.Source.SourceId == x.SourceId))
+                        {
+                            sourcesInMap.Add(condition.SourceField.Source);
+                        }
+                    }
+                    //Check rulesourcefields
+                    foreach (RuleSourceField ruleSourceField in transform.Rule.RuleSourceFields)
+                    {
+                        if (!sourcesInMap.Any(x => ruleSourceField.SourceField.Source.SourceId == x.SourceId))
+                        {
+                            sourcesInMap.Add(ruleSourceField.SourceField.Source);
+                        }
+                    }
+                }
+            }
+            //Why do I need to do this for it to work????
+            foreach (var source in sourcesInMap)
+            {
+                source.SourceFields = null;
+            }
+            return sourcesInMap;
+        }
+
         // POST api/Maps
         [HttpPost]
         public IActionResult Post([FromBody]Map map)
@@ -43,6 +88,21 @@ namespace GTiHub.Controllers.API
             if (map == null)
             {
                 return BadRequest();
+            }
+            foreach(Transformation transform in map.Transformations)
+            {
+                foreach(Condition condition in transform.Conditions)
+                {
+                    condition.SourceFieldId = condition.SourceField.SourceFieldId;
+                    condition.SourceField = null;
+                }
+                foreach(RuleSourceField ruleSourceField in transform.Rule.RuleSourceFields)
+                {
+                    ruleSourceField.SourceFieldId = ruleSourceField.SourceField.SourceFieldId;
+                    ruleSourceField.SourceField = null;
+                }
+                transform.Rule.TargetFieldId = transform.Rule.TargetField.TargetFieldId;
+                transform.Rule.TargetField = null;
             }
             dbContext.Maps.Add(map);
             dbContext.SaveChanges();

@@ -46,6 +46,14 @@ var SourceAddEditComponent = (function () {
         this.selectService.initSources();
         this.newSource();
     };
+    SourceAddEditComponent.prototype.extractFile = function () {
+        var _this = this;
+        this.uploader.onBuildItemForm = function (item, form) {
+            form.append("delimiter", _this.delimiter);
+        };
+        this.uploader.uploadAll();
+        this.delimiter = '';
+    };
     SourceAddEditComponent.prototype.newSource = function () {
         var _this = this;
         this.sourceAddEditService.clear();
@@ -59,7 +67,7 @@ var SourceAddEditComponent = (function () {
             //User selected source field in modal
             if (result == 'Select Source') {
                 _this.selectService.getSelectedSource().subscribe(function (source) { return _this.source = source; });
-                _this._dataService.GetSingle('SourceSelect', _this.source["sourceId"])
+                _this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', _this.source["sourceId"])
                     .subscribe(function (sourceFields) {
                     _this.sourceAddEditService.setSourceFields(sourceFields);
                 });

@@ -27,7 +27,7 @@ var SFieldSelectService = (function () {
         this.selectedSourceSubj.next(source);
         this.hasSelectedSourceSubj.next(true);
         //Set the available source fields
-        this._dataService.GetSingle('SourceSelect', this.selectedSourceSubj.getValue()["sourceId"])
+        this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', this.selectedSourceSubj.getValue()["sourceId"])
             .subscribe(function (sourceFields) {
             _this.filteredSourceFieldsSubj.next(sourceFields);
         });

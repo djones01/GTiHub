@@ -61,14 +61,23 @@
                                     <div class="radio">
                                         <label><input type="radio" name="sFieldOptTemplate" [(ngModel)]="sopt" [value]="true" checked />Extract From File</label>
                                     </div>
-                                    <div *ngIf="sopt" class="form-group">
-                                        <label for="templateFile">Select Template File</label>
-                                        <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" /><br />
-                                        <button type="button" class="btn btn-default"
-                                                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                                            <span class="glyphicon glyphicon-upload"></span> Extract Fields
-                                        </button>
+                                    <div *ngIf="sopt">
+                                        <div class="form-group">
+                                            <label for="templateFile">Select Template File</label>
+                                            <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="delimiter">Delimiter</label>
+                                            <input type="text" name="delimiter" [(ngModel)]="delimiter" maxlength="1" size="1" class="form-control threechar" />
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-default"
+                                                    (click)="extractFile()" [disabled]="!uploader.getNotUploadedItems().length || delimiter == ''">
+                                                <span class="glyphicon glyphicon-upload"></span> Extract Fields
+                                            </button>
+                                        </div>
                                     </div>
+                                  
                                     <div *ngIf="!sopt" class="form-group">
                                         <label for="name">Number of Fields (max of 300)</label>
                                         <input type="number" value="0" min="0" max="300" class="form-control" id="sfieldCount" name="sfieldCount" [(ngModel)]="sfieldCount" (change)="onFieldCountChange()" />
