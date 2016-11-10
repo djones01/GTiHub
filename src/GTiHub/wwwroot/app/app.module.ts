@@ -30,6 +30,8 @@ import { TransformAddEditComponent } from './transformation/transform-addedit.co
 import { ConditionAddEditComponent } from './transformation/condition/condition-addedit.component';
 import { RuleAddEditComponent } from './transformation/rule/rule-addedit.component';
 import { RuleSourceFieldAddEditComponent } from './transformation/rule/rulesourcefield-addedit.component';
+import { FieldFormatComponent } from './transformation/rule/field-format.component';
+import { DateFormatComponent } from './transformation/rule/date-format.component';
 
 //Pipes
 import { ExtractFileNamePipe } from './pipes/extract-file-name.pipe';
@@ -66,6 +68,8 @@ import { ExtractFileNamePipe } from './pipes/extract-file-name.pipe';
         ConditionAddEditComponent,
         RuleAddEditComponent,
         RuleSourceFieldAddEditComponent,
+        FieldFormatComponent,
+        DateFormatComponent,
         FileSelectDirective,
         ExtractFileNamePipe
     ],

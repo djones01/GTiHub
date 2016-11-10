@@ -40,7 +40,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("GetSourceFieldsbySource/{id}")]
         public IEnumerable<SourceField> GetSourceFieldsBySource(int id)
         {
-            return dbContext.SourceFields.Where(x => x.SourceId == id).ToList();
+            return dbContext.SourceFields.Where(x => x.SourceId == id).OrderBy(x => x.SeqNum).ToList();
         }
 
         // POST api/Sources

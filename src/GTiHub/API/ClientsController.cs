@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using GTiHub.Models.EntityModel;
 using Microsoft.AspNetCore.Mvc;
-using GTiHub.Models.EntityModel;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GTiHub.Controllers.API
 {

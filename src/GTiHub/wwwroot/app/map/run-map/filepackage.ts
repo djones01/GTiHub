@@ -2,7 +2,8 @@
     constructor(
         public isPrimarySource: boolean,
         public sourceId: number,
-        public sourceDescription: number,
+        public sourceName: string,
+        public sourceDescription: string,
         public firstRowHeader: boolean,
         public altHeadRow: number,
         public delimiter: string,

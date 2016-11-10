@@ -20,6 +20,7 @@ export class SourceFieldAddEditComponent implements OnInit, OnDestroy {
     private options = [
         { value: 'url', display: 'URL' },
         { value: 'text', display: 'Text' },
+        { value: 'date', display: 'Date' },
         { value: 'bool', display: 'Boolean' },
         { value: 'decimal', display: 'Decimal' },
         { value: 'currency', display: 'Currency' },

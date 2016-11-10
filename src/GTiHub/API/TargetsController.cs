@@ -42,7 +42,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("GetTargetFieldsbyTarget/{id}")]
         public IEnumerable<TargetField> GetTargetFieldsByTarget(int id)
         {
-            return dbContext.TargetFields.Where(x => x.TargetId == id).ToList();
+            return dbContext.TargetFields.Where(x => x.TargetId == id).OrderBy(x => x.SeqNum).ToList();
         }
 
         // POST api/Targets

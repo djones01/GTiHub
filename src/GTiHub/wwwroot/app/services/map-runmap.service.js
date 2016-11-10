@@ -28,7 +28,7 @@ var RunMapService = (function () {
         var filepackages = new Array();
         this._dataService.GetAllWithId('Maps/MapSources', mapId).subscribe(function (sources) {
             sources.forEach(function (source) {
-                filepackages.push(new filepackage_1.FilePackage(false, source['sourceId'], source['description'], true, 1, '', null));
+                filepackages.push(new filepackage_1.FilePackage(false, source['sourceId'], source['name'], source['description'], true, 1, '', null));
             });
             if (filepackages.length == 1) {
                 filepackages[0].isPrimarySource = true;

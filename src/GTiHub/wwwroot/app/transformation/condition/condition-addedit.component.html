@@ -9,8 +9,8 @@
                     <div *ngFor="let condition of conditions; let i=index" class="row override-bs-padding">
                         <div class="col-md-1">
                             <select class="form-control" *ngIf="i != 0" [(ngModel)]="condition.chain_Operation" name="chain_Operation" #chain_Operation="ngModel">
-                                <option value="or">Or</option>
-                                <option value="and">And</option>
+                                <option value="||">Or</option>
+                                <option value="&&">And</option>
                             </select>
                         </div>
                         <div class="col-md-1">
@@ -30,10 +30,12 @@
                         </div>
                         <div class="col-md-2">
                             <select class="form-control" [(ngModel)]="condition.operation" name="operation" #operation="ngModel">
-                                <option value="=">equals</option>
+                                <option value="==">equals</option>
                                 <option value="!=">not equal</option>
                                 <option value="<">less than</option>
                                 <option value=">">greater than</option>
+                                <option value="<=">less that or equal</option>
+                                <option value=">=">greater than or equal</option>
                             </select>
                         </div>
                         <div class="col-md-3">

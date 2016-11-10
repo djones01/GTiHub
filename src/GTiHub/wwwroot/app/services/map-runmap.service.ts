@@ -17,7 +17,7 @@ export class RunMapService {
         var filepackages = new Array<FilePackage>();
         this._dataService.GetAllWithId('Maps/MapSources', mapId).subscribe(sources => {
             sources.forEach(function (source) {
-                filepackages.push(new FilePackage(false,source['sourceId'], source['description'], true, 1,'', null));
+                filepackages.push(new FilePackage(false,source['sourceId'], source['name'], source['description'], true, 1,'', null));
             });
             if (filepackages.length == 1) {
                 filepackages[0].isPrimarySource = true;

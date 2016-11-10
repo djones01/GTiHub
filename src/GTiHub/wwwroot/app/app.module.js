@@ -39,6 +39,8 @@ var transform_addedit_component_1 = require('./transformation/transform-addedit.
 var condition_addedit_component_1 = require('./transformation/condition/condition-addedit.component');
 var rule_addedit_component_1 = require('./transformation/rule/rule-addedit.component');
 var rulesourcefield_addedit_component_1 = require('./transformation/rule/rulesourcefield-addedit.component');
+var field_format_component_1 = require('./transformation/rule/field-format.component');
+var date_format_component_1 = require('./transformation/rule/date-format.component');
 //Pipes
 var extract_file_name_pipe_1 = require('./pipes/extract-file-name.pipe');
 var AppModule = (function () {
@@ -75,6 +77,8 @@ var AppModule = (function () {
                 condition_addedit_component_1.ConditionAddEditComponent,
                 rule_addedit_component_1.RuleAddEditComponent,
                 rulesourcefield_addedit_component_1.RuleSourceFieldAddEditComponent,
+                field_format_component_1.FieldFormatComponent,
+                date_format_component_1.DateFormatComponent,
                 ng2_file_upload_1.FileSelectDirective,
                 extract_file_name_pipe_1.ExtractFileNamePipe
             ],

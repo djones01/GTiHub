@@ -118,7 +118,7 @@ var MapAddEditService = (function () {
     };
     MapAddEditService.prototype.addCondition = function () {
         //Use concat here since push would return the length of the array post push
-        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new transformation_1.Condition(this.condSeqNum++, (this.condSeqNum == 1) ? '' : 'or', '', '', '', '', null)));
+        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new transformation_1.Condition(this.condSeqNum++, '', '', '', '', '', null)));
     };
     MapAddEditService.prototype.removeCondition = function (condition) {
         //Use filter in order to return list

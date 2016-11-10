@@ -9,8 +9,7 @@ using GTiHub.Models.EntityModel;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+using NCalc;
 
 namespace GTiHub.API.File_Handling
 {
@@ -95,7 +94,7 @@ namespace GTiHub.API.File_Handling
                 var targetId = targetTables.Keys.ToList()[0];
 
                 //Apply transformations 
-                success = await Task.Run(() => TransformMapToFile(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId));
+                success = await Task.Run(() => TransformMapToFile(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId, true));
 
                 //Create new memory stream to return
                 bytes = GetTargetStream(ref targetTables, targetId);
@@ -144,17 +143,18 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="sourceTables">Arrays of source values and their associated Fields</param>
         /// <param name="transformations">Transformations to be applied to sources</param>
+        /// <returns>Whether or not we were able to successfully transform the map</returns>
         private bool TransformMapToFile(ref Dictionary<int, SourceInfo> sourceTables,
             ref Dictionary<int, TargetInfo> targetTables, 
             ref List<Transformation> transformations, 
             int primarySourceId,
             int lineCount, 
             int primaryFieldCount,
-            int targetId)
+            int targetId,
+            bool applyConditions)
         {
             //Apply all transformations
-            //TODO conditions
-            ApplyTransformations(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId);
+            ApplyTransformations(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId, applyConditions);
 
             //Copy over fields from primary source to target which are not covered by rules
             ApplyFallbacks(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId);
@@ -211,7 +211,8 @@ namespace GTiHub.API.File_Handling
             int primarySourceId, 
             int lineCount, 
             int primaryFieldCount, 
-            int targetId)
+            int targetId,
+            bool applyConditions)
         {
             var sourceFieldName = "";
             var targetFieldName = "";
@@ -219,14 +220,25 @@ namespace GTiHub.API.File_Handling
             var targetFieldIndex = -1;
             var resultString = "";
             int sourceFieldSourceId;
+            List<Token> tokens = null;
+            bool conditionPass = false;
 
             //Operate on the output for each transformation
             foreach (Transformation transform in transformations)
             {
+                //If the user has set "Apply Conditions" to true, init tokens
+                if (applyConditions)
+                {
+                    //Get the list of tokens for all conditions in the transformation
+                    tokens = CondEvalHelpers.TokensFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList());
+                    //Convert the token list to reverse polish notation
+                    //tokens = CondEvalHelpers.ConvertToReversePolish(tokens);
+                }
+
                 List<RuleSourceField> ruleSourceFields = transform.Rule.RuleSourceFields.ToList();
                 targetFieldName = transform.Rule.TargetField.Name;
                 targetFieldIndex = targetTables[targetId].targetFields[targetFieldName].fieldIndex;
-                
+
                 switch (transform.Rule.Rule_Operation)
                 {
                     case "sfield":
@@ -235,17 +247,43 @@ namespace GTiHub.API.File_Handling
                         {
                             sourceFieldName = ruleSourceField.SourceField.Name;
                             sourceFieldSourceId = ruleSourceField.SourceField.SourceId;
-                            sourceFieldIndex = sourceTables[sourceFieldSourceId].sourceFields[sourceFieldName];                         
 
-                            //Loop through all lines in the array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
-                            for (int i = 0; i < lineCount; i++)
+                            if (sourceTables[sourceFieldSourceId].sourceFields.ContainsKey(sourceFieldName))
                             {
-                                resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
-                                targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
+                                sourceFieldIndex = sourceTables[sourceFieldSourceId].sourceFields[sourceFieldName];
+
+                                //Loop through all lines in the array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
+                                for (int i = 0; i < lineCount; i++)
+                                {
+                                    if (applyConditions)
+                                    {
+                                        //Evaluate the token list with the given row values
+                                        conditionPass = CondEvalHelpers.EvalRPNAtRow(i, ref tokens, ref sourceTables);
+
+                                        if (conditionPass)
+                                        {
+                                            //Transform
+                                            resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
+                                            targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //Transform without checking condition
+                                        resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
+                                        targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
+                                    }
+                                   
+                                }
+
+                                //Set the column to populated
+                                targetTables[targetId].targetFields[targetFieldName].populated = true;
+                            }
+                            else
+                            {
+                                //Log
                             }
 
-                            //Set the column to populated
-                            targetTables[targetId].targetFields[targetFieldName].populated = true;
                         }
                         break;
                     case "assign":
@@ -255,11 +293,11 @@ namespace GTiHub.API.File_Handling
                     case "text":
                         //Loop through all lines in the array corresponding to the rule field's sourcefield and set to the text values
                         for (int i = 0; i < lineCount; i++)
-                        {                            
+                        {
                             targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + transform.Rule.Rule_Value;
                         }
                         break;
-                } 
+                }
             }
         }
 
@@ -268,7 +306,7 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="primarySourceId"></param>
         /// <param name="targetId"></param>
-        /// <returns></returns>
+        /// <returns>Whether the number of sourcefields in the primary source is the same as the target</returns>
         private bool ComparePrimSourceTarget(int primarySourceId, int targetId)
         {
             //Short way to count without returning all entities
@@ -281,7 +319,7 @@ namespace GTiHub.API.File_Handling
         /// Gets the dictionary of source names with their arrays of values
         /// </summary>
         /// <param name="form">Form collection</param>
-        /// <returns></returns>
+        /// <returns>Dictionary of source values indexed by source ID and containing one or multiple SourceInfo objects</returns>
         public static Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form)
         {
             //Stores source values in jagged string array with an associated dictionary of header names and indeces.
@@ -347,7 +385,7 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="reader"></param>
         /// <param name="encoding"></param>
-        /// <returns></returns>
+        /// <returns>An array containing all lines read from a file</returns>
         public static async Task<string[]> ReadAllLinesAsync(StreamReader reader, Encoding encoding)
         {
             var lines = new List<string>();
@@ -368,7 +406,7 @@ namespace GTiHub.API.File_Handling
         /// Get the primary source id from form
         /// </summary>
         /// <param name="form"></param>
-        /// <returns></returns>
+        /// <returns>ID of the primary source</returns>
         private int GetPrimarySourceId(ref IFormCollection form)
         {
             //Determine which source has been marked as primary
@@ -387,7 +425,7 @@ namespace GTiHub.API.File_Handling
         /// Gets the set of transformations for a given mapId
         /// </summary>
         /// <param name="mapId"></param>
-        /// <returns></returns>
+        /// <returns>List of Transformations for a given Map</returns>
         private List<Transformation> GetMapTransformations(int mapId)
         {
             return dbContext.Transformations.Where(x => x.MapId == mapId)
@@ -395,15 +433,14 @@ namespace GTiHub.API.File_Handling
                      .ThenInclude(condition => condition.SourceField)
                  .Include(transform => transform.Rule.TargetField.Target)
                  .Include(transform => transform.Rule.RuleSourceFields)
-                         .ThenInclude(ruleSourceField => ruleSourceField.SourceField)
-                 .ToList();
+                         .ThenInclude(ruleSourceField => ruleSourceField.SourceField).ToList();
         }
 
         /// <summary>
         /// Gets a dictionary of TargetFields and their corresponding indexes for a target
         /// </summary>
         /// <param name="targetId"></param>
-        /// <returns></returns>
+        /// <returns>TargetTable for a given target</returns>
         private Dictionary<int, TargetInfo> GetTargetTables(ref List<Transformation> transformations, int primarySourceId, int lineCount, int primaryFieldCount)
         {
             Dictionary<int, TargetInfo> targetInfo = new Dictionary<int, TargetInfo>();

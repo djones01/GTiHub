@@ -4,6 +4,7 @@ import { Response, Headers } from '@angular/http';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { SourceFieldListComponent } from '../../source/selection/sourcefield-list.component';
 import { SourceListComponent } from '../../source/selection/source-list.component';
+import { FieldFormatComponent } from './field-format.component';
 import { SFieldSelectService } from '../../services/source-select.service';
 import { Subscription }   from 'rxjs/Subscription';
 import { SourceField } from '../../source/source';

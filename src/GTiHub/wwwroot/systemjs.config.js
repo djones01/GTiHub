@@ -25,6 +25,7 @@
             'rxjs': 'npm:rxjs',
             'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
             'ng2-file-upload': 'npm:ng2-file-upload/ng2-file-upload.js',
+            'dateformat': 'npm:dateformat/lib/dateformat.js',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
             'services': 'app/services'
         },

@@ -119,7 +119,7 @@ export class MapAddEditService {
     }
     addCondition() {
         //Use concat here since push would return the length of the array post push
-        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new Condition(this.condSeqNum++, (this.condSeqNum == 1) ? '' : 'or', '', '', '', '', null)));
+        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new Condition(this.condSeqNum++,'', '', '', '', '', null)));
     }
     removeCondition(condition: Condition) {
         //Use filter in order to return list
