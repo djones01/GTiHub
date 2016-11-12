@@ -23,6 +23,23 @@ var ConditionAddEditComponent = (function () {
         this.hasSelectedSourceField = false;
         //List of Conditions currently in the add/edit list
         this.conditions = [];
+        //Options for operator selection
+        this.dateNumOpts = [
+            { value: '==', display: 'equals' },
+            { value: '!=', display: 'not equal' },
+            { value: '<', display: 'less than' },
+            { value: '<=', display: 'less than or equal' },
+            { value: '>', display: 'greater than' },
+            { value: '>=', display: 'greater than or equal' },
+        ];
+        this.textOpts = [
+            { value: '==', display: 'equals' },
+            { value: '!=', display: 'not equal' }
+        ];
+        this.boolOpts = [
+            { value: '==', display: 'equals' },
+            { value: '!=', display: 'not equal' }
+        ];
     }
     //Modal Functions
     ConditionAddEditComponent.prototype.openSourceSelect = function (content, condition) {

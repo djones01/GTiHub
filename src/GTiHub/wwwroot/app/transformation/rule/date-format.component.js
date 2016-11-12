@@ -16,27 +16,33 @@ var DateFormatComponent = (function () {
         this.datePattern = "";
         this.dateExamplePattern = "";
         this.hasValidFormat = false;
+        this.presetOpts = [
+            { value: "dd/MM/yyyy", display: "dd/MM/yyyy" },
+            { value: "MM/dd/yyyy", display: "MM/dd/yyyy" },
+            { value: "yyyy/MM/dd", display: "yyyy/MM/dd" },
+            { value: "yyyy/dd/MM", display: "yyyy/dd/MM" },
+        ];
         this.dateOptions = [
             {
                 label: "Day", options: [
-                    { value: "d", name: "Day: 1 - 31" },
-                    { value: "dd", name: "Day: 01 - 31" },
-                    { value: "ddd", name: "Day: Mon" },
-                    { value: "dddd", name: "Day: Monday" }
+                    { value: "d", display: "Day: 1 - 31" },
+                    { value: "dd", display: "Day: 01 - 31" },
+                    { value: "ddd", display: "Day: Mon" },
+                    { value: "dddd", display: "Day: Monday" }
                 ]
             },
             {
                 label: "Month", options: [
-                    { value: "M", name: "Month: 1 - 12" },
-                    { value: "MM", name: "Month: 01 - 12" },
-                    { value: "MMM", name: "Month: Jun" },
-                    { value: "MMMM", name: "Month: June" }
+                    { value: "M", display: "Month: 1 - 12" },
+                    { value: "MM", display: "Month: 01 - 12" },
+                    { value: "MMM", display: "Month: Jun" },
+                    { value: "MMMM", display: "Month: June" }
                 ]
             },
             {
                 label: "Year", options: [
-                    { value: "yy", name: "Year: 00 - 99" },
-                    { value: "yyyy", name: "Year: 1900" }
+                    { value: "yy", display: "Year: 00 - 99" },
+                    { value: "yyyy", display: "Year: 1900" }
                 ]
             }];
     }

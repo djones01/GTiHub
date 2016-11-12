@@ -3,7 +3,7 @@
         <div class="form-group input-container">
             <label for="mapSelect">Select Map to Run</label>
             <select #mapSelect class="form-control" (change)="onMapChange(mapSelect.value)">
-                <option value=""></option>
+                <option value="" disabled selected>Select Map</option>
                 <option *ngFor="let map of maps" [value]="map.mapId">
                     {{map.description}}
                 </option>

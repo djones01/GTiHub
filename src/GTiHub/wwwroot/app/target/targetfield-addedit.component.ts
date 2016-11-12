@@ -20,8 +20,9 @@ export class TargetFieldAddEditComponent implements OnInit, OnDestroy {
     private options = [
         { value: 'url', display: 'URL' },
         { value: 'text', display: 'Text' },
+        { value: 'date', display: 'Date' },
         { value: 'bool', display: 'Boolean' },
-        { value: 'decimal', display: 'Decimal' },
+        { value: 'num', display: 'Number' },
         { value: 'currency', display: 'Currency' },
         { value: 'email', display: 'Email' }
     ];

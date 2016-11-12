@@ -19,8 +19,9 @@ var TargetFieldAddEditComponent = (function () {
         this.options = [
             { value: 'url', display: 'URL' },
             { value: 'text', display: 'Text' },
+            { value: 'date', display: 'Date' },
             { value: 'bool', display: 'Boolean' },
-            { value: 'decimal', display: 'Decimal' },
+            { value: 'num', display: 'Number' },
             { value: 'currency', display: 'Currency' },
             { value: 'email', display: 'Email' }
         ];

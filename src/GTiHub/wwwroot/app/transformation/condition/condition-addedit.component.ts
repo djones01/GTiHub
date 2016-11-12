@@ -8,6 +8,7 @@ import { SourceListComponent } from '../../source/selection/source-list.componen
 import { SFieldSelectService } from '../../services/source-select.service';
 import { Subscription }   from 'rxjs/Subscription';
 import { MapAddEditService } from '../../services/map-addedit.service';
+import { SourceField } from '../../source/source';
 
 @Component({
     selector: 'condition-addedit',
@@ -18,9 +19,30 @@ export class ConditionAddEditComponent implements OnInit, OnDestroy {
     active: boolean = true;
     selectingCondition: Condition;
     hasSelectedSourceField: boolean = false;
-    selectedSourceField: any;
+    selectedSourceField: SourceField;
     //List of Conditions currently in the add/edit list
     public conditions: Condition[] = [];
+
+    //Options for operator selection
+    private dateNumOpts = [
+        { value: '==', display: 'equals' },
+        { value: '!=', display: 'not equal' },
+        { value: '<', display: 'less than' },
+        { value: '<=', display: 'less than or equal' },
+        { value: '>', display: 'greater than' },
+        { value: '>=', display: 'greater than or equal' },
+    ];
+
+    private textOpts = [
+        { value: '==', display: 'equals' },
+        { value: '!=', display: 'not equal' }
+        //TODO: Contains, doesn't contain, begins with, ends with
+    ];
+
+    private boolOpts = [
+        { value: '==', display: 'equals' },
+        { value: '!=', display: 'not equal' }
+    ];
 
     //Modal subscriptions
     hasSelectedSubscription: Subscription;

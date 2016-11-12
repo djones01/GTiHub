@@ -1,128 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.IO;
+﻿using GTiHub.API.File_Handling;
 using GTiHub.Models.EntityModel;
-using System.Text;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NCalc;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GTiHub.API.File_Handling
+namespace GTiHub.API
 {
-    [Route("api/[controller]")]
-    public class FileController : Controller
+    public interface ITransformHelpers
     {
-        private readonly GTiHubContext dbContext;
-        private TransformHelpers helpers;
 
-        public FileController(GTiHubContext dbContext, TransformHelpers helpers)
+    }
+
+    public class TransformHelpers
+    {
+        private GTiHubContext dbContext;
+        public TransformHelpers(GTiHubContext dbContext)
         {
             this.dbContext = dbContext;
-            this.helpers = helpers;
         }
 
-        [Route("ExtractHeaders")]
-        [HttpPost]
-        public async Task<IActionResult> ExtractHeaders(IFormCollection form)
-        {
-            if (!Request.ContentType.Contains("multipart/form-data"))
-            {
-                return new UnsupportedMediaTypeResult();
-            }
-
-            IFormFile file = form.Files[0];
-            if (file == null) throw new Exception("File is null");
-            if (file.Length == 0) throw new Exception("File is empty");
-            if (file.ContentType != "text/csv" && file.ContentType != "text/plain" && file.ContentType != "application/octet-stream" && file.ContentType != "application/vnd.ms-excel") return new UnsupportedMediaTypeResult();
-
-            List<SourceField> sfields = new List<SourceField>();
-            int sfieldSeqCount = 1;
-
-            try
-            {
-                using (var reader = new StreamReader(file.OpenReadStream()))
-                {
-                    var line = await reader.ReadLineAsync();
-
-                    var delimiter = Convert.ToChar(form["delimiter"]);
-
-                    var fields = line.Split(delimiter);
-                    foreach (var field in fields)
-                    {
-                        sfields.Add(new SourceField(field, "text", true, sfieldSeqCount++));
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-            }     
-
-            return new ObjectResult(sfields);
-        }
-
-        [Route("RunMapping")]
-        [HttpPost]
-        public async Task<FileResult> RunMapping(IFormCollection form)
-        {
-
-            byte[] bytes = new byte[0];
-
-            try
-            {
-                //Get form info
-                var mapId = Convert.ToInt32(form["mapId"]);
-                var evalConditions = Convert.ToBoolean(form["evalConditions"]);
-                var outputDelimiter = form["outputDelimiter"];
-
-                var success = false;
-
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                //Get formatted data from the uploaded files
-                var sourceTables = await Task.Run(() => GetSourceTables(form));
-
-                //Get list of transformations for map
-                var transformations = await Task.Run(() => GetMapTransformations(mapId));
-                
-                //Get the id of the primary source
-                var primarySourceId = await Task.Run(() => GetPrimarySourceId(ref form));
-
-                //Get field counts for primary table
-                var lineCount = sourceTables[primarySourceId].sourceVals.Length;
-                var primaryFieldCount = sourceTables[primarySourceId].sourceFields.Count;
-
-                //Get target tables
-                var targetTables = await Task.Run(() => GetTargetTables(ref transformations, primarySourceId, lineCount, primaryFieldCount));
-
-                var targetId = targetTables.Keys.ToList()[0];
-
-                //Apply transformations 
-                success = await Task.Run(() => TransformMapToFile(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId, evalConditions));
-
-                //Create new memory stream to return
-                bytes = GetTargetStream(ref targetTables, targetId, outputDelimiter);
-
-                stopwatch.Stop();          
-
-                //return result;    
-            }
-            catch (Exception ex)
-            {
-            }
-
-                //HttpContext.Response.ContentType = "application/octet-stream";
-                //var result = new FileStreamResult(new MemoryStream(bytes), "application/octet-stream")
-                //{
-                //    FileDownloadName = "test.csv"
-                //};
-                return File(bytes, "application/octet-stream", "test.csv");
-               
-        }
-
-        private byte[] GetTargetStream(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter)
+        public byte[] GetTargetStream(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter)
         {
             StringBuilder combined = new StringBuilder();
             TargetInfo targetInfo = targetTables[targetId];
@@ -150,11 +53,11 @@ namespace GTiHub.API.File_Handling
         /// <param name="sourceTables">Arrays of source values and their associated Fields</param>
         /// <param name="transformations">Transformations to be applied to sources</param>
         /// <returns>Whether or not we were able to successfully transform the map</returns>
-        private bool TransformMapToFile(ref Dictionary<int, SourceInfo> sourceTables,
-            ref Dictionary<int, TargetInfo> targetTables, 
-            ref List<Transformation> transformations, 
+        public bool TransformMapToFile(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
             int primarySourceId,
-            int lineCount, 
+            int lineCount,
             int primaryFieldCount,
             int targetId,
             bool applyConditions)
@@ -168,19 +71,19 @@ namespace GTiHub.API.File_Handling
             return true;
         }
 
-        private void ApplyFallbacks(ref Dictionary<int, SourceInfo> sourceTables, 
-            ref Dictionary<int, TargetInfo> targetTables, 
-            ref List<Transformation> transformations, 
-            int primarySourceId, 
-            int lineCount, 
-            int primaryFieldCount, 
+        public void ApplyFallbacks(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
+            int primarySourceId,
+            int lineCount,
+            int primaryFieldCount,
             int targetId)
         {
             List<string> fieldList = new List<string>(targetTables[targetId].targetFields.Keys);
             var targetFieldIndex = -1;
             var sourceFieldIndex = -1;
             //Check all target fields in the target table to see if they are populated or not
-            foreach(string field in fieldList)
+            foreach (string field in fieldList)
             {
                 if (!targetTables[targetId].targetFields[field].populated)
                 {
@@ -211,12 +114,12 @@ namespace GTiHub.API.File_Handling
         /// <param name="primarySourceId">Id of the primary source</param>
         /// <param name="lineCount">Number of lines in the primary source</param>
         /// <param name="primaryFieldCount">Number of Fields in the primary source</param>
-        private void ApplyTransformations(ref Dictionary<int, SourceInfo> sourceTables,
-            ref Dictionary<int, TargetInfo> targetTables,  
-            ref List<Transformation> transformations, 
-            int primarySourceId, 
-            int lineCount, 
-            int primaryFieldCount, 
+        public void ApplyTransformations(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
+            int primarySourceId,
+            int lineCount,
+            int primaryFieldCount,
             int targetId,
             bool applyConditions)
         {
@@ -226,7 +129,7 @@ namespace GTiHub.API.File_Handling
             var targetFieldIndex = -1;
             var resultString = "";
             int sourceFieldSourceId;
-            
+
             //Local vars for condition evals
             string expr = "";
             List<Parameter> parameters = new List<Parameter>();
@@ -243,7 +146,7 @@ namespace GTiHub.API.File_Handling
                     //tokens = CondEvalHelpers.TokensFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList());
                     expr = CondEvalHelpers.ExprFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList(), ref parameters);
                     expression = new Expression(expr);
-                   
+
                     //Convert the token list to reverse polish notation
                     //tokens = CondEvalHelpers.ConvertToReversePolish(tokens);
                 }
@@ -280,7 +183,7 @@ namespace GTiHub.API.File_Handling
                                         else
                                         {
                                             conditionPass = Convert.ToBoolean(expression.Evaluate());
-                                        }                                    
+                                        }
 
                                         if (conditionPass)
                                         {
@@ -299,7 +202,7 @@ namespace GTiHub.API.File_Handling
                                         resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
                                         targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
                                     }
-                                   
+
                                 }
 
                                 //Set the column to populated
@@ -333,24 +236,24 @@ namespace GTiHub.API.File_Handling
         /// <param name="primarySourceId"></param>
         /// <param name="targetId"></param>
         /// <returns>Whether the number of sourcefields in the primary source is the same as the target</returns>
-        private bool ComparePrimSourceTarget(int primarySourceId, int targetId)
+        public bool ComparePrimSourceTarget(int primarySourceId, int targetId)
         {
             //Short way to count without returning all entities
             var primaryCount = (from s in dbContext.Sources where s.SourceId == primarySourceId from sf in s.SourceFields select sf).Count();
             var targetCount = (from t in dbContext.Targets where t.TargetId == targetId from tf in t.TargetFields select tf).Count();
             return primaryCount == targetCount;
-        } 
+        }
 
         /// <summary>
         /// Gets the dictionary of source names with their arrays of values
         /// </summary>
         /// <param name="form">Form collection</param>
         /// <returns>Dictionary of source values indexed by source ID and containing one or multiple SourceInfo objects</returns>
-        public static Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form)
+        public Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form)
         {
             //Stores source values in jagged string array with an associated dictionary of header names and indeces.
-            var sourcesVals = new Dictionary<int, SourceInfo>();         
-          
+            var sourcesVals = new Dictionary<int, SourceInfo>();
+
             Parallel.ForEach(form.Files, async file =>
             {
                 var sourceId = Convert.ToInt32(file.Name);
@@ -363,12 +266,12 @@ namespace GTiHub.API.File_Handling
                 if (!firstRowIsHeader)
                 {
                     altHeadRow = Convert.ToInt32(form["altHeadRow-" + sourceId]) - 1;
-                }          
+                }
 
                 using (var buffer = new BufferedStream(file.OpenReadStream()))
                 using (var reader = new StreamReader(buffer))
                 {
-                    var lines = await ReadAllLinesAsync(reader, Encoding.UTF8);                   
+                    var lines = await ReadAllLinesAsync(reader, Encoding.UTF8);
                     string[] splitline;
 
                     //Get the number of header fields
@@ -384,7 +287,7 @@ namespace GTiHub.API.File_Handling
                         sourceTable[z] = new string[headerCount];
                     }
 
-                    for(int z = 0; z < headerCount; z++)
+                    for (int z = 0; z < headerCount; z++)
                     {
                         sourceFields.Add(splitline[z], z);
                     }
@@ -399,11 +302,11 @@ namespace GTiHub.API.File_Handling
                         }
                     }
 
-                    sourcesVals.Add(sourceId, new SourceInfo(sourceFields,sourceTable));
+                    sourcesVals.Add(sourceId, new SourceInfo(sourceFields, sourceTable));
                 }
             });
 
-            return sourcesVals;      
+            return sourcesVals;
         }
 
         /// <summary>
@@ -412,7 +315,7 @@ namespace GTiHub.API.File_Handling
         /// <param name="reader"></param>
         /// <param name="encoding"></param>
         /// <returns>An array containing all lines read from a file</returns>
-        public static async Task<string[]> ReadAllLinesAsync(StreamReader reader, Encoding encoding)
+        public async Task<string[]> ReadAllLinesAsync(StreamReader reader, Encoding encoding)
         {
             var lines = new List<string>();
 
@@ -433,7 +336,7 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="form"></param>
         /// <returns>ID of the primary source</returns>
-        private int GetPrimarySourceId(ref IFormCollection form)
+        public int GetPrimarySourceId(ref IFormCollection form)
         {
             //Determine which source has been marked as primary
             var primarySourceId = -1;
@@ -452,7 +355,7 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="mapId"></param>
         /// <returns>List of Transformations for a given Map</returns>
-        private List<Transformation> GetMapTransformations(int mapId)
+        public List<Transformation> GetMapTransformations(int mapId)
         {
             return dbContext.Transformations.Where(x => x.MapId == mapId)
                  .Include(transform => transform.Conditions)
@@ -467,7 +370,7 @@ namespace GTiHub.API.File_Handling
         /// </summary>
         /// <param name="targetId"></param>
         /// <returns>TargetTable for a given target</returns>
-        private Dictionary<int, TargetInfo> GetTargetTables(ref List<Transformation> transformations, int primarySourceId, int lineCount, int primaryFieldCount)
+        public Dictionary<int, TargetInfo> GetTargetTables(ref List<Transformation> transformations, int primarySourceId, int lineCount, int primaryFieldCount)
         {
             Dictionary<int, TargetInfo> targetInfo = new Dictionary<int, TargetInfo>();
 
@@ -494,11 +397,47 @@ namespace GTiHub.API.File_Handling
             Dictionary<string, TargetFieldInfo> targetFieldsDict = new Dictionary<string, TargetFieldInfo>();
             for (int i = 0; i < targetFields.Count; i++)
             {
-                targetFieldsDict.Add(targetFields[i].Name, new TargetFieldInfo(i,false));
+                targetFieldsDict.Add(targetFields[i].Name, new TargetFieldInfo(i, false));
             }
 
             targetInfo[targetId] = new TargetInfo(targetFieldsDict, targetVals);
             return targetInfo;
+        }
+    }
+
+    public class TargetInfo
+    {
+        public Dictionary<string, TargetFieldInfo> targetFields { get; set; }
+        public string[][] targetVals { get; set; }
+
+        public TargetInfo(Dictionary<string, TargetFieldInfo> targetFields, string[][] targetVals)
+        {
+            this.targetFields = targetFields;
+            this.targetVals = targetVals;
+        }
+    }
+
+    public class TargetFieldInfo
+    {
+        public int fieldIndex;
+        public bool populated;
+
+        public TargetFieldInfo(int fieldIndex, bool populated)
+        {
+            this.fieldIndex = fieldIndex;
+            this.populated = populated;
+        }
+    }
+
+    public class SourceInfo
+    {
+        public Dictionary<string, int> sourceFields { get; set; }
+        public string[][] sourceVals { get; set; }
+
+        public SourceInfo(Dictionary<string, int> sourceFields, string[][] sourceVals)
+        {
+            this.sourceFields = sourceFields;
+            this.sourceVals = sourceVals;
         }
     }
 }

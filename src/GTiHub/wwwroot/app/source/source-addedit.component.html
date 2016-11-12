@@ -63,8 +63,15 @@
                                     </div>
                                     <div *ngIf="sopt">
                                         <div class="form-group">
-                                            <label for="templateFile">Select Template File</label>
-                                            <input type="file" name="templateFile" ng2FileSelect [uploader]="uploader" />
+                                            <label for="templateFile">Select Template File</label> 
+                                            <div class="input-group">
+                                                <label class="input-group-btn">
+                                                    <span class="btn btn-default">
+                                                        Browse&hellip; <input type="file" name="templateFile" #templateFile style="display:none;" ng2FileSelect [uploader]="uploader" />
+                                                    </span>
+                                                </label>
+                                                <input type="text" class="form-control" readonly value="{{templateFile.value | extractFileName}}" />
+                                            </div>                                                                  
                                         </div>
                                         <div class="form-group">
                                             <label for="delimiter">Delimiter</label>

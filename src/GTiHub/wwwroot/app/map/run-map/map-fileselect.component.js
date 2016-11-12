@@ -15,6 +15,7 @@ var MapFileSelectComponent = (function () {
     function MapFileSelectComponent(runMapService) {
         this.runMapService = runMapService;
         this.processingMap = false;
+        this.outputDelimiter = ',';
         this.uploader = new ng2_file_upload_1.FileUploader({ url: 'api/File/RunMapping' });
         this.uploader.onCompleteItem = function (item, response, status, headers) {
             var res = JSON.parse(response);
@@ -55,21 +56,53 @@ var MapFileSelectComponent = (function () {
             formData.append(filePackage.sourceId, fileItem._file, fileItem.file.name);
         }
         formData.append("mapId", this.selectedMapId);
+        formData.append("evalConditions", this.evalConditions);
+        formData.append("outputDelimiter", (this.outputDelimiter == '' ? ',' : this.outputDelimiter));
         var xhr = new XMLHttpRequest();
         //Need to use self in callback to have access to "this"
         var self = this;
+        //MIME type of the returned file
+        var mimetype = "";
+        var fileName = "";
         xhr.onreadystatechange = function (e) {
             if (xhr.readyState == 4) {
                 self.setProcessing(false);
+                //Check the user set value of the file extension and set type 
+                switch (self.fileExt) {
+                    case "csv":
+                        mimetype = "text/csv";
+                        break;
+                    case "txt":
+                        mimetype = "text/plain";
+                        break;
+                    case "dat":
+                        mimetype = "application/octet-stream";
+                        break;
+                    default:
+                        mimetype = "text/plain";
+                        break;
+                }
                 // Create a new Blob object using the response data of the onload object
-                var blob = new Blob([this.response], { type: 'text/csv' });
+                var blob = new Blob([this.response], { type: mimetype });
                 var a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);
                 //Create a DOMString representing the blob and point the link element towards it
                 var url = window.URL.createObjectURL(blob);
                 a.href = url;
-                a.setAttribute("download", "test.csv");
+                //Set the name of the returned file
+                if (self.fileName != "") {
+                    if (self.fileExt != "") {
+                        this.fileName = self.fileName + "." + self.fileExt;
+                    }
+                    else {
+                        this.fileName = self.fileName + ".txt";
+                    }
+                }
+                else {
+                    this.fileName = "output.txt";
+                }
+                a.setAttribute("download", this.fileName);
                 //programatically click the link to trigger the download
                 a.click();
                 //release the reference to the file by revoking the Object URL
