@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System;
+using GTiHub.API;
 
 namespace GTiHub
 {
@@ -34,7 +35,9 @@ namespace GTiHub
             services.AddMemoryCache();
             services.AddSession();
             services.AddMvc();
-            
+
+            //Add the TransformHelpers service
+            services.TryAddTransient<ITransformHelpers, TransformHelpers>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

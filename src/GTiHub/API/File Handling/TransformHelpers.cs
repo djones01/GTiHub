@@ -14,10 +14,39 @@ namespace GTiHub.API
 {
     public interface ITransformHelpers
     {
-
+        byte[] GetTargetStream(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter);
+        bool TransformMapToFile(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
+            int primarySourceId,
+            int lineCount,
+            int primaryFieldCount,
+            int targetId,
+            bool applyConditions);
+        void ApplyFallbacks(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
+            int primarySourceId,
+            int lineCount,
+            int primaryFieldCount,
+            int targetId);
+        void ApplyTransformations(ref Dictionary<int, SourceInfo> sourceTables,
+            ref Dictionary<int, TargetInfo> targetTables,
+            ref List<Transformation> transformations,
+            int primarySourceId,
+            int lineCount,
+            int primaryFieldCount,
+            int targetId,
+            bool applyConditions);
+        bool ComparePrimSourceTarget(int primarySourceId, int targetId);
+        Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form);
+        Dictionary<int, TargetInfo> GetTargetTables(ref List<Transformation> transformations, int primarySourceId, int lineCount, int primaryFieldCount);
+        Task<string[]> ReadAllLinesAsync(StreamReader reader, Encoding encoding);
+        int GetPrimarySourceId(ref IFormCollection form);
+        List<Transformation> GetMapTransformations(int mapId);
     }
 
-    public class TransformHelpers
+    public class TransformHelpers : ITransformHelpers
     {
         private GTiHubContext dbContext;
         public TransformHelpers(GTiHubContext dbContext)
