@@ -16,11 +16,11 @@ namespace GTiHub.API.File_Handling
     [Route("api/[controller]")]
     public class FileController : Controller
     {
-        private ITransformHelpers helpers;
+        private ITransformHelpers _helpers;
 
-        public FileController(ITransformHelpers helpers)
+        public FileController(ITransformHelpers _helpers)
         {
-            this.helpers = helpers;
+            this._helpers = _helpers;
         }
 
         [Route("ExtractHeaders")]
@@ -80,28 +80,28 @@ namespace GTiHub.API.File_Handling
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 //Get formatted data from the uploaded files
-                var sourceTables = await Task.Run(() => helpers.GetSourceTables(form));
+                var sourceTables = await Task.Run(() => _helpers.GetSourceTables(form));
 
                 //Get list of transformations for map
-                var transformations = await Task.Run(() => helpers.GetMapTransformations(mapId));
+                var transformations = await Task.Run(() => _helpers.GetMapTransformations(mapId));
 
                 //Get the id of the primary source
-                var primarySourceId = await Task.Run(() => helpers.GetPrimarySourceId(ref form));
+                var primarySourceId = await Task.Run(() => _helpers.GetPrimarySourceId(ref form));
 
                 //Get field counts for primary table
-                var lineCount = sourceTables[primarySourceId].sourceVals.Length;
-                var primaryFieldCount = sourceTables[primarySourceId].sourceFields.Count;
+                var lineCount = sourceTables[primarySourceId].SourceVals.Length;
+                var primaryFieldCount = sourceTables[primarySourceId].SourceFields.Count;
 
                 //Get target tables
-                var targetTables = await Task.Run(() => helpers.GetTargetTables(ref transformations, primarySourceId, lineCount, primaryFieldCount));
+                var targetTables = await Task.Run(() => _helpers.GetTargetTables(ref transformations, primarySourceId, lineCount, primaryFieldCount));
 
                 var targetId = targetTables.Keys.ToList()[0];
 
                 //Apply transformations 
-                success = await Task.Run(() => helpers.TransformMapToFile(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId, evalConditions));
+                success = await Task.Run(() => _helpers.TransformMapToFile(ref sourceTables, ref targetTables, ref transformations, primarySourceId, lineCount, primaryFieldCount, targetId, evalConditions));
 
                 //Create new memory stream to return
-                bytes = helpers.GetTargetStream(ref targetTables, targetId, outputDelimiter);
+                bytes = _helpers.GetTargetBytes(ref targetTables, targetId, outputDelimiter);
 
                 stopwatch.Stop();
 

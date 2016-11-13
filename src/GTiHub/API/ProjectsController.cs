@@ -9,24 +9,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class ProjectsController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public ProjectsController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public ProjectsController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Projects
         [HttpGet]
         public IEnumerable<Project> Get()
         {
-            return dbContext.Projects.ToList();
+            return _dbContext.Projects.ToList();
         }
 
         // GET api/Projects/5
         [HttpGet("{id}", Name = "GetProject")]
         public IActionResult Get(int id)
         {
-            var project = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var project = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
             if (project == null)
             {
                 return NotFound();
@@ -42,8 +42,8 @@ namespace GTiHub.Controllers.API
             {
                 return BadRequest();
             }
-            dbContext.Projects.Add(project);
-            dbContext.SaveChanges();
+            _dbContext.Projects.Add(project);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetProject", new { id = project.ProjectId }, project);
         }
 
@@ -56,7 +56,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedProject = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var updatedProject = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
 
             if (updatedProject == null)
             {
@@ -72,7 +72,7 @@ namespace GTiHub.Controllers.API
             updatedProject.ProjectTargets = project.ProjectTargets;
             updatedProject.UserProjectSecs = project.UserProjectSecs;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
         }
@@ -81,13 +81,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var project = dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var project = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
             if (project == null)
             {
                 return NotFound();
             }
-            dbContext.Projects.Remove(project);
-            dbContext.SaveChanges();
+            _dbContext.Projects.Remove(project);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

@@ -11,24 +11,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class MapsController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public MapsController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public MapsController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Maps
         [HttpGet]
         public IEnumerable<Map> Get()
         {
-            return dbContext.Maps.ToList();
+            return _dbContext.Maps.ToList();
         }
 
         // GET api/Maps/5
         [HttpGet("{id}", Name = "GetMap")]
         public IActionResult Get(int id)
         {
-            var map = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
+            var map = _dbContext.Maps.FirstOrDefault(x => x.MapId == id);
             if (map == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("MapSources/{id}")]
         public IEnumerable<Source> MapSources(int id)
         {
-            List<Transformation> mapTransforms = dbContext.Transformations.Where(x => x.MapId == id)
+            List<Transformation> mapTransforms = _dbContext.Transformations.Where(x => x.MapId == id)
                  .Include(transform => transform.Conditions)
                      .ThenInclude(condition => condition.SourceField)
                          .ThenInclude(sourceField => sourceField.Source)
@@ -104,8 +104,8 @@ namespace GTiHub.Controllers.API
                 transform.Rule.TargetFieldId = transform.Rule.TargetField.TargetFieldId;
                 transform.Rule.TargetField = null;
             }
-            dbContext.Maps.Add(map);
-            dbContext.SaveChanges();
+            _dbContext.Maps.Add(map);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetMap", new { id = map.MapId }, map);
         }
 
@@ -118,7 +118,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedMap = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
+            var updatedMap = _dbContext.Maps.FirstOrDefault(x => x.MapId == id);
 
             if (updatedMap == null)
             {
@@ -131,7 +131,7 @@ namespace GTiHub.Controllers.API
             updatedMap.ProjectMaps = map.ProjectMaps;
             updatedMap.Transformations = map.Transformations;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
         }
@@ -140,13 +140,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var map = dbContext.Maps.FirstOrDefault(x => x.MapId == id);
+            var map = _dbContext.Maps.FirstOrDefault(x => x.MapId == id);
             if (map == null)
             {
                 return NotFound();
             }
-            dbContext.Maps.Remove(map);
-            dbContext.SaveChanges();
+            _dbContext.Maps.Remove(map);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

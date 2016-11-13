@@ -10,9 +10,6 @@ namespace GTiHub.Models.EntityModel
 {
     public class GTiHubContext : DbContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
-
         public GTiHubContext(DbContextOptions<GTiHubContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -34,6 +31,9 @@ namespace GTiHub.Models.EntityModel
         public DbSet<Transformation> Transformations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserProjectSec> UserProjectSecs { get; set; }
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private ISession _session => _httpContextAccessor.HttpContext.Session;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

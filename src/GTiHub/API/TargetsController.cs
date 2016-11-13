@@ -13,24 +13,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class TargetsController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public TargetsController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public TargetsController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Targets
         [HttpGet]
         public IEnumerable<Target> Get()
         {
-            return dbContext.Targets.ToList();
+            return _dbContext.Targets.ToList();
         }
 
         // GET api/Targets/5
         [HttpGet("{id}",Name = "GetTarget")]
         public IActionResult Get(int id)
         {
-            var target = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
+            var target = _dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
             if (target == null)
             {
                 return NotFound();
@@ -42,7 +42,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("GetTargetFieldsbyTarget/{id}")]
         public IEnumerable<TargetField> GetTargetFieldsByTarget(int id)
         {
-            return dbContext.TargetFields.Where(x => x.TargetId == id).OrderBy(x => x.SeqNum).ToList();
+            return _dbContext.TargetFields.Where(x => x.TargetId == id).OrderBy(x => x.SeqNum).ToList();
         }
 
         // POST api/Targets
@@ -53,8 +53,8 @@ namespace GTiHub.Controllers.API
             {
                 return BadRequest();
             }
-            dbContext.Targets.Add(target);
-            dbContext.SaveChanges();
+            _dbContext.Targets.Add(target);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetTarget", new { id = target.TargetId }, target);
         }
 
@@ -67,7 +67,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedTarget = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
+            var updatedTarget = _dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
 
             if (updatedTarget == null)
             {
@@ -81,7 +81,7 @@ namespace GTiHub.Controllers.API
             updatedTarget.ProjectTargets = target.ProjectTargets;
             updatedTarget.TargetFields = target.TargetFields;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
         }
@@ -90,13 +90,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var target = dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
+            var target = _dbContext.Targets.FirstOrDefault(x => x.TargetId == id);
             if (target == null)
             {
                 return NotFound();
             }
-            dbContext.Targets.Remove(target);
-            dbContext.SaveChanges();
+            _dbContext.Targets.Remove(target);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

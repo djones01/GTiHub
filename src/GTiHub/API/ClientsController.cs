@@ -8,24 +8,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class ClientsController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public ClientsController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public ClientsController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Clients
         [HttpGet]
         public IEnumerable<Client> Get()
         {
-            return dbContext.Clients.ToList();
+            return _dbContext.Clients.ToList();
         }
 
         // GET api/Clients/5
         [HttpGet("{id}", Name = "GetClient")]
         public IActionResult Get(int id)
         {
-            var client = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
+            var client = _dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
             if (client == null)
             {
                 return NotFound();
@@ -41,8 +41,8 @@ namespace GTiHub.Controllers.API
             {
                 return BadRequest();
             }
-            dbContext.Clients.Add(client);
-            dbContext.SaveChanges();
+            _dbContext.Clients.Add(client);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetClient", new { id = client.ClientId }, client);
         }
 
@@ -55,7 +55,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedClient = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
+            var updatedClient = _dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
 
             if (updatedClient == null)
             {
@@ -65,7 +65,7 @@ namespace GTiHub.Controllers.API
             updatedClient.Name = client.Name;
             updatedClient.Industry = client.Industry;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
         }
@@ -74,13 +74,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var client = dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
+            var client = _dbContext.Clients.FirstOrDefault(x => x.ClientId == id);
             if (client == null)
             {
                 return NotFound();
             }
-            dbContext.Clients.Remove(client);
-            dbContext.SaveChanges();
+            _dbContext.Clients.Remove(client);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

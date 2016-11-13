@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using GTiHub.API;
+using Serilog;
 
 namespace GTiHub
 {
@@ -50,6 +51,9 @@ namespace GTiHub
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //Add serilog to the logging pipeline
+            loggerFactory.AddSerilog();
 
             app.UseSession();
             app.UseStaticFiles();

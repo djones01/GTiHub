@@ -9,24 +9,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public UsersController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public UsersController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Users
         [HttpGet]
         public IEnumerable<User> Get()
         {
-            return dbContext.Users.ToList();
+            return _dbContext.Users.ToList();
         }
 
         // GET api/Users/5
         [HttpGet("{id}", Name = "GetUser")]
         public IActionResult Get(int id)
         {
-            var user = dbContext.Users.FirstOrDefault(x => x.UserId == id);
+            var user = _dbContext.Users.FirstOrDefault(x => x.UserId == id);
             if(user == null)
             {
                 return NotFound();
@@ -42,8 +42,8 @@ namespace GTiHub.Controllers.API
             {
                 return BadRequest();
             }
-            dbContext.Users.Add(user);
-            dbContext.SaveChanges();
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetUser", new { id = user.UserId }, user);
         }
 
@@ -56,7 +56,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedUser = dbContext.Users.FirstOrDefault(x => x.UserId == id);
+            var updatedUser = _dbContext.Users.FirstOrDefault(x => x.UserId == id);
 
             if(updatedUser == null)
             {
@@ -72,7 +72,7 @@ namespace GTiHub.Controllers.API
             updatedUser.Hash = user.Hash;
             updatedUser.UserProjectSecs = user.UserProjectSecs;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
 
@@ -82,13 +82,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var user = dbContext.Users.FirstOrDefault(x => x.UserId == id);
+            var user = _dbContext.Users.FirstOrDefault(x => x.UserId == id);
             if(user == null)
             {
                 return NotFound();
             }
-            dbContext.Users.Remove(user);
-            dbContext.SaveChanges();
+            _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

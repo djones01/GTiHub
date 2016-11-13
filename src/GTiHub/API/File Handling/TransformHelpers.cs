@@ -1,8 +1,11 @@
 ﻿using GTiHub.API.File_Handling;
 using GTiHub.Models.EntityModel;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NCalc;
+using Serilog;
+using Serilog.Sinks.RollingFile;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,9 +15,15 @@ using System.Threading.Tasks;
 
 namespace GTiHub.API
 {
+    /// <summary>
+    /// Interface for TransformHelpers
+    /// </summary>
     public interface ITransformHelpers
     {
-        byte[] GetTargetStream(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter);
+        //Logging methods
+        void SetLogFile(string fileName);
+
+        // Transformation methods
         bool TransformMapToFile(ref Dictionary<int, SourceInfo> sourceTables,
             ref Dictionary<int, TargetInfo> targetTables,
             ref List<Transformation> transformations,
@@ -41,39 +50,69 @@ namespace GTiHub.API
         bool ComparePrimSourceTarget(int primarySourceId, int targetId);
         Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form);
         Dictionary<int, TargetInfo> GetTargetTables(ref List<Transformation> transformations, int primarySourceId, int lineCount, int primaryFieldCount);
+        byte[] GetTargetBytes(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter);
         Task<string[]> ReadAllLinesAsync(StreamReader reader, Encoding encoding);
         int GetPrimarySourceId(ref IFormCollection form);
         List<Transformation> GetMapTransformations(int mapId);
     }
 
+    /// <summary>
+    /// Implement ITransformHelpers
+    /// </summary>
     public class TransformHelpers : ITransformHelpers
     {
-        private GTiHubContext dbContext;
-        public TransformHelpers(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        private readonly ILogger _logger;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public TransformHelpers(GTiHubContext _dbContext, ILogger _logger, IHostingEnvironment _hostingEnvironment)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
+            this._logger = _logger;
+            this._hostingEnvironment = _hostingEnvironment;
         }
 
-        public byte[] GetTargetStream(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter)
+        public void SetLogFile(string fileName)
         {
-            StringBuilder combined = new StringBuilder();
-            TargetInfo targetInfo = targetTables[targetId];
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.RollingFile(pathFormat: _hostingEnvironment.ContentRootPath + "/" + fileName + ".log",
+                                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {SourceContext} [{Level}] {Message}{NewLine}{Exception}")
+                .CreateLogger().ForContext<TransformHelpers>();
+        }
 
-            //Add headers
-            string[] fieldList = new List<string>(targetTables[targetId].targetFields.Keys).ToArray();
-            combined.AppendLine(string.Join(outputDelimiter, fieldList));
-
-            //Add everything else
-            for (int i = 0; i < targetInfo.targetVals.Length; i++)
+        /// <summary>
+        /// Gets an array of bytes from a set of TargetTables
+        /// </summary>
+        /// <param name="targetTables">Target table(s) that can convert</param>
+        /// <param name="targetId">Id of the target table to convert</param>
+        /// <param name="outputDelimiter">Delimiter for the file output</param>
+        /// <returns>Array of bytes for one target table</returns>
+        public byte[] GetTargetBytes(ref Dictionary<int, TargetInfo> targetTables, int targetId, string outputDelimiter)
+        {
+            byte[] bytes = null;
+            try
             {
-                combined.AppendLine(string.Join(outputDelimiter, targetInfo.targetVals[i]));
+                StringBuilder combined = new StringBuilder();
+                TargetInfo targetInfo = targetTables[targetId];
+
+                //Add headers
+                string[] fieldList = new List<string>(targetTables[targetId].TargetFields.Keys).ToArray();
+                combined.AppendLine(string.Join(outputDelimiter, fieldList));
+
+                //Add everything else
+                for (int i = 0; i < targetInfo.TargetVals.Length; i++)
+                {
+                    combined.AppendLine(string.Join(outputDelimiter, targetInfo.TargetVals[i]));
+                }
+
+                //Get byte array
+                bytes = System.Text.Encoding.UTF8.GetBytes(combined.ToString());
             }
-
-            //Get byte array
-            var bytes = System.Text.Encoding.UTF8.GetBytes(combined.ToString());
-
-            return bytes;
-            //return new MemoryStream(bytes);          
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while getting bytes for Target: {TargetId}", targetId);
+            }
+            return bytes;     
         }
 
         /// <summary>
@@ -108,34 +147,47 @@ namespace GTiHub.API
             int primaryFieldCount,
             int targetId)
         {
-            List<string> fieldList = new List<string>(targetTables[targetId].targetFields.Keys);
-            var targetFieldIndex = -1;
-            var sourceFieldIndex = -1;
-            //Check all target fields in the target table to see if they are populated or not
-            foreach (string field in fieldList)
+            Log.Information("Begin searching for fallbacks in Primary Source: {PrimarySourceId} for unpopulated Target fields in Target: {TargetId}", primarySourceId, targetId);
+
+            try
             {
-                if (!targetTables[targetId].targetFields[field].populated)
+                List<string> fieldList = new List<string>(targetTables[targetId].TargetFields.Keys);
+                var targetFieldIndex = -1;
+                var sourceFieldIndex = -1;
+                //Check all target fields in the target table to see if they are populated or not
+                foreach (string field in fieldList)
                 {
-                    //Check the primary source for a corresponding column
-                    if (sourceTables[primarySourceId].sourceFields.ContainsKey(field) ||
-                        sourceTables[primarySourceId].sourceFields.ContainsKey(field.ToUpper()) ||
-                        sourceTables[primarySourceId].sourceFields.ContainsKey(field.ToLower()))
+                    if (!targetTables[targetId].TargetFields[field].Populated)
                     {
-                        targetFieldIndex = targetTables[targetId].targetFields[field].fieldIndex;
-                        sourceFieldIndex = sourceTables[primarySourceId].sourceFields[field];
-                        //Loop through all lines in the array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
-                        for (int i = 0; i < lineCount; i++)
+                        //Check the primary source for a corresponding column
+                        if (sourceTables[primarySourceId].SourceFields.ContainsKey(field) ||
+                            sourceTables[primarySourceId].SourceFields.ContainsKey(field.ToUpper()) ||
+                            sourceTables[primarySourceId].SourceFields.ContainsKey(field.ToLower()))
                         {
-                            targetTables[targetId].targetVals[i][targetFieldIndex] = sourceTables[primarySourceId].sourceVals[i][sourceFieldIndex];
+                            targetFieldIndex = targetTables[targetId].TargetFields[field].FieldIndex;
+                            sourceFieldIndex = sourceTables[primarySourceId].SourceFields[field];
+                            //Loop through all lines in the array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
+                            for (int i = 0; i < lineCount; i++)
+                            {
+                                targetTables[targetId].TargetVals[i][targetFieldIndex] = sourceTables[primarySourceId].SourceVals[i][sourceFieldIndex];
+                            }
+                        }
+                        else
+                        {
+                            Log.Warning("Unable to find field in Primary Source matching {Field}", field);
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while applying fallbacks with Primary Source: {PrimarySourceId} and Target: {TargetId}", primarySourceId, targetId);
+            }       
         }
 
 
         /// <summary>
-        /// Applys a set of transformations to the given source tables and copies columns to targets
+        /// Applies a set of transformations to the given source tables and copies columns to targets
         /// </summary>
         /// <param name="sourceTables">Collection of source tables and their associated header data</param>
         /// <param name="output">Reference to output arrays</param>
@@ -152,111 +204,116 @@ namespace GTiHub.API
             int targetId,
             bool applyConditions)
         {
-            var sourceFieldName = "";
-            var targetFieldName = "";
-            var sourceFieldIndex = -1;
-            var targetFieldIndex = -1;
-            var resultString = "";
-            int sourceFieldSourceId;
+            Log.Information("Begin applying Transformations with Primary Source: {PrimarySourceId} and Target: {TargetId}", primarySourceId, targetId);
 
-            //Local vars for condition evals
-            string expr = "";
-            List<Parameter> parameters = new List<Parameter>();
-            Expression expression = null;
-            bool conditionPass = false;
-
-            //Operate on the output for each transformation
-            foreach (Transformation transform in transformations)
+            try
             {
-                //If the user has set "Apply Conditions" to true, init tokens
-                if (applyConditions)
+                var sourceFieldName = "";
+                var targetFieldName = "";
+                var sourceFieldIndex = -1;
+                var targetFieldIndex = -1;
+                var resultString = "";
+                int sourceFieldSourceId;
+
+                //Local vars for condition evals
+                string expr = "";
+                List<Parameter> parameters = new List<Parameter>();
+                Expression expression = null;
+                bool conditionPass = false;
+
+                //Operate on the output for each transformation
+                foreach (Transformation transform in transformations)
                 {
-                    //Get the list of tokens for all conditions in the transformation
-                    //tokens = CondEvalHelpers.TokensFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList());
-                    expr = CondEvalHelpers.ExprFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList(), ref parameters);
-                    expression = new Expression(expr);
+                    //If the user has set "Apply Conditions" to true, init tokens
+                    if (applyConditions)
+                    {
+                        expr = CondEvalHelpers.ExprFromConditions(transform.Conditions.OrderBy(x => x.SeqNum).ToList(), ref parameters);
+                        expression = new Expression(expr);
+                    }
 
-                    //Convert the token list to reverse polish notation
-                    //tokens = CondEvalHelpers.ConvertToReversePolish(tokens);
-                }
+                    List<RuleSourceField> ruleSourceFields = transform.Rule.RuleSourceFields.ToList();
+                    targetFieldName = transform.Rule.TargetField.Name;
+                    targetFieldIndex = targetTables[targetId].TargetFields[targetFieldName].FieldIndex;
 
-                List<RuleSourceField> ruleSourceFields = transform.Rule.RuleSourceFields.ToList();
-                targetFieldName = transform.Rule.TargetField.Name;
-                targetFieldIndex = targetTables[targetId].targetFields[targetFieldName].fieldIndex;
-
-                switch (transform.Rule.Rule_Operation)
-                {
-                    case "sfield":
-                        //Loop through all available rule fields and copy to intermediate vals
-                        foreach (RuleSourceField ruleSourceField in ruleSourceFields)
-                        {
-                            sourceFieldName = ruleSourceField.SourceField.Name;
-                            sourceFieldSourceId = ruleSourceField.SourceField.SourceId;
-
-                            if (sourceTables[sourceFieldSourceId].sourceFields.ContainsKey(sourceFieldName))
+                    switch (transform.Rule.Rule_Operation)
+                    {
+                        case "sfield":
+                            //Loop through all available rule fields and copy to intermediate vals
+                            foreach (RuleSourceField ruleSourceField in ruleSourceFields)
                             {
-                                sourceFieldIndex = sourceTables[sourceFieldSourceId].sourceFields[sourceFieldName];
+                                sourceFieldName = ruleSourceField.SourceField.Name;
+                                sourceFieldSourceId = ruleSourceField.SourceField.SourceId;
 
-                                //Loop through all lines in the source array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
-                                for (int i = 0; i < lineCount; i++)
+                                if (sourceTables[sourceFieldSourceId].SourceFields.ContainsKey(sourceFieldName))
                                 {
-                                    //If the user wishes to apply conditions
-                                    if (applyConditions)
+                                    sourceFieldIndex = sourceTables[sourceFieldSourceId].SourceFields[sourceFieldName];
+
+                                    //Loop through all lines in the source array corresponding to the rule field's sourcefield and prepend, append, and format as needed, then add to output table
+                                    for (int i = 0; i < lineCount; i++)
                                     {
-                                        //Get parameters from all of the source tables
-                                        expression = CondEvalHelpers.GetExpressionParams(parameters, ref sourceTables, expression, i);
-                                        if (expression.HasErrors())
+                                        //If the user wishes to apply conditions
+                                        if (applyConditions)
                                         {
-                                            conditionPass = false;
+                                            //Get parameters from all of the source tables
+                                            expression = CondEvalHelpers.GetExpressionParams(parameters, ref sourceTables, expression, i);
+                                            if (expression.HasErrors())
+                                            {
+                                                conditionPass = false;
+                                            }
+                                            else
+                                            {
+                                                conditionPass = Convert.ToBoolean(expression.Evaluate());
+                                            }
+
+                                            if (conditionPass)
+                                            {
+                                                //Transform
+                                                resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].SourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
+                                                targetTables[targetId].TargetVals[i][targetFieldIndex] = targetTables[targetId].TargetVals[i][targetFieldIndex] + resultString;
+                                            }
+                                            else
+                                            {
+                                                targetTables[targetId].TargetVals[i][targetFieldIndex] = "";
+                                            }
                                         }
                                         else
                                         {
-                                            conditionPass = Convert.ToBoolean(expression.Evaluate());
+                                            //Transform without checking condition
+                                            resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].SourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
+                                            targetTables[targetId].TargetVals[i][targetFieldIndex] = targetTables[targetId].TargetVals[i][targetFieldIndex] + resultString;
                                         }
 
-                                        if (conditionPass)
-                                        {
-                                            //Transform
-                                            resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
-                                            targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
-                                        }
-                                        else
-                                        {
-                                            targetTables[targetId].targetVals[i][targetFieldIndex] = "";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        //Transform without checking condition
-                                        resultString = ruleSourceField.Prepend + sourceTables[sourceFieldSourceId].sourceVals[i][sourceFieldIndex] + ruleSourceField.Append;
-                                        targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + resultString;
                                     }
 
+                                    //Set the column to populated
+                                    targetTables[targetId].TargetFields[targetFieldName].Populated = true;
+                                }
+                                else
+                                {
+                                    Log.Information("Unable to find rule field {SourceFieldName} in source tables, fallback will be applied", sourceFieldName);
                                 }
 
-                                //Set the column to populated
-                                targetTables[targetId].targetFields[targetFieldName].populated = true;
                             }
-                            else
+                            break;
+                        case "assign":
+
+
+                            break;
+                        case "text":
+                            //Loop through all lines in the array corresponding to the rule field's sourcefield and set to the text values
+                            for (int i = 0; i < lineCount; i++)
                             {
-                                //Log
+                                targetTables[targetId].TargetVals[i][targetFieldIndex] = targetTables[targetId].TargetVals[i][targetFieldIndex] + transform.Rule.Rule_Value;
                             }
-
-                        }
-                        break;
-                    case "assign":
-
-
-                        break;
-                    case "text":
-                        //Loop through all lines in the array corresponding to the rule field's sourcefield and set to the text values
-                        for (int i = 0; i < lineCount; i++)
-                        {
-                            targetTables[targetId].targetVals[i][targetFieldIndex] = targetTables[targetId].targetVals[i][targetFieldIndex] + transform.Rule.Rule_Value;
-                        }
-                        break;
+                            break;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while applying Transformations with Primary Source: {PrimarySourceId} and Target: {TargetId}", primarySourceId, targetId);
+            }
+            
         }
 
         /// <summary>
@@ -267,9 +324,18 @@ namespace GTiHub.API
         /// <returns>Whether the number of sourcefields in the primary source is the same as the target</returns>
         public bool ComparePrimSourceTarget(int primarySourceId, int targetId)
         {
-            //Short way to count without returning all entities
-            var primaryCount = (from s in dbContext.Sources where s.SourceId == primarySourceId from sf in s.SourceFields select sf).Count();
-            var targetCount = (from t in dbContext.Targets where t.TargetId == targetId from tf in t.TargetFields select tf).Count();
+            var primaryCount = 0;
+            var targetCount = 0;
+            try
+            {
+                //Short way to count without returning all entities
+                primaryCount = (from s in _dbContext.Sources where s.SourceId == primarySourceId from sf in s.SourceFields select sf).Count();
+                targetCount = (from t in _dbContext.Targets where t.TargetId == targetId from tf in t.TargetFields select tf).Count();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error while comparing Primary Source: {PrimarySourceId} to Target: {TargetId}", primarySourceId, targetId);
+            }         
             return primaryCount == targetCount;
         }
 
@@ -280,60 +346,72 @@ namespace GTiHub.API
         /// <returns>Dictionary of source values indexed by source ID and containing one or multiple SourceInfo objects</returns>
         public Dictionary<int, SourceInfo> GetSourceTables(IFormCollection form)
         {
+            Log.Information("Begin getting Source values from files");
+
             //Stores source values in jagged string array with an associated dictionary of header names and indeces.
             var sourcesVals = new Dictionary<int, SourceInfo>();
 
-            Parallel.ForEach(form.Files, async file =>
+            try
             {
-                var sourceId = Convert.ToInt32(file.Name);
-                var sourceFields = new Dictionary<string, int>();
-
-                //Get form info pertinent to current file
-                var delimiter = Convert.ToChar(form["delimiter-" + sourceId]);
-                var firstRowIsHeader = Convert.ToBoolean(form["firstRowHeader-" + sourceId]);
-                int altHeadRow = 0;
-                if (!firstRowIsHeader)
+                Parallel.ForEach(form.Files, async file =>
                 {
-                    altHeadRow = Convert.ToInt32(form["altHeadRow-" + sourceId]) - 1;
-                }
+                    var sourceId = Convert.ToInt32(file.Name);
+                    var sourceFields = new Dictionary<string, int>();
 
-                using (var buffer = new BufferedStream(file.OpenReadStream()))
-                using (var reader = new StreamReader(buffer))
-                {
-                    var lines = await ReadAllLinesAsync(reader, Encoding.UTF8);
-                    string[] splitline;
-
-                    //Get the number of header fields
-                    splitline = lines[altHeadRow++].Trim().Replace("\r", "").Replace("\n", "").Split(delimiter);
-                    int headerCount = splitline.Length;
-                    int adjustedLineCount = lines.Length - altHeadRow;
-
-                    var sourceTable = new string[adjustedLineCount][];
-
-                    //Initialize inner string array
-                    for (int z = 0; z < adjustedLineCount; z++)
+                    //Get form info pertinent to current file
+                    var delimiter = Convert.ToChar(form["delimiter-" + sourceId]);
+                    var firstRowIsHeader = Convert.ToBoolean(form["firstRowHeader-" + sourceId]);
+                    int altHeadRow = 0;
+                    if (!firstRowIsHeader)
                     {
-                        sourceTable[z] = new string[headerCount];
+                        altHeadRow = Convert.ToInt32(form["altHeadRow-" + sourceId]) - 1;
                     }
 
-                    for (int z = 0; z < headerCount; z++)
+                    using (var buffer = new BufferedStream(file.OpenReadStream()))
+                    using (var reader = new StreamReader(buffer))
                     {
-                        sourceFields.Add(splitline[z], z);
-                    }
+                        Log.Information("Begin reading lines from file with Source Id: {SourceId}", sourceId);
+                        var lines = await ReadAllLinesAsync(reader, Encoding.UTF8);
+                        Log.Information("Finished reading lines from file with Source Id: {SourceId}", sourceId);
 
-                    //Get the data from the file and put it in string array, start reading at altHeadRow 
-                    for (int i = 0; i < adjustedLineCount; i++)
-                    {
+                        string[] splitline;
+
+                        //Get the number of header fields
                         splitline = lines[altHeadRow++].Trim().Replace("\r", "").Replace("\n", "").Split(delimiter);
-                        for (int j = 0; j < headerCount; j++)
-                        {
-                            sourceTable[i][j] = splitline[j];
-                        }
-                    }
+                        int headerCount = splitline.Length;
+                        int adjustedLineCount = lines.Length - altHeadRow;
 
-                    sourcesVals.Add(sourceId, new SourceInfo(sourceFields, sourceTable));
-                }
-            });
+                        var sourceTable = new string[adjustedLineCount][];
+
+                        //Initialize inner string array
+                        for (int z = 0; z < adjustedLineCount; z++)
+                        {
+                            sourceTable[z] = new string[headerCount];
+                        }
+
+                        for (int z = 0; z < headerCount; z++)
+                        {
+                            sourceFields.Add(splitline[z], z);
+                        }
+
+                        //Get the data from the file and put it in string array, start reading at altHeadRow 
+                        for (int i = 0; i < adjustedLineCount; i++)
+                        {
+                            splitline = lines[altHeadRow++].Trim().Replace("\r", "").Replace("\n", "").Split(delimiter);
+                            for (int j = 0; j < headerCount; j++)
+                            {
+                                sourceTable[i][j] = splitline[j];
+                            }
+                        }
+
+                        sourcesVals.Add(sourceId, new SourceInfo(sourceFields, sourceTable));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while getting Source tables from files");
+            }          
 
             return sourcesVals;
         }
@@ -348,14 +426,21 @@ namespace GTiHub.API
         {
             var lines = new List<string>();
 
-            using (var rdr = reader)
+            try
             {
-                string line;
-                while ((line = await rdr.ReadLineAsync()) != null)
+                using (var rdr = reader)
                 {
-                    lines.Add(line);
+                    string line;
+                    while ((line = await rdr.ReadLineAsync()) != null)
+                    {
+                        lines.Add(line);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while reading lines from file");
+            }         
 
             return lines.ToArray();
         }
@@ -369,13 +454,22 @@ namespace GTiHub.API
         {
             //Determine which source has been marked as primary
             var primarySourceId = -1;
-            foreach (IFormFile file in form.Files)
+
+            try
             {
-                if (Convert.ToBoolean(form["primary-" + file.Name]) == true)
+                foreach (IFormFile file in form.Files)
                 {
-                    primarySourceId = Convert.ToInt32(file.Name);
+                    if (Convert.ToBoolean(form["primary-" + file.Name]) == true)
+                    {
+                        primarySourceId = Convert.ToInt32(file.Name);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error encountered while getting the primary source id");
+            }
+            
             return primarySourceId;
         }
 
@@ -386,7 +480,7 @@ namespace GTiHub.API
         /// <returns>List of Transformations for a given Map</returns>
         public List<Transformation> GetMapTransformations(int mapId)
         {
-            return dbContext.Transformations.Where(x => x.MapId == mapId)
+            return _dbContext.Transformations.Where(x => x.MapId == mapId)
                  .Include(transform => transform.Conditions)
                      .ThenInclude(condition => condition.SourceField)
                  .Include(transform => transform.Rule.TargetField.Target)
@@ -403,70 +497,78 @@ namespace GTiHub.API
         {
             Dictionary<int, TargetInfo> targetInfo = new Dictionary<int, TargetInfo>();
 
-            //Check if the target has the same number of fields as the primary source
-            //TODO - add support for multiple target files
-            var targetId = transformations[0].Rule.TargetField.TargetId;
-
-            //Not the same number of source and target fields
-            if (!ComparePrimSourceTarget(primarySourceId, targetId))
+            try
             {
-                return null;
+                //Check if the target has the same number of fields as the primary source
+                //TODO - add support for multiple target files
+                var targetId = transformations[0].Rule.TargetField.TargetId;
+
+                //Not the same number of source and target fields
+                if (!ComparePrimSourceTarget(primarySourceId, targetId))
+                {
+                    return null;
+                }
+
+                //Create a jagged output array the same size as the primary source jagged array.
+                var targetVals = new string[lineCount][];
+
+                //Initialize inner string arrays for output
+                for (int i = 0; i < lineCount; i++)
+                {
+                    targetVals[i] = new string[primaryFieldCount];
+                }
+
+                List<TargetField> targetFields = _dbContext.TargetFields.Where(x => x.TargetId == targetId).OrderBy(x => x.SeqNum).ToList();
+                Dictionary<string, TargetFieldInfo> targetFieldsDict = new Dictionary<string, TargetFieldInfo>();
+                for (int i = 0; i < targetFields.Count; i++)
+                {
+                    targetFieldsDict.Add(targetFields[i].Name, new TargetFieldInfo(i, false));
+                }
+
+                targetInfo[targetId] = new TargetInfo(targetFieldsDict, targetVals);
             }
-
-            //Create a jagged output array the same size as the primary source jagged array.
-            var targetVals = new string[lineCount][];
-
-            //Initialize inner string arrays for output
-            for (int i = 0; i < lineCount; i++)
+            catch (Exception ex)
             {
-                targetVals[i] = new string[primaryFieldCount];
+                Log.Error(ex, "Error encountered while getting Target tables");
             }
-
-            List<TargetField> targetFields = dbContext.TargetFields.Where(x => x.TargetId == targetId).OrderBy(x => x.SeqNum).ToList();
-            Dictionary<string, TargetFieldInfo> targetFieldsDict = new Dictionary<string, TargetFieldInfo>();
-            for (int i = 0; i < targetFields.Count; i++)
-            {
-                targetFieldsDict.Add(targetFields[i].Name, new TargetFieldInfo(i, false));
-            }
-
-            targetInfo[targetId] = new TargetInfo(targetFieldsDict, targetVals);
+                     
             return targetInfo;
         }
     }
 
     public class TargetInfo
     {
-        public Dictionary<string, TargetFieldInfo> targetFields { get; set; }
-        public string[][] targetVals { get; set; }
-
         public TargetInfo(Dictionary<string, TargetFieldInfo> targetFields, string[][] targetVals)
         {
-            this.targetFields = targetFields;
-            this.targetVals = targetVals;
+            this.TargetFields = targetFields;
+            this.TargetVals = targetVals;
         }
+
+        public Dictionary<string, TargetFieldInfo> TargetFields { get; set; }
+        public string[][] TargetVals { get; set; }
     }
 
     public class TargetFieldInfo
     {
-        public int fieldIndex;
-        public bool populated;
-
         public TargetFieldInfo(int fieldIndex, bool populated)
         {
-            this.fieldIndex = fieldIndex;
-            this.populated = populated;
+            this.FieldIndex = fieldIndex;
+            this.Populated = populated;
         }
+
+        public int FieldIndex { get; set; }
+        public bool Populated { get; set; }
     }
 
     public class SourceInfo
     {
-        public Dictionary<string, int> sourceFields { get; set; }
-        public string[][] sourceVals { get; set; }
-
         public SourceInfo(Dictionary<string, int> sourceFields, string[][] sourceVals)
         {
-            this.sourceFields = sourceFields;
-            this.sourceVals = sourceVals;
+            this.SourceFields = sourceFields;
+            this.SourceVals = sourceVals;
         }
+
+        public Dictionary<string, int> SourceFields { get; set; }
+        public string[][] SourceVals { get; set; }
     }
 }

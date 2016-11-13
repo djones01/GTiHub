@@ -11,24 +11,24 @@ namespace GTiHub.Controllers.API
     [Route("api/[controller]")]
     public class SourcesController : Controller
     {
-        private readonly GTiHubContext dbContext;
-        public SourcesController(GTiHubContext dbContext)
+        private readonly GTiHubContext _dbContext;
+        public SourcesController(GTiHubContext _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         // GET: api/Sources
         [HttpGet]
         public IEnumerable<Source> Get()
         {
-            return dbContext.Sources.ToList();
+            return _dbContext.Sources.ToList();
         }
 
         // GET api/Sources/5
         [HttpGet("{id}", Name = "GetSource")]
         public IActionResult Get(int id)
         {
-            var source = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
+            var source = _dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
             if (source == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace GTiHub.Controllers.API
         [HttpGet("GetSourceFieldsbySource/{id}")]
         public IEnumerable<SourceField> GetSourceFieldsBySource(int id)
         {
-            return dbContext.SourceFields.Where(x => x.SourceId == id).OrderBy(x => x.SeqNum).ToList();
+            return _dbContext.SourceFields.Where(x => x.SourceId == id).OrderBy(x => x.SeqNum).ToList();
         }
 
         // POST api/Sources
@@ -56,8 +56,8 @@ namespace GTiHub.Controllers.API
                 return BadRequest(ModelState);
             }
 
-            dbContext.Sources.Add(source);
-            dbContext.SaveChanges();
+            _dbContext.Sources.Add(source);
+            _dbContext.SaveChanges();
             return CreatedAtRoute("GetSource", new { id = source.SourceId }, source);
         }
 
@@ -70,7 +70,7 @@ namespace GTiHub.Controllers.API
                 return BadRequest();
             }
 
-            var updatedSource = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
+            var updatedSource = _dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
 
             if (updatedSource == null)
             {
@@ -84,7 +84,7 @@ namespace GTiHub.Controllers.API
             updatedSource.ProjectSources = source.ProjectSources;
             updatedSource.SourceFields = source.SourceFields;
 
-            dbContext.SaveChanges();
+            _dbContext.SaveChanges();
 
             return new NoContentResult();
         }
@@ -93,13 +93,13 @@ namespace GTiHub.Controllers.API
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var source = dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
+            var source = _dbContext.Sources.FirstOrDefault(x => x.SourceId == id);
             if (source == null)
             {
                 return NotFound();
             }
-            dbContext.Sources.Remove(source);
-            dbContext.SaveChanges();
+            _dbContext.Sources.Remove(source);
+            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

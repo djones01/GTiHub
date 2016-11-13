@@ -69,9 +69,9 @@ namespace GTiHub.API.File_Handling
             foreach (Parameter parameter in parameters)
             {
                 //Get the index of the named column in the source tables
-                sourceFieldIndex = sourceTables[parameter.sourceId].sourceFields[parameter.sourceFieldName];
+                sourceFieldIndex = sourceTables[parameter.sourceId].SourceFields[parameter.sourceFieldName];
                 //Get the value of the column at the given row and column, then set parameter value
-                expression.Parameters[parameter.parameterId] = sourceTables[parameter.sourceId].sourceVals[row][sourceFieldIndex];
+                expression.Parameters[parameter.parameterId] = sourceTables[parameter.sourceId].SourceVals[row][sourceFieldIndex];
             }
             return expression;
         }
