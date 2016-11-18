@@ -59,7 +59,9 @@
                                 <input *ngIf="condition.sourceField.datatype == 'num' || condition.sourceField.datatype == 'currency'"
                                        class="form-control" type="number" step="any" [(ngModel)]="condition.cond_Value" name="cond_Value" #cond_Value="ngModel" />
                                 <!-- Display for date input -->
-                                <input *ngIf="condition.sourceField.datatype == 'date'" class="form-control" type="date" [(ngModel)]="condition.cond_Value" name="cond_Value" #cond_Value="ngModel" />
+                                <input *ngIf="condition.sourceField.datatype == 'date'" class="form-control" name="cond_Value" #cond_Value="ngModel" [(ngModel)]="condition.cond_Value"
+                                           ng2-datetime-picker
+                                           date-only="true" required />
                                 <!-- Display for boolean input -->
                                 <select *ngIf="condition.sourceField.datatype == 'bool'" class="form-control" [(ngModel)]="condition.cond_Value" name="cond_Value" #cond_Value="ngModel">
                                     <option value="" disabled selected>Select T/F</option>

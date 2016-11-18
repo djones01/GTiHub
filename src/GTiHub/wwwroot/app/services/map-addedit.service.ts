@@ -10,9 +10,11 @@ export class MapAddEditService {
     //------------------------------Subjects-----------------------------------------//
 
     //Values for tracking state of a map
-    private mapSubj = new BehaviorSubject(new Map('','',true,[]));
+    private mapsSubj = new BehaviorSubject<Array<Map>>([]);
+    private mapSubj = new BehaviorSubject(null);
     private mapTransformsSubj = new BehaviorSubject<Array<Transformation>>([]);
     private mapAddingOrModifyingTransSubj = new BehaviorSubject(false);
+    private addingOrModifyingMapSubj = new BehaviorSubject(false);
 
     //Values for tracking state of a transformation 
     private transformSubj = new BehaviorSubject(new Transformation('',null,[]));
@@ -31,24 +33,28 @@ export class MapAddEditService {
     //Map methods
     getMap() {
         return this.mapSubj.asObservable();
-    }
-    addingOrModifyingTransform(addingTransform: boolean) {
-        this.mapAddingOrModifyingTransSubj.next(addingTransform);
-    }
-    getAddingOrModifyingTransform() {
-        return this.mapAddingOrModifyingTransSubj.asObservable();
-    }
-    getMapTransforms() {
-        return this.mapTransformsSubj.asObservable();
-    }
-    removeMapTransform(transform: Transformation) {
-        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el != transform });
-        this.mapTransformsSubj.next(filtered);
-    }
+    } 
     addOrUpdateMap() {
         var map = this.mapSubj.getValue();
         map.transformations = this.mapTransformsSubj.getValue();
         this._dataService.Add('Maps', map).subscribe(() => { }, error => console.log(error), ()=> { });
+    }
+    refreshMapsList() {
+        this._dataService.GetAll('Maps').subscribe(maps => this.mapsSubj.next(maps), error => console.log(error), () => { });
+    }
+    getMapsList() {
+        return this.mapsSubj.asObservable();
+    }
+    setEditMap(editMap: Map) {
+        this.mapSubj.next(editMap);
+        this.getTransformsForMap(editMap.mapId);
+        this.addingOrModifyingMapSubj.next(true);
+    }
+    deleteMap(deleteMap: Map) {
+
+    }
+    getAddingOrModifyingMap() {
+        return this.addingOrModifyingMapSubj.asObservable();
     }
 
     //Transform methods
@@ -67,10 +73,10 @@ export class MapAddEditService {
             rule.ruleSourceFields = this.ruleSourceFieldsSubj.getValue();
             transform.rule = rule;
             this.mapTransformsSubj.next(this.mapTransformsSubj.getValue().concat(this.transformSubj.getValue()));
-            this.resetTransformSubjects();
         }
         //Currently editing a transform
         else {
+
         }
     }
     resetTransformSubjects() {
@@ -78,6 +84,25 @@ export class MapAddEditService {
         this.ruleSubj.next(new Rule('', '', '', null, []));
         this.ruleSourceFieldsSubj.next([]);
         this.conditionsSubj.next([]);
+        this.addingOrModifyingTransform(false);
+    }
+    addingOrModifyingTransform(addingTransform: boolean) {
+        this.mapAddingOrModifyingTransSubj.next(addingTransform);
+    }
+    getAddingOrModifyingTransform() {
+        return this.mapAddingOrModifyingTransSubj.asObservable();
+    }
+    getMapTransforms() {
+        return this.mapTransformsSubj.asObservable();
+    }
+    removeMapTransform(transform: Transformation) {
+        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el != transform });
+        this.mapTransformsSubj.next(filtered);
+    }
+    getTransformsForMap(mapId: number) {
+        this._dataService.GetAllWithId('Maps/GetMapTransforms', mapId).subscribe(transforms => {
+            this.mapTransformsSubj.next(transforms)
+        }, error => console.log(error), () => { });
     }
 
     //Rule methods
@@ -133,6 +158,7 @@ export class MapAddEditService {
     }
 
     constructor(private _dataService: DataService) {
-
+        //Get the list of maps
+        this.refreshMapsList();
     }
 }

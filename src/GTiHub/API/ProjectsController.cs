@@ -1,67 +1,71 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GTiHub.Models.EntityModel;
-
-namespace GTiHub.Controllers.API
+﻿namespace GTiHub.Controllers.API
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using GTiHub.Models.EntityModel;
+
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     public class ProjectsController : Controller
     {
         private readonly GTiHubContext _dbContext;
+
         public ProjectsController(GTiHubContext _dbContext)
         {
             this._dbContext = _dbContext;
+        }
+
+        // DELETE api/Projects/5
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var project = this._dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            if (project == null) return this.NotFound();
+
+            this._dbContext.Projects.Remove(project);
+            this._dbContext.SaveChanges();
+            return new NoContentResult();
         }
 
         // GET: api/Projects
         [HttpGet]
         public IEnumerable<Project> Get()
         {
-            return _dbContext.Projects.ToList();
+            return this._dbContext.Projects.ToList();
         }
 
         // GET api/Projects/5
         [HttpGet("{id}", Name = "GetProject")]
         public IActionResult Get(int id)
         {
-            var project = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
+            var project = this._dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            if (project == null) return this.NotFound();
+
             return new ObjectResult(project);
         }
 
         // POST api/Projects
         [HttpPost]
-        public IActionResult Post([FromBody]Project project)
+        public IActionResult Post([FromBody] Project project)
         {
-            if (project == null)
-            {
-                return BadRequest();
-            }
-            _dbContext.Projects.Add(project);
-            _dbContext.SaveChanges();
-            return CreatedAtRoute("GetProject", new { id = project.ProjectId }, project);
+            if (project == null) return this.BadRequest();
+
+            this._dbContext.Projects.Add(project);
+            this._dbContext.SaveChanges();
+            return this.CreatedAtRoute("GetProject", new { id = project.ProjectId }, project);
         }
 
         // PUT api/Projects/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Project project)
+        public IActionResult Put(int id, [FromBody] Project project)
         {
-            if (project == null || project.ProjectId != id)
-            {
-                return BadRequest();
-            }
+            if ((project == null) || (project.ProjectId != id)) return this.BadRequest();
 
-            var updatedProject = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var updatedProject = this._dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
 
-            if (updatedProject == null)
-            {
-                return NotFound();
-            }
+            if (updatedProject == null) return this.NotFound();
 
             updatedProject.Name = project.Name;
             updatedProject.Description = project.Description;
@@ -72,22 +76,8 @@ namespace GTiHub.Controllers.API
             updatedProject.ProjectTargets = project.ProjectTargets;
             updatedProject.UserProjectSecs = project.UserProjectSecs;
 
-            _dbContext.SaveChanges();
+            this._dbContext.SaveChanges();
 
-            return new NoContentResult();
-        }
-
-        // DELETE api/Projects/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var project = _dbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            _dbContext.Projects.Remove(project);
-            _dbContext.SaveChanges();
             return new NoContentResult();
         }
     }

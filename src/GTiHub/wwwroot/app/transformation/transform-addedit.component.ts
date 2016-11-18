@@ -4,11 +4,14 @@ import { Response, Headers } from '@angular/http';
 import { Transformation } from './transformation';
 import { Subscription }   from 'rxjs/Subscription';
 import { MapAddEditService } from '../services/map-addedit.service';
+import { SFieldSelectService } from '../services/source-select.service';
+import { TFieldSelectService } from '../services/target-select.service';
+
 
 @Component({
     selector: 'transform-addedit',
     templateUrl: 'app/transformation/transform-addedit.component.html',
-    providers: [DataService],
+    providers: [SFieldSelectService, TFieldSelectService]
 })
 export class TransformAddEditComponent implements OnInit, OnDestroy {
     //Transformation which is currently being added or edited

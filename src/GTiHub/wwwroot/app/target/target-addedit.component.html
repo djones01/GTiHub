@@ -29,13 +29,14 @@
                         </div>
                         <div class="form-group">
                             <label for="effective_Date">Effective Date</label>
-                            <input type="date" class="form-control" id="effective_Date"
-                                   [(ngModel)]="target.effective_Date" name="effective_Date"
-                                   #effective_Date="ngModel"
-                                   required>
-                            <div *ngIf="!effective_Date.valid && !effective_Date.pristine"
-                                 class="alert alert-danger">
-                                Effective Date is required
+                            <div style="width: 200px">
+                                <input class="form-control" name="effective_Date" #effective_Date="ngModel" [(ngModel)]="target.effective_Date"
+                                       ng2-datetime-picker
+                                       date-only="true" required />
+                                <div *ngIf="!effective_Date.valid && !effective_Date.pristine"
+                                     class="alert alert-danger">
+                                    Description is required
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">

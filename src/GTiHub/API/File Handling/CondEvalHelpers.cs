@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using GTiHub.Models.EntityModel;
-using System.Text;
-using System.Collections;
-using NCalc;
-
-namespace GTiHub.API.File_Handling
+﻿namespace GTiHub.API.File_Handling
 {
+    using System.Collections.Generic;
+
+    using GTiHub.Models.EntityModel;
+
+    using NCalc;
+
     public static class CondEvalHelpers
     {
         public static string ExprFromConditions(List<Condition> conditions, ref List<Parameter> parameters)
         {
-            if (conditions == null)
+            if (conditions == null) return null;
+
+            var expr = string.Empty;
+            var paramIndex = 0;
+
+            // Build Token string from conditions
+            foreach (var condition in conditions)
             {
-                return null;
-            }
+                // Add the logical operators (OR and AND) if exists
+                if (condition.Chain_Operation != string.Empty) expr += condition.Chain_Operation + " ";
 
-            string expr = "";
-            int paramIndex = 0;
+                // Add left paren if exists
+                if (condition.Left_Paren != string.Empty) expr += "( ";
 
-            //Build Token string from conditions
-            foreach (Condition condition in conditions)
-            {
-                //Add the logical operators (OR and AND) if exists
-                if (condition.Chain_Operation != "") expr += condition.Chain_Operation + " ";
-
-                //Add left paren if exists
-                if (condition.Left_Paren != "") expr += "( ";
-
-                //Add sourcefield parameter - use index for parameter id and match to Parameter in Parameters list
+                // Add sourcefield parameter - use index for parameter id and match to Parameter in Parameters list
                 expr += "[" + paramIndex + "] ";
-                parameters.Add(new Parameter(condition.SourceField.SourceId, condition.SourceField.Name, paramIndex.ToString()));
+                parameters.Add(
+                    new Parameter(condition.SourceField.SourceId, condition.SourceField.Name, paramIndex.ToString()));
 
-                //Add operator
+                // Add operator
                 expr += condition.Operation + " ";
 
-                //Add right operand
+                // Add right operand
                 switch (condition.SourceField.Datatype)
                 {
                     case "url":
@@ -55,33 +50,42 @@ namespace GTiHub.API.File_Handling
                         break;
                 }
 
-                //Add the right paren if exists
-                if (condition.Right_Paren != "") expr += ") ";
+                // Add the right paren if exists
+                if (condition.Right_Paren != string.Empty) expr += ") ";
                 paramIndex++;
             }
 
             return expr;
         }
 
-        public static Expression GetExpressionParams(List<Parameter> parameters, ref Dictionary<int, SourceInfo> sourceTables, Expression expression, int row)
+        public static Expression GetExpressionParams(
+            List<Parameter> parameters,
+            ref Dictionary<int, SourceInfo> sourceTables,
+            Expression expression,
+            int row)
         {
             int sourceFieldIndex;
-            foreach (Parameter parameter in parameters)
+            foreach (var parameter in parameters)
             {
-                //Get the index of the named column in the source tables
+                // Get the index of the named column in the source tables
                 sourceFieldIndex = sourceTables[parameter.sourceId].SourceFields[parameter.sourceFieldName];
-                //Get the value of the column at the given row and column, then set parameter value
-                expression.Parameters[parameter.parameterId] = sourceTables[parameter.sourceId].SourceVals[row][sourceFieldIndex];
+
+                // Get the value of the column at the given row and column, then set parameter value
+                expression.Parameters[parameter.parameterId] =
+                    sourceTables[parameter.sourceId].SourceVals[row][sourceFieldIndex];
             }
+
             return expression;
         }
     }
 
     public class Parameter
     {
-        public int sourceId;
-        public string sourceFieldName;
         public string parameterId;
+
+        public string sourceFieldName;
+
+        public int sourceId;
 
         public Parameter(int sourceId, string sourceFieldName, string parameterId)
         {
@@ -91,5 +95,3 @@ namespace GTiHub.API.File_Handling
         }
     }
 }
-
-   

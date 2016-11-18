@@ -11,16 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
 var transformation_1 = require('../transformation/transformation');
-var map_1 = require('../map/map');
 var data_service_1 = require('./data.service');
 var MapAddEditService = (function () {
     function MapAddEditService(_dataService) {
         this._dataService = _dataService;
         //------------------------------Subjects-----------------------------------------//
         //Values for tracking state of a map
-        this.mapSubj = new BehaviorSubject_1.BehaviorSubject(new map_1.Map('', '', true, []));
+        this.mapsSubj = new BehaviorSubject_1.BehaviorSubject([]);
+        this.mapSubj = new BehaviorSubject_1.BehaviorSubject(null);
         this.mapTransformsSubj = new BehaviorSubject_1.BehaviorSubject([]);
         this.mapAddingOrModifyingTransSubj = new BehaviorSubject_1.BehaviorSubject(false);
+        this.addingOrModifyingMapSubj = new BehaviorSubject_1.BehaviorSubject(false);
         //Values for tracking state of a transformation 
         this.transformSubj = new BehaviorSubject_1.BehaviorSubject(new transformation_1.Transformation('', null, []));
         //Rule / rule source fields
@@ -30,29 +31,35 @@ var MapAddEditService = (function () {
         //Conditions
         this.condSeqNum = 1;
         this.conditionsSubj = new BehaviorSubject_1.BehaviorSubject([]);
+        //Get the list of maps
+        this.refreshMapsList();
     }
     //-------------------------------Methods-----------------------------------------//
     //Map methods
     MapAddEditService.prototype.getMap = function () {
         return this.mapSubj.asObservable();
     };
-    MapAddEditService.prototype.addingOrModifyingTransform = function (addingTransform) {
-        this.mapAddingOrModifyingTransSubj.next(addingTransform);
-    };
-    MapAddEditService.prototype.getAddingOrModifyingTransform = function () {
-        return this.mapAddingOrModifyingTransSubj.asObservable();
-    };
-    MapAddEditService.prototype.getMapTransforms = function () {
-        return this.mapTransformsSubj.asObservable();
-    };
-    MapAddEditService.prototype.removeMapTransform = function (transform) {
-        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el != transform; });
-        this.mapTransformsSubj.next(filtered);
-    };
     MapAddEditService.prototype.addOrUpdateMap = function () {
         var map = this.mapSubj.getValue();
         map.transformations = this.mapTransformsSubj.getValue();
         this._dataService.Add('Maps', map).subscribe(function () { }, function (error) { return console.log(error); }, function () { });
+    };
+    MapAddEditService.prototype.refreshMapsList = function () {
+        var _this = this;
+        this._dataService.GetAll('Maps').subscribe(function (maps) { return _this.mapsSubj.next(maps); }, function (error) { return console.log(error); }, function () { });
+    };
+    MapAddEditService.prototype.getMapsList = function () {
+        return this.mapsSubj.asObservable();
+    };
+    MapAddEditService.prototype.setEditMap = function (editMap) {
+        this.mapSubj.next(editMap);
+        this.getTransformsForMap(editMap.mapId);
+        this.addingOrModifyingMapSubj.next(true);
+    };
+    MapAddEditService.prototype.deleteMap = function (deleteMap) {
+    };
+    MapAddEditService.prototype.getAddingOrModifyingMap = function () {
+        return this.addingOrModifyingMapSubj.asObservable();
     };
     //Transform methods
     MapAddEditService.prototype.setTransform = function (transform) {
@@ -70,7 +77,6 @@ var MapAddEditService = (function () {
             rule.ruleSourceFields = this.ruleSourceFieldsSubj.getValue();
             transform.rule = rule;
             this.mapTransformsSubj.next(this.mapTransformsSubj.getValue().concat(this.transformSubj.getValue()));
-            this.resetTransformSubjects();
         }
         else {
         }
@@ -80,6 +86,26 @@ var MapAddEditService = (function () {
         this.ruleSubj.next(new transformation_1.Rule('', '', '', null, []));
         this.ruleSourceFieldsSubj.next([]);
         this.conditionsSubj.next([]);
+        this.addingOrModifyingTransform(false);
+    };
+    MapAddEditService.prototype.addingOrModifyingTransform = function (addingTransform) {
+        this.mapAddingOrModifyingTransSubj.next(addingTransform);
+    };
+    MapAddEditService.prototype.getAddingOrModifyingTransform = function () {
+        return this.mapAddingOrModifyingTransSubj.asObservable();
+    };
+    MapAddEditService.prototype.getMapTransforms = function () {
+        return this.mapTransformsSubj.asObservable();
+    };
+    MapAddEditService.prototype.removeMapTransform = function (transform) {
+        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el != transform; });
+        this.mapTransformsSubj.next(filtered);
+    };
+    MapAddEditService.prototype.getTransformsForMap = function (mapId) {
+        var _this = this;
+        this._dataService.GetAllWithId('Maps/GetMapTransforms', mapId).subscribe(function (transforms) {
+            _this.mapTransformsSubj.next(transforms);
+        }, function (error) { return console.log(error); }, function () { });
     };
     //Rule methods
     MapAddEditService.prototype.setRule = function (rule) {

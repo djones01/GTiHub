@@ -19,6 +19,7 @@ var data_service_1 = require('./services/data.service');
 var ng2_pagination_1 = require('ng2-pagination');
 var ng2_file_upload_1 = require('ng2-file-upload');
 var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+var ng2_datetime_picker_1 = require('ng2-datetime-picker');
 //Component imports
 var home_component_1 = require('./home/home.component');
 var about_component_1 = require('./about/about.component');
@@ -33,6 +34,7 @@ var targetfield_addedit_component_1 = require('./target/targetfield-addedit.comp
 var target_list_component_1 = require('./target/selection/target-list.component');
 var targetfield_list_component_1 = require('./target/selection/targetfield-list.component');
 var map_addedit_component_1 = require('./map/map-addedit.component');
+var map_list_component_1 = require('./map/map-list.component');
 var map_runmap_component_1 = require('./map/run-map/map-runmap.component');
 var map_fileselect_component_1 = require('./map/run-map/map-fileselect.component');
 var transform_addedit_component_1 = require('./transformation/transform-addedit.component');
@@ -54,7 +56,8 @@ var AppModule = (function () {
                 http_1.JsonpModule,
                 forms_1.FormsModule,
                 ng2_pagination_1.Ng2PaginationModule,
-                ng_bootstrap_1.NgbModule,
+                ng2_datetime_picker_1.Ng2DatetimePickerModule,
+                ng_bootstrap_1.NgbModule.forRoot(),
                 app_routes_1.routing
             ],
             declarations: [app_component_1.AppComponent,
@@ -71,6 +74,7 @@ var AppModule = (function () {
                 target_list_component_1.TargetListComponent,
                 targetfield_list_component_1.TargetFieldListComponent,
                 map_addedit_component_1.MapAddEditComponent,
+                map_list_component_1.MapListComponent,
                 map_runmap_component_1.RunMapComponent,
                 map_fileselect_component_1.MapFileSelectComponent,
                 transform_addedit_component_1.TransformAddEditComponent,

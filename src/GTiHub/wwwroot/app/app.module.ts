@@ -9,6 +9,7 @@ import { DataService } from './services/data.service';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Ng2DatetimePickerModule } from 'ng2-datetime-picker';
 
 //Component imports
 import { HomeComponent } from './home/home.component';
@@ -24,6 +25,7 @@ import { TargetFieldAddEditComponent } from './target/targetfield-addedit.compon
 import { TargetListComponent } from './target/selection/target-list.component';
 import { TargetFieldListComponent } from './target/selection/targetfield-list.component';
 import { MapAddEditComponent } from './map/map-addedit.component';
+import { MapListComponent } from './map/map-list.component';
 import { RunMapComponent } from './map/run-map/map-runmap.component';
 import { MapFileSelectComponent } from './map/run-map/map-fileselect.component';
 import { TransformAddEditComponent } from './transformation/transform-addedit.component';
@@ -44,7 +46,8 @@ import { ExtractFileNamePipe } from './pipes/extract-file-name.pipe';
         JsonpModule,
         FormsModule,
         Ng2PaginationModule,
-        NgbModule,
+        Ng2DatetimePickerModule,
+        NgbModule.forRoot(),
         routing
     ],
 
@@ -62,6 +65,7 @@ import { ExtractFileNamePipe } from './pipes/extract-file-name.pipe';
         TargetListComponent,
         TargetFieldListComponent,     
         MapAddEditComponent,
+        MapListComponent,
         RunMapComponent,
         MapFileSelectComponent,
         TransformAddEditComponent,

@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var data_service_1 = require('../services/data.service');
 var map_addedit_service_1 = require('../services/map-addedit.service');
+var source_select_service_1 = require('../services/source-select.service');
+var target_select_service_1 = require('../services/target-select.service');
 var TransformAddEditComponent = (function () {
     function TransformAddEditComponent(_dataService, mapAddEditService) {
         this._dataService = _dataService;
@@ -44,7 +46,7 @@ var TransformAddEditComponent = (function () {
         core_1.Component({
             selector: 'transform-addedit',
             templateUrl: 'app/transformation/transform-addedit.component.html',
-            providers: [data_service_1.DataService],
+            providers: [source_select_service_1.SFieldSelectService, target_select_service_1.TFieldSelectService]
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, map_addedit_service_1.MapAddEditService])
     ], TransformAddEditComponent);

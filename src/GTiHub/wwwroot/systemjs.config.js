@@ -27,6 +27,7 @@
             'ng2-file-upload': 'npm:ng2-file-upload/ng2-file-upload.js',
             'dateformat': 'npm:dateformat/lib/dateformat.js',
             '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
+            'ng2-datetime-picker': 'node_modules/ng2-datetime-picker/dist',
             'services': 'app/services'
         },
         // packages tells the System loader how to load when no filename and/or no extension
@@ -36,6 +37,10 @@
                 defaultExtension: 'js'
             },
             rxjs: {
+                defaultExtension: 'js'
+            },
+            'ng2-datetime-picker':{
+                main: 'ng2-datetime-picker.umd.js',
                 defaultExtension: 'js'
             },
             'node_modules/ng2-file-upload': {
