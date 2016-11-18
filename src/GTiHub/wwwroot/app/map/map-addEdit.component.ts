@@ -5,21 +5,20 @@ import { Transformation } from '../transformation/transformation';
 import { Map } from './map';
 import { MapAddEditService } from '../services/map-addedit.service';
 import { Subscription }   from 'rxjs/Subscription';
-import { SFieldSelectService } from '../services/source-select.service';
-import { TFieldSelectService } from '../services/target-select.service';
 
 @Component({
     selector: 'map-addedit',
-    templateUrl: 'app/map/map-addedit.component.html',
-    providers: [DataService, MapAddEditService, SFieldSelectService, TFieldSelectService],
+    templateUrl: 'app/map/map-addedit.component.html'
 })
 export class MapAddEditComponent implements OnInit, OnDestroy {
     //Map which is being added or edited
-    public map: Map;
+    map: Map;
     //List of Transformations for the map
-    public transformations: Transformation[];
+    transformations: Transformation[];
+    //Whether or not we're editing a map currently
+    editingMap: boolean;
     //Toggles whether or not to show the Transformation components
-    public addingTransform: boolean;
+    addingTransform: boolean;
     active: boolean = true;
 
     //Subscriptions for map create service
@@ -27,26 +26,38 @@ export class MapAddEditComponent implements OnInit, OnDestroy {
     addingTransformSubscription: Subscription;
     mapTransformsSubscription: Subscription;
     mapHasTransformSubscription: Subscription;
+    editingMapSubscription: Subscription; 
+
+    //Sets the transform for editing
+    editTransform(transform: Transformation) {
+        this.mapAddEditService.setTransform(transform);
+        this.mapAddEditService.addingOrModifyingTransform(true);
+    }
+
+    //Delete a transform
+
 
     //Sets the visible component to the transform add/edit component
     addNewTransform() {
-        this.mapAddEditService.addingOrModifyingTransform(true);    
+        this.mapAddEditService.addingOrModifyingTransform(true);
     }
 
     onSubmit() {
         this.mapAddEditService.addOrUpdateMap();
     }
 
-    constructor(private _dataService: DataService, private mapAddEditService: MapAddEditService) {    
+    constructor(private _dataService: DataService, private mapAddEditService: MapAddEditService) {
     }
     ngOnInit(): void {
         this.addingTransformSubscription = this.mapAddEditService.getAddingOrModifyingTransform().subscribe(addingTransform => this.addingTransform = addingTransform);
         this.mapTransformsSubscription = this.mapAddEditService.getMapTransforms().subscribe(mapTransforms => this.transformations = mapTransforms);
         this.mapSubscription = this.mapAddEditService.getMap().subscribe(map => this.map = map);
+        this.editingMapSubscription = this.mapAddEditService.getAddingOrModifyingMap().subscribe(editingMap => this.editingMap = editingMap);
     }
     ngOnDestroy(): void {
         this.addingTransformSubscription.unsubscribe();
         this.mapTransformsSubscription.unsubscribe();
         this.mapSubscription.unsubscribe();
+        this.editingMapSubscription.unsubscribe();
     }
 }
