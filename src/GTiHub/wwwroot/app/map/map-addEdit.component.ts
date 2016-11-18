@@ -26,16 +26,15 @@ export class MapAddEditComponent implements OnInit, OnDestroy {
     addingTransformSubscription: Subscription;
     mapTransformsSubscription: Subscription;
     mapHasTransformSubscription: Subscription;
-    editingMapSubscription: Subscription; 
+    editingMapSubscription: Subscription;
 
     //Sets the transform for editing
     editTransform(transform: Transformation) {
         this.mapAddEditService.addingOrModifyingTransform(true);
-        this.mapAddEditService.setTransform(transform, true);     
+        this.mapAddEditService.setTransform(transform, true);
     }
 
     //Delete a transform
-
 
     //Sets the visible component to the transform add/edit component
     addNewTransform() {

@@ -1,6 +1,6 @@
-﻿import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+﻿import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
 import { Transformation, Rule, RuleSourceField, Condition } from '../transformation/transformation';
 import { Map } from '../map/map';
 import { DataService } from './data.service';
@@ -16,7 +16,7 @@ export class MapAddEditService {
     private mapAddingOrModifyingTransSubj = new BehaviorSubject(false);
     private editingMapSubj = new BehaviorSubject(false);
 
-    //Values for tracking state of a transformation 
+    //Values for tracking state of a transformation
     private transformSubj = new BehaviorSubject(new Transformation('', null, []));
 
     //Rule / rule source fields
@@ -51,7 +51,6 @@ export class MapAddEditService {
         this.editingMapSubj.next(true);
     }
     deleteMap(deleteMap: Map) {
-
     }
     getAddingOrModifyingMap() {
         return this.editingMapSubj.asObservable();
@@ -82,7 +81,6 @@ export class MapAddEditService {
         }
         //Currently editing a transform
         else {
-
         }
     }
     resetTransformSubjects() {
@@ -102,7 +100,7 @@ export class MapAddEditService {
         return this.mapTransformsSubj.asObservable();
     }
     removeMapTransform(transform: Transformation) {
-        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el != transform });
+        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el !== transform });
         this.mapTransformsSubj.next(filtered);
     }
     getTransformsForMap(mapId: number) {
@@ -137,7 +135,7 @@ export class MapAddEditService {
         for (var i = removeIndex; i < ruleSourceFields.length; i++) {
             ruleSourceFields[i].seqNum--;
         }
-        var filtered = ruleSourceFields.filter(function (el) { return el != ruleSourceField });
+        var filtered = ruleSourceFields.filter(function (el) { return el !== ruleSourceField });
         this.ruleSourceFieldsSubj.next(filtered);
     }
 
@@ -159,7 +157,7 @@ export class MapAddEditService {
         for (var i = removeIndex; i < conditions.length; i++) {
             conditions[i].seqNum--;
         }
-        var filtered = conditions.filter(function (el) { return el != condition });
+        var filtered = conditions.filter(function (el) { return el !== condition });
         this.conditionsSubj.next(filtered);
     }
 

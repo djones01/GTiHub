@@ -1,22 +1,19 @@
 ﻿namespace GTiHub.API
 {
+    using GTiHub.API.File_Handling;
+    using GTiHub.Models.EntityModel;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+    using NCalc;
+    using Serilog;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
-    using GTiHub.API.File_Handling;
-    using GTiHub.Models.EntityModel;
-
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-
-    using NCalc;
-    using Serilog;
 
     /// <summary>
     /// Interface for TransformHelpers
@@ -262,9 +259,11 @@
                             }
 
                             break;
+
                         case "assign":
 
                             break;
+
                         case "text":
 
                             // Loop through all lines in the array corresponding to the rule field's sourcefield and set to the text values
@@ -416,7 +415,7 @@
 
                                     for (var z = 0; z < headerCount; z++) sourceFields.Add(splitline[z], z);
 
-                                    // Get the data from the file and put it in string array, start reading at altHeadRow 
+                                    // Get the data from the file and put it in string array, start reading at altHeadRow
                                     for (var i = 0; i < adjustedLineCount; i++)
                                     {
                                         splitline =
