@@ -19,8 +19,8 @@ var MapAddEditComponent = (function () {
     }
     //Sets the transform for editing
     MapAddEditComponent.prototype.editTransform = function (transform) {
-        this.mapAddEditService.setTransform(transform);
         this.mapAddEditService.addingOrModifyingTransform(true);
+        this.mapAddEditService.setTransform(transform, true);
     };
     //Delete a transform
     //Sets the visible component to the transform add/edit component

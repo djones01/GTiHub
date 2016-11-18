@@ -14,11 +14,11 @@ export class MapAddEditService {
     private mapSubj = new BehaviorSubject(null);
     private mapTransformsSubj = new BehaviorSubject<Array<Transformation>>([]);
     private mapAddingOrModifyingTransSubj = new BehaviorSubject(false);
-    private addingOrModifyingMapSubj = new BehaviorSubject(false);
+    private editingMapSubj = new BehaviorSubject(false);
 
     //Values for tracking state of a transformation 
-    private transformSubj = new BehaviorSubject(new Transformation('',null,[]));
-    
+    private transformSubj = new BehaviorSubject(new Transformation('', null, []));
+
     //Rule / rule source fields
     rsfSeqNum = 1;
     private ruleSubj = new BehaviorSubject(new Rule('', '', '', null, []));
@@ -33,11 +33,11 @@ export class MapAddEditService {
     //Map methods
     getMap() {
         return this.mapSubj.asObservable();
-    } 
+    }
     addOrUpdateMap() {
         var map = this.mapSubj.getValue();
         map.transformations = this.mapTransformsSubj.getValue();
-        this._dataService.Add('Maps', map).subscribe(() => { }, error => console.log(error), ()=> { });
+        this._dataService.Add('Maps', map).subscribe(() => { }, error => console.log(error), () => { });
     }
     refreshMapsList() {
         this._dataService.GetAll('Maps').subscribe(maps => this.mapsSubj.next(maps), error => console.log(error), () => { });
@@ -48,18 +48,24 @@ export class MapAddEditService {
     setEditMap(editMap: Map) {
         this.mapSubj.next(editMap);
         this.getTransformsForMap(editMap.mapId);
-        this.addingOrModifyingMapSubj.next(true);
+        this.editingMapSubj.next(true);
     }
     deleteMap(deleteMap: Map) {
 
     }
     getAddingOrModifyingMap() {
-        return this.addingOrModifyingMapSubj.asObservable();
+        return this.editingMapSubj.asObservable();
     }
 
     //Transform methods
-    setTransform(transform: Transformation) {
-        this.transformSubj.next(transform);
+    setTransform(transform: Transformation, editing: boolean) {
+        if (editing) {
+            //Load Rule and Condition data for the transform to be edited
+            this.transformSubj.next(transform);
+        }
+        else {
+            this.transformSubj.next(new Transformation('', null, []));
+        }
     }
     getTransform() {
         return this.transformSubj.asObservable();
@@ -144,7 +150,7 @@ export class MapAddEditService {
     }
     addCondition() {
         //Use concat here since push would return the length of the array post push
-        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new Condition(this.condSeqNum++,'', '', '', '', '', null)));
+        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new Condition(this.condSeqNum++, '', '', '', '', '', null)));
     }
     removeCondition(condition: Condition) {
         //Use filter in order to return list

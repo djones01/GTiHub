@@ -30,8 +30,8 @@ export class MapAddEditComponent implements OnInit, OnDestroy {
 
     //Sets the transform for editing
     editTransform(transform: Transformation) {
-        this.mapAddEditService.setTransform(transform);
         this.mapAddEditService.addingOrModifyingTransform(true);
+        this.mapAddEditService.setTransform(transform, true);     
     }
 
     //Delete a transform

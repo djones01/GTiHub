@@ -21,7 +21,7 @@ var MapAddEditService = (function () {
         this.mapSubj = new BehaviorSubject_1.BehaviorSubject(null);
         this.mapTransformsSubj = new BehaviorSubject_1.BehaviorSubject([]);
         this.mapAddingOrModifyingTransSubj = new BehaviorSubject_1.BehaviorSubject(false);
-        this.addingOrModifyingMapSubj = new BehaviorSubject_1.BehaviorSubject(false);
+        this.editingMapSubj = new BehaviorSubject_1.BehaviorSubject(false);
         //Values for tracking state of a transformation 
         this.transformSubj = new BehaviorSubject_1.BehaviorSubject(new transformation_1.Transformation('', null, []));
         //Rule / rule source fields
@@ -54,16 +54,22 @@ var MapAddEditService = (function () {
     MapAddEditService.prototype.setEditMap = function (editMap) {
         this.mapSubj.next(editMap);
         this.getTransformsForMap(editMap.mapId);
-        this.addingOrModifyingMapSubj.next(true);
+        this.editingMapSubj.next(true);
     };
     MapAddEditService.prototype.deleteMap = function (deleteMap) {
     };
     MapAddEditService.prototype.getAddingOrModifyingMap = function () {
-        return this.addingOrModifyingMapSubj.asObservable();
+        return this.editingMapSubj.asObservable();
     };
     //Transform methods
-    MapAddEditService.prototype.setTransform = function (transform) {
-        this.transformSubj.next(transform);
+    MapAddEditService.prototype.setTransform = function (transform, editing) {
+        if (editing) {
+            //Load Rule and Condition data for the transform to be edited
+            this.transformSubj.next(transform);
+        }
+        else {
+            this.transformSubj.next(new transformation_1.Transformation('', null, []));
+        }
     };
     MapAddEditService.prototype.getTransform = function () {
         return this.transformSubj.asObservable();
