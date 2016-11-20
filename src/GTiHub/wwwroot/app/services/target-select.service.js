@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
-var data_service_1 = require('./data.service');
+var core_1 = require("@angular/core");
+var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+var data_service_1 = require("./data.service");
 var TFieldSelectService = (function () {
     function TFieldSelectService(_dataService) {
         this._dataService = _dataService;
@@ -27,7 +27,7 @@ var TFieldSelectService = (function () {
         this.selectedTargetSubj.next(target);
         this.hasSelectedTargetSubj.next(true);
         //Set the available target fields
-        this._dataService.GetAllWithId('Targets/GetTargetFieldsByTarget', this.selectedTargetSubj.getValue()["targetId"])
+        this._dataService.GetAllWithId("Targets/GetTargetFieldsByTarget", this.selectedTargetSubj.getValue()["targetId"])
             .subscribe(function (targetFields) {
             _this.filteredTargetFieldsSubj.next(targetFields);
         });
@@ -51,7 +51,8 @@ var TFieldSelectService = (function () {
     };
     TFieldSelectService.prototype.initTargets = function () {
         var _this = this;
-        this._dataService.GetAll('Targets').subscribe(function (targets) { return _this.targetsSubj.next(targets); }, function (error) { return console.log(error); });
+        this._dataService.GetAll("Targets")
+            .subscribe(function (targets) { return _this.targetsSubj.next(targets); }, function (error) { return console.log(error); });
     };
     //Targetfield methods
     TFieldSelectService.prototype.setSelectedTargetField = function (targetField) {

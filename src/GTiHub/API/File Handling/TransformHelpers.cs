@@ -1,19 +1,27 @@
 ﻿namespace GTiHub.API
 {
-    using GTiHub.API.File_Handling;
-    using GTiHub.Models.EntityModel;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using NCalc;
-    using Serilog;
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    using GTiHub.API.File_Handling;
+    using GTiHub.Models.EntityModel;
+
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Logging;
+
+    using NCalc;
+
+    using Serilog;
+
+    #endregion
 
     /// <summary>
     /// Interface for TransformHelpers
@@ -83,7 +91,10 @@
 
         private readonly ILogger<TransformHelpers> _logger;
 
-        public TransformHelpers(GTiHubContext _dbContext, ILogger<TransformHelpers> _logger, IHostingEnvironment _hostingEnvironment)
+        public TransformHelpers(
+            GTiHubContext _dbContext,
+            ILogger<TransformHelpers> _logger,
+            IHostingEnvironment _hostingEnvironment)
         {
             this._dbContext = _dbContext;
             this._logger = _logger;
@@ -329,10 +340,10 @@
             return
                 this._dbContext.Transformations.Where(x => x.MapId == mapId)
                     .Include(transform => transform.Conditions)
-                        .ThenInclude(condition => condition.SourceField)
+                    .ThenInclude(condition => condition.SourceField)
                     .Include(transform => transform.Rule.TargetField.Target)
                     .Include(transform => transform.Rule.RuleSourceFields)
-                        .ThenInclude(ruleSourceField => ruleSourceField.SourceField)
+                    .ThenInclude(ruleSourceField => ruleSourceField.SourceField)
                     .ToList();
         }
 

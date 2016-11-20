@@ -8,17 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
 var ProjectAddEditComponent = (function () {
     function ProjectAddEditComponent(_dataService) {
         this._dataService = _dataService;
     }
     ProjectAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'project-addedit',
+            selector: "project-addedit",
             providers: [data_service_1.DataService],
-            templateUrl: 'app/components/project/project-addedit.component.html'
+            templateUrl: "app/components/project/project-addedit.component.html"
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService])
     ], ProjectAddEditComponent);

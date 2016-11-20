@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
-var data_service_1 = require('./data.service');
+var core_1 = require("@angular/core");
+var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+var data_service_1 = require("./data.service");
 var SFieldSelectService = (function () {
     function SFieldSelectService(_dataService) {
         this._dataService = _dataService;
@@ -27,7 +27,7 @@ var SFieldSelectService = (function () {
         this.selectedSourceSubj.next(source);
         this.hasSelectedSourceSubj.next(true);
         //Set the available source fields
-        this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', this.selectedSourceSubj.getValue()["sourceId"])
+        this._dataService.GetAllWithId("Sources/GetSourceFieldsBySource", this.selectedSourceSubj.getValue()["sourceId"])
             .subscribe(function (sourceFields) {
             _this.filteredSourceFieldsSubj.next(sourceFields);
         });
@@ -51,7 +51,8 @@ var SFieldSelectService = (function () {
     };
     SFieldSelectService.prototype.initSources = function () {
         var _this = this;
-        this._dataService.GetAll('Sources').subscribe(function (sources) { return _this.sourcesSubj.next(sources); }, function (error) { return console.log(error); });
+        this._dataService.GetAll("Sources")
+            .subscribe(function (sources) { return _this.sourcesSubj.next(sources); }, function (error) { return console.log(error); });
     };
     //Sourcefield methods
     SFieldSelectService.prototype.setSelectedSourceField = function (sourceField) {

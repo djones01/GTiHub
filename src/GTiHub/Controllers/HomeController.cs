@@ -1,17 +1,21 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace GTiHub.Controllers
 {
+    #region
+
+    using Microsoft.AspNetCore.Mvc;
+
+    #endregion
+
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public IActionResult Source()
         {
-            return View("Sources");
+            return this.View("Sources");
         }
     }
 }

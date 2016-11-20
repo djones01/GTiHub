@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var DateFormatComponent = (function () {
     function DateFormatComponent() {
         //Fields for date
@@ -24,7 +24,8 @@ var DateFormatComponent = (function () {
         ];
         this.dateOptions = [
             {
-                label: "Day", options: [
+                label: "Day",
+                options: [
                     { value: "d", display: "Day: 1 - 31" },
                     { value: "dd", display: "Day: 01 - 31" },
                     { value: "ddd", display: "Day: Mon" },
@@ -32,7 +33,8 @@ var DateFormatComponent = (function () {
                 ]
             },
             {
-                label: "Month", options: [
+                label: "Month",
+                options: [
                     { value: "M", display: "Month: 1 - 12" },
                     { value: "MM", display: "Month: 01 - 12" },
                     { value: "MMM", display: "Month: Jun" },
@@ -40,18 +42,20 @@ var DateFormatComponent = (function () {
                 ]
             },
             {
-                label: "Year", options: [
+                label: "Year",
+                options: [
                     { value: "yy", display: "Year: 00 - 99" },
                     { value: "yyyy", display: "Year: 1900" }
                 ]
-            }];
+            }
+        ];
     }
     DateFormatComponent.prototype.deleteDatePart = function (i) {
         this.dateParts.splice(i, 1);
         this.modifyDatePattern();
     };
     DateFormatComponent.prototype.addDatePart = function () {
-        this.dateParts.push(new DatePart('', ''));
+        this.dateParts.push(new DatePart("", ""));
     };
     DateFormatComponent.prototype.modifyDatePattern = function () {
         this.datePattern = "";
@@ -59,7 +63,7 @@ var DateFormatComponent = (function () {
         for (var i = 0; i < this.dateParts.length; i++) {
             this.datePattern += this.dateParts[i].value;
         }
-        var dateFormat = require('dateformat');
+        var dateFormat = require("dateformat");
         this.dateExamplePattern = dateFormat(new Date(), this.datePattern);
         var timestamp = Date.parse(this.dateExamplePattern);
         if (isNaN(timestamp) == false) {
@@ -74,8 +78,8 @@ var DateFormatComponent = (function () {
     DateFormatComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'date-format',
-            templateUrl: 'date-format.component.html'
+            selector: "date-format",
+            templateUrl: "date-format.component.html"
         }), 
         __metadata('design:paramtypes', [])
     ], DateFormatComponent);

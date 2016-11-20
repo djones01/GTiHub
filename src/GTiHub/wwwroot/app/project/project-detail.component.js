@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
 var ProjectDetailComponent = (function () {
     function ProjectDetailComponent(_dataService) {
         this._dataService = _dataService;
@@ -17,15 +17,15 @@ var ProjectDetailComponent = (function () {
     }
     ProjectDetailComponent.prototype.getProjects = function () {
         var _this = this;
-        this._dataService.GetAll('Projects').subscribe(function (projects) { return _this.projects = projects; });
+        this._dataService.GetAll("Projects").subscribe(function (projects) { return _this.projects = projects; });
     };
     ProjectDetailComponent.prototype.ngOnInit = function () {
         this.getProjects();
     };
     ProjectDetailComponent = __decorate([
         core_1.Component({
-            selector: 'project-detail',
-            templateUrl: 'app/project/project-detail.component.html',
+            selector: "project-detail",
+            templateUrl: "app/project/project-detail.component.html",
             providers: [data_service_1.DataService]
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService])

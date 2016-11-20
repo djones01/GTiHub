@@ -1,9 +1,9 @@
 ﻿import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
-import { Transformation, Rule, RuleSourceField, Condition } from '../transformation/transformation';
-import { Map } from '../map/map';
-import { DataService } from './data.service';
+import { Transformation, Rule, RuleSourceField, Condition } from "../transformation/transformation";
+import { Map } from "../map/map";
+import { DataService } from "./data.service";
 
 @Injectable()
 export class MapAddEditService {
@@ -17,11 +17,11 @@ export class MapAddEditService {
     private editingMapSubj = new BehaviorSubject(false);
 
     //Values for tracking state of a transformation
-    private transformSubj = new BehaviorSubject(new Transformation('', null, []));
+    private transformSubj = new BehaviorSubject(new Transformation("", null, []));
 
     //Rule / rule source fields
     rsfSeqNum = 1;
-    private ruleSubj = new BehaviorSubject(new Rule('', '', '', null, []));
+    private ruleSubj = new BehaviorSubject(new Rule("", "", "", null, []));
     private ruleSourceFieldsSubj = new BehaviorSubject<Array<RuleSourceField>>([]);
 
     //Conditions
@@ -34,24 +34,31 @@ export class MapAddEditService {
     getMap() {
         return this.mapSubj.asObservable();
     }
+
     addOrUpdateMap() {
-        var map = this.mapSubj.getValue();
+        const map = this.mapSubj.getValue();
         map.transformations = this.mapTransformsSubj.getValue();
-        this._dataService.Add('Maps', map).subscribe(() => { }, error => console.log(error), () => { });
+        this._dataService.Add("Maps", map).subscribe(() => {}, error => console.log(error), () => {});
     }
+
     refreshMapsList() {
-        this._dataService.GetAll('Maps').subscribe(maps => this.mapsSubj.next(maps), error => console.log(error), () => { });
+        this._dataService.GetAll("Maps")
+            .subscribe(maps => this.mapsSubj.next(maps), error => console.log(error), () => {});
     }
+
     getMapsList() {
         return this.mapsSubj.asObservable();
     }
+
     setEditMap(editMap: Map) {
         this.mapSubj.next(editMap);
         this.getTransformsForMap(editMap.mapId);
         this.editingMapSubj.next(true);
     }
+
     deleteMap(deleteMap: Map) {
     }
+
     getAddingOrModifyingMap() {
         return this.editingMapSubj.asObservable();
     }
@@ -61,20 +68,21 @@ export class MapAddEditService {
         if (editing) {
             //Load Rule and Condition data for the transform to be edited
             this.transformSubj.next(transform);
-        }
-        else {
-            this.transformSubj.next(new Transformation('', null, []));
+        } else {
+            this.transformSubj.next(new Transformation("", null, []));
         }
     }
+
     getTransform() {
         return this.transformSubj.asObservable();
     }
+
     createOrUpdateTransform() {
         //Currently adding a transform
         if (this.mapAddingOrModifyingTransSubj.getValue()) {
-            var transform = this.transformSubj.getValue();
+            const transform = this.transformSubj.getValue();
             transform.conditions = this.conditionsSubj.getValue();
-            var rule = this.ruleSubj.getValue();
+            const rule = this.ruleSubj.getValue();
             rule.ruleSourceFields = this.ruleSourceFieldsSubj.getValue();
             transform.rule = rule;
             this.mapTransformsSubj.next(this.mapTransformsSubj.getValue().concat(this.transformSubj.getValue()));
@@ -83,36 +91,46 @@ export class MapAddEditService {
         else {
         }
     }
+
     resetTransformSubjects() {
-        this.transformSubj.next(new Transformation('', null, []));
-        this.ruleSubj.next(new Rule('', '', '', null, []));
+        this.transformSubj.next(new Transformation("", null, []));
+        this.ruleSubj.next(new Rule("", "", "", null, []));
         this.ruleSourceFieldsSubj.next([]);
         this.conditionsSubj.next([]);
         this.addingOrModifyingTransform(false);
     }
+
     addingOrModifyingTransform(addingTransform: boolean) {
         this.mapAddingOrModifyingTransSubj.next(addingTransform);
     }
+
     getAddingOrModifyingTransform() {
         return this.mapAddingOrModifyingTransSubj.asObservable();
     }
+
     getMapTransforms() {
         return this.mapTransformsSubj.asObservable();
     }
+
     removeMapTransform(transform: Transformation) {
-        var filtered = this.mapTransformsSubj.getValue().filter(function (el) { return el !== transform });
+        const filtered = this.mapTransformsSubj.getValue().filter(function(el) { return el !== transform });
         this.mapTransformsSubj.next(filtered);
     }
+
     getTransformsForMap(mapId: number) {
-        this._dataService.GetAllWithId('Maps/GetMapTransforms', mapId).subscribe(transforms => {
-            this.mapTransformsSubj.next(transforms)
-        }, error => console.log(error), () => { });
+        this._dataService.GetAllWithId("Maps/GetMapTransforms", mapId)
+            .subscribe(transforms => {
+                    this.mapTransformsSubj.next(transforms);
+                },
+                error => console.log(error),
+                () => {});
     }
 
     //Rule methods
     setRule(rule: Rule) {
         this.ruleSubj.next(rule);
     }
+
     getRule() {
         return this.ruleSubj.asObservable();
     }
@@ -121,21 +139,25 @@ export class MapAddEditService {
     setRuleSourceFields(ruleSourceFields: RuleSourceField[]) {
         this.ruleSourceFieldsSubj.next(ruleSourceFields);
     }
+
     getRuleSourceFields() {
         return this.ruleSourceFieldsSubj.asObservable();
     }
+
     addRuleSourceField() {
         //Use concat here since push would return the length of the array post push
-        this.ruleSourceFieldsSubj.next(this.ruleSourceFieldsSubj.getValue().concat(new RuleSourceField(this.rsfSeqNum++, '', '', '', null)));
+        this.ruleSourceFieldsSubj.next(this.ruleSourceFieldsSubj.getValue()
+            .concat(new RuleSourceField(this.rsfSeqNum++, "", "", "", null)));
     }
+
     removeRuleSourceField(ruleSourceField: RuleSourceField) {
         //Use filter in order to return list
-        var ruleSourceFields = this.ruleSourceFieldsSubj.getValue();
-        var removeIndex = ruleSourceFields.indexOf(ruleSourceField);
-        for (var i = removeIndex; i < ruleSourceFields.length; i++) {
+        const ruleSourceFields = this.ruleSourceFieldsSubj.getValue();
+        const removeIndex = ruleSourceFields.indexOf(ruleSourceField);
+        for (let i = removeIndex; i < ruleSourceFields.length; i++) {
             ruleSourceFields[i].seqNum--;
         }
-        var filtered = ruleSourceFields.filter(function (el) { return el !== ruleSourceField });
+        const filtered = ruleSourceFields.filter(function(el) { return el !== ruleSourceField });
         this.ruleSourceFieldsSubj.next(filtered);
     }
 
@@ -143,21 +165,25 @@ export class MapAddEditService {
     setConditions(conditions: Condition[]) {
         this.conditionsSubj.next(conditions);
     }
+
     getConditions() {
         return this.conditionsSubj.asObservable();
     }
+
     addCondition() {
         //Use concat here since push would return the length of the array post push
-        this.conditionsSubj.next(this.conditionsSubj.getValue().concat(new Condition(this.condSeqNum++, '', '', '', '', '', null)));
+        this.conditionsSubj.next(this.conditionsSubj.getValue()
+            .concat(new Condition(this.condSeqNum++, "", "", "", "", "", null)));
     }
+
     removeCondition(condition: Condition) {
         //Use filter in order to return list
-        var conditions = this.conditionsSubj.getValue();
-        var removeIndex = conditions.indexOf(condition);
-        for (var i = removeIndex; i < conditions.length; i++) {
+        const conditions = this.conditionsSubj.getValue();
+        const removeIndex = conditions.indexOf(condition);
+        for (let i = removeIndex; i < conditions.length; i++) {
             conditions[i].seqNum--;
         }
-        var filtered = conditions.filter(function (el) { return el !== condition });
+        const filtered = conditions.filter(function(el) { return el !== condition });
         this.conditionsSubj.next(filtered);
     }
 

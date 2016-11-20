@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../../services/data.service');
-var target_select_service_1 = require('../../services/target-select.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../../services/data.service");
+var target_select_service_1 = require("../../services/target-select.service");
 var TargetListComponent = (function () {
     function TargetListComponent(_dataService, selectService) {
         this._dataService = _dataService;
@@ -22,7 +22,8 @@ var TargetListComponent = (function () {
     };
     TargetListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.selectedSubscription = this.selectService.getSelectedTarget().subscribe(function (selectedTarget) { _this.selectedTarget = selectedTarget; });
+        this.selectedSubscription = this.selectService.getSelectedTarget()
+            .subscribe(function (selectedTarget) { _this.selectedTarget = selectedTarget; });
         this.targetsSubscription = this.selectService.getTargets().subscribe(function (targets) { return _this.targets = targets; });
         this.selectService.initTargets();
     };
@@ -32,8 +33,8 @@ var TargetListComponent = (function () {
     };
     TargetListComponent = __decorate([
         core_1.Component({
-            selector: 'target-list',
-            templateUrl: 'app/target/selection/target-list.component.html',
+            selector: "target-list",
+            templateUrl: "app/target/selection/target-list.component.html",
             providers: [data_service_1.DataService],
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, target_select_service_1.TFieldSelectService])

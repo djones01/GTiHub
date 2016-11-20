@@ -8,16 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
-var data_service_1 = require('./data.service');
-var target_1 = require('../target/target');
+var core_1 = require("@angular/core");
+var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+var data_service_1 = require("./data.service");
+var target_1 = require("../target/target");
 var TargetAddEditService = (function () {
     function TargetAddEditService(_dataService) {
         this._dataService = _dataService;
         this.seqNumCount = 1;
         //Values for tracking state of Target
-        this.targetSubj = new BehaviorSubject_1.BehaviorSubject(new target_1.Target('', '', '', true, null));
+        this.targetSubj = new BehaviorSubject_1.BehaviorSubject(new target_1.Target("", "", "", true, null));
         //Values for tracking state of Target targetfields
         this.targetFieldsSubj = new BehaviorSubject_1.BehaviorSubject([]);
         this.hasTargetFieldsSubj = new BehaviorSubject_1.BehaviorSubject(false);
@@ -26,7 +26,7 @@ var TargetAddEditService = (function () {
     TargetAddEditService.prototype.createOrUpdateTarget = function () {
         var target = this.targetSubj.getValue();
         target.targetFields = this.targetFieldsSubj.getValue();
-        this._dataService.Add('Targets', target).subscribe(function (target) { }, function (error) { return console.log(error); });
+        this._dataService.Add("Targets", target).subscribe(function (target) { }, function (error) { return console.log(error); });
     };
     TargetAddEditService.prototype.setTarget = function (target) {
         this.targetSubj.next(target);
@@ -57,7 +57,8 @@ var TargetAddEditService = (function () {
     };
     TargetAddEditService.prototype.addNewTargetField = function () {
         //Use concat here since push would return the length of the array post push
-        this.targetFieldsSubj.next(this.targetFieldsSubj.getValue().concat(new target_1.TargetField('N/A', 'text', true, this.seqNumCount++)));
+        this.targetFieldsSubj.next(this.targetFieldsSubj.getValue()
+            .concat(new target_1.TargetField("N/A", "text", true, this.seqNumCount++)));
         this.setHasTargetFields();
     };
     TargetAddEditService.prototype.removeTargetField = function (targetField, i) {
@@ -91,7 +92,7 @@ var TargetAddEditService = (function () {
         return this.hasTargetFieldsSubj.asObservable();
     };
     TargetAddEditService.prototype.clear = function () {
-        this.targetSubj.next(new target_1.Target('', '', '', true, null));
+        this.targetSubj.next(new target_1.Target("", "", "", true, null));
         this.targetFieldsSubj.next([]);
         this.hasTargetFieldsSubj.next(false);
     };

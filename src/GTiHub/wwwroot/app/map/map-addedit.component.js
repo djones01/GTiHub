@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
-var map_addedit_service_1 = require('../services/map-addedit.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
+var map_addedit_service_1 = require("../services/map-addedit.service");
 var MapAddEditComponent = (function () {
     function MapAddEditComponent(_dataService, mapAddEditService) {
         this._dataService = _dataService;
@@ -32,10 +32,13 @@ var MapAddEditComponent = (function () {
     };
     MapAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.addingTransformSubscription = this.mapAddEditService.getAddingOrModifyingTransform().subscribe(function (addingTransform) { return _this.addingTransform = addingTransform; });
-        this.mapTransformsSubscription = this.mapAddEditService.getMapTransforms().subscribe(function (mapTransforms) { return _this.transformations = mapTransforms; });
+        this.addingTransformSubscription = this.mapAddEditService.getAddingOrModifyingTransform()
+            .subscribe(function (addingTransform) { return _this.addingTransform = addingTransform; });
+        this.mapTransformsSubscription = this.mapAddEditService.getMapTransforms()
+            .subscribe(function (mapTransforms) { return _this.transformations = mapTransforms; });
         this.mapSubscription = this.mapAddEditService.getMap().subscribe(function (map) { return _this.map = map; });
-        this.editingMapSubscription = this.mapAddEditService.getAddingOrModifyingMap().subscribe(function (editingMap) { return _this.editingMap = editingMap; });
+        this.editingMapSubscription = this.mapAddEditService.getAddingOrModifyingMap()
+            .subscribe(function (editingMap) { return _this.editingMap = editingMap; });
     };
     MapAddEditComponent.prototype.ngOnDestroy = function () {
         this.addingTransformSubscription.unsubscribe();
@@ -45,8 +48,8 @@ var MapAddEditComponent = (function () {
     };
     MapAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'map-addedit',
-            templateUrl: 'app/map/map-addedit.component.html'
+            selector: "map-addedit",
+            templateUrl: "app/map/map-addedit.component.html"
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, map_addedit_service_1.MapAddEditService])
     ], MapAddEditComponent);

@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
-var map_addedit_service_1 = require('../services/map-addedit.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
+var map_addedit_service_1 = require("../services/map-addedit.service");
 var MapListComponent = (function () {
     function MapListComponent(mapAddEditService) {
         this.mapAddEditService = mapAddEditService;
@@ -24,10 +24,12 @@ var MapListComponent = (function () {
     };
     MapListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.mapsSubscription = this.mapAddEditService.getMapsList().subscribe(function (maps) {
+        this.mapsSubscription = this.mapAddEditService.getMapsList()
+            .subscribe(function (maps) {
             _this.maps = maps;
         });
-        this.editingMapSubscription = this.mapAddEditService.getAddingOrModifyingMap().subscribe(function (editingMap) { return _this.editingMap = editingMap; });
+        this.editingMapSubscription = this.mapAddEditService.getAddingOrModifyingMap()
+            .subscribe(function (editingMap) { return _this.editingMap = editingMap; });
     };
     MapListComponent.prototype.ngOnDestroy = function () {
         this.mapsSubscription.unsubscribe();
@@ -35,8 +37,8 @@ var MapListComponent = (function () {
     };
     MapListComponent = __decorate([
         core_1.Component({
-            selector: 'map-list',
-            templateUrl: 'app/map/map-list.component.html',
+            selector: "map-list",
+            templateUrl: "app/map/map-list.component.html",
             providers: [data_service_1.DataService, map_addedit_service_1.MapAddEditService]
         }), 
         __metadata('design:paramtypes', [map_addedit_service_1.MapAddEditService])

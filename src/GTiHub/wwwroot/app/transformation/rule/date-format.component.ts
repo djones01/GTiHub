@@ -1,16 +1,16 @@
-﻿import { Component, OnInit, OnChanges, Input, Output } from '@angular/core';
+﻿import { Component, OnInit, OnChanges, Input, Output } from "@angular/core";
 
 @Component({
     moduleId: module.id,
-    selector: 'date-format',
-    templateUrl: 'date-format.component.html'
+    selector: "date-format",
+    templateUrl: "date-format.component.html"
 })
 export class DateFormatComponent implements OnInit {
     //Fields for date
     dateParts: DatePart[] = [];
-    datePattern: string = "";
-    dateExamplePattern: string = "";
-    hasValidFormat: boolean = false;
+    datePattern = "";
+    dateExamplePattern = "";
+    hasValidFormat = false;
 
     presetOpts = [
         { value: "dd/MM/yyyy", display: "dd/MM/yyyy" },
@@ -21,7 +21,8 @@ export class DateFormatComponent implements OnInit {
 
     dateOptions = [
         {
-            label: "Day", options: [
+            label: "Day",
+            options: [
                 { value: "d", display: "Day: 1 - 31" },
                 { value: "dd", display: "Day: 01 - 31" },
                 { value: "ddd", display: "Day: Mon" },
@@ -29,20 +30,22 @@ export class DateFormatComponent implements OnInit {
             ]
         },
         {
-            label: "Month", options: [
+            label: "Month",
+            options: [
                 { value: "M", display: "Month: 1 - 12" },
                 { value: "MM", display: "Month: 01 - 12" },
                 { value: "MMM", display: "Month: Jun" },
                 { value: "MMMM", display: "Month: June" }
-
             ]
         },
         {
-            label: "Year", options: [
+            label: "Year",
+            options: [
                 { value: "yy", display: "Year: 00 - 99" },
                 { value: "yyyy", display: "Year: 1900" }
             ]
-        }];
+        }
+    ];
 
     deleteDatePart(i: number) {
         this.dateParts.splice(i, 1);
@@ -50,33 +53,33 @@ export class DateFormatComponent implements OnInit {
     }
 
     addDatePart() {
-        this.dateParts.push(new DatePart('', ''));
+        this.dateParts.push(new DatePart("", ""));
     }
 
     modifyDatePattern() {
         this.datePattern = "";
         //Create the date pattern from the date parts
-        for (var i = 0; i < this.dateParts.length; i++) {
+        for (let i = 0; i < this.dateParts.length; i++) {
             this.datePattern += this.dateParts[i].value;
         }
-        var dateFormat = require('dateformat');
+        const dateFormat = require("dateformat");
         this.dateExamplePattern = dateFormat(new Date(), this.datePattern);
-        var timestamp = Date.parse(this.dateExamplePattern);
+        const timestamp = Date.parse(this.dateExamplePattern);
         if (isNaN(timestamp) == false) {
             this.hasValidFormat = true;
-        }
-        else {
-            this.dateExamplePattern = "Invalid Format"
+        } else {
+            this.dateExamplePattern = "Invalid Format";
             this.hasValidFormat = false;
         }
     }
 
-    ngOnInit() { }
+    ngOnInit() {}
 }
 
 class DatePart {
     constructor(
         public type: string,
         public value: string
-    ) { }
+    ) {
+    }
 }

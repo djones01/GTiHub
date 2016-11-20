@@ -2,10 +2,11 @@
     constructor(
         public name: string,
         public description: string,
-        public effective_Date: string,     
+        public effective_Date: string,
         public active: boolean,
-        public sourceFields: SourceField[]    
-    ) { }
+        public sourceFields: SourceField[]
+    ) {
+    }
 }
 
 export class SourceField {
@@ -14,5 +15,6 @@ export class SourceField {
         public datatype: string,
         public active: boolean,
         public seqNum: number
-    ) { }
+    ) {
+    }
 }

@@ -8,33 +8,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-var Rx_1 = require('rxjs/Rx');
-var app_constants_1 = require('../app.constants');
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+var Rx_1 = require("rxjs/Rx");
+var app_constants_1 = require("../app.constants");
 var DataService = (function () {
     function DataService(_http, _configuration) {
         this._http = _http;
         this._configuration = _configuration;
         this.actionUrl = _configuration.ApiUrl;
         this.headers = new http_1.Headers();
-        this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Accept', 'application/json');
+        this.headers.append("Content-Type", "application/json");
+        this.headers.append("Accept", "application/json");
     }
     DataService.prototype.GetAll = function (action) {
         return this._http.get(this.actionUrl + action)
             .map(function (res) { return res.json(); })
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || "Server Error"); });
     };
     DataService.prototype.GetAllWithId = function (action, id) {
-        return this._http.get(this.actionUrl + action + '/' + id)
+        return this._http.get(this.actionUrl + action + "/" + id)
             .map(function (res) { return res.json(); })
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || "Server Error"); });
     };
     DataService.prototype.GetSingle = function (action, id) {
-        return this._http.get(this.actionUrl + action + '/' + id)
+        return this._http.get(this.actionUrl + action + "/" + id)
             .map(function (res) { return res.json(); })
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || "Server Error"); });
     };
     DataService.prototype.Add = function (action, itemToAdd) {
         return this._http.post(this.actionUrl + action, JSON.stringify(itemToAdd), { headers: this.headers })
@@ -43,21 +43,22 @@ var DataService = (function () {
     };
     DataService.prototype.Update = function (action, id, itemToUpdate) {
         return this._http
-            .put(this.actionUrl + action + '/' + id, JSON.stringify(itemToUpdate), { headers: this.headers })
+            .put(this.actionUrl + action + "/" + id, JSON.stringify(itemToUpdate), { headers: this.headers })
             .map(function (res) { return res.json(); })
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || "Server Error"); });
     };
     DataService.prototype.Delete = function (action, id) {
-        return this._http.delete(this.actionUrl + action + '/' + id)
-            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || 'Server Error'); });
+        return this._http.delete(this.actionUrl + action + "/" + id)
+            .catch(function (error) { return Rx_1.Observable.throw(error.json().error || "Server Error"); });
     };
     DataService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
     DataService.prototype.handleError = function (error) {
-        var errMsg = (error.message) ? error.message :
-            error.status ? error.status + " - " + error.statusText : 'Server error';
+        var errMsg = (error.message)
+            ? error.message
+            : error.status ? error.status + " - " + error.statusText : "Server error";
         console.error(errMsg); // log to console instead
         return Rx_1.Observable.throw(errMsg);
     };

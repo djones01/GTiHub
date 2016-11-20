@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
-var source_addedit_service_1 = require('../services/source-addedit.service');
-var source_select_service_1 = require('../services/source-select.service');
-var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
-var ng2_file_upload_1 = require('ng2-file-upload');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
+var source_addedit_service_1 = require("../services/source-addedit.service");
+var source_select_service_1 = require("../services/source-select.service");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
+var ng2_file_upload_1 = require("ng2-file-upload");
 var SourceAddEditComponent = (function () {
     function SourceAddEditComponent(_dataService, modalService, sourceAddEditService, selectService) {
         var _this = this;
@@ -31,7 +31,7 @@ var SourceAddEditComponent = (function () {
         this.sfieldCount = 0;
         this.hasSourceFields = false;
         this.hasSelectedSource = true;
-        this.uploader = new ng2_file_upload_1.FileUploader({ url: 'api/File/ExtractHeaders' });
+        this.uploader = new ng2_file_upload_1.FileUploader({ url: "api/File/ExtractHeaders" });
         this.uploader.onCompleteItem = function (item, response, status, headers) {
             var res = JSON.parse(response);
             _this.sourceAddEditService.setSourceFields(res);
@@ -52,7 +52,7 @@ var SourceAddEditComponent = (function () {
             form.append("delimiter", _this.delimiter);
         };
         this.uploader.uploadAll();
-        this.delimiter = '';
+        this.delimiter = "";
     };
     SourceAddEditComponent.prototype.newSource = function () {
         var _this = this;
@@ -63,11 +63,12 @@ var SourceAddEditComponent = (function () {
     //Modal Functions
     SourceAddEditComponent.prototype.openSourceSelect = function (content) {
         var _this = this;
-        this.modalService.open(content, { size: 'lg' }).result.then(function (result) {
+        this.modalService.open(content, { size: "lg" })
+            .result.then(function (result) {
             //User selected source field in modal
-            if (result == 'Select Source') {
+            if (result == "Select Source") {
                 _this.selectService.getSelectedSource().subscribe(function (source) { return _this.source = source; });
-                _this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', _this.source["sourceId"])
+                _this._dataService.GetAllWithId("Sources/GetSourceFieldsBySource", _this.source["sourceId"])
                     .subscribe(function (sourceFields) {
                     _this.sourceAddEditService.setSourceFields(sourceFields);
                 });
@@ -77,8 +78,10 @@ var SourceAddEditComponent = (function () {
     SourceAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.sourceSubscription = this.sourceAddEditService.getSource().subscribe(function (source) { return _this.source = source; });
-        this.hasSourceFieldsSubscription = this.sourceAddEditService.hasSourceFields().subscribe(function (hasSourceFields) { return _this.hasSourceFields = hasSourceFields; });
-        this.hasSelectedSourceSubscription = this.selectService.hasSelectedSource().subscribe(function (hasSelectedSource) { return _this.hasSelectedSource = hasSelectedSource; });
+        this.hasSourceFieldsSubscription = this.sourceAddEditService.hasSourceFields()
+            .subscribe(function (hasSourceFields) { return _this.hasSourceFields = hasSourceFields; });
+        this.hasSelectedSourceSubscription = this.selectService.hasSelectedSource()
+            .subscribe(function (hasSelectedSource) { return _this.hasSelectedSource = hasSelectedSource; });
     };
     SourceAddEditComponent.prototype.ngOnDestroy = function () {
         this.sourceSubscription.unsubscribe();
@@ -87,8 +90,8 @@ var SourceAddEditComponent = (function () {
     };
     SourceAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'source-addedit',
-            templateUrl: 'app/source/source-addedit.component.html',
+            selector: "source-addedit",
+            templateUrl: "app/source/source-addedit.component.html",
             providers: [data_service_1.DataService, source_addedit_service_1.SourceAddEditService, source_select_service_1.SFieldSelectService],
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, ng_bootstrap_1.NgbModal, source_addedit_service_1.SourceAddEditService, source_select_service_1.SFieldSelectService])

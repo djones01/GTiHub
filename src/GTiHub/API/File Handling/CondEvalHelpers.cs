@@ -1,10 +1,14 @@
 ﻿namespace GTiHub.API.File_Handling
 {
+    #region
+
     using System.Collections.Generic;
 
     using GTiHub.Models.EntityModel;
 
     using NCalc;
+
+    #endregion
 
     public static class CondEvalHelpers
     {

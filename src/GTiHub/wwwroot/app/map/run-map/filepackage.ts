@@ -8,5 +8,6 @@
         public altHeadRow: number,
         public delimiter: string,
         public file: File
-    ) { }
+    ) {
+    }
 }

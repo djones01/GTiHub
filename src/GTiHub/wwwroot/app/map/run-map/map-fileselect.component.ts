@@ -1,26 +1,27 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RunMapService } from '../../services/map-runmap.service';
-import { Subscription }   from 'rxjs/Subscription';
-import { FileUploader, FileSelectDirective } from 'ng2-file-upload';
-import { Map } from '../map';
-import { FilePackage } from './filepackage';
+﻿import { Component, OnInit, OnDestroy } from "@angular/core";
+import { RunMapService } from "../../services/map-runmap.service";
+import { Subscription } from "rxjs/Subscription";
+import { FileUploader, FileSelectDirective } from "ng2-file-upload";
+import { Map } from "../map";
+import { FilePackage } from "./filepackage";
 
 @Component({
     moduleId: module.id,
-    selector: 'map-fileselect',
-    templateUrl: 'map-fileselect.component.html'
+    selector: "map-fileselect",
+    templateUrl: "map-fileselect.component.html"
 })
 export class MapFileSelectComponent implements OnInit, OnDestroy {
     //Array for file packages
     filePackages: FilePackage[];
-    public uploader: FileUploader;
+    uploader: FileUploader;
     selectedMapId: number;
-    processingMap: boolean = false;
+    processingMap = false;
+    lastUsedSourceId: number;
 
     //Model values for generation options
     fileName: string;
     fileExt: string;
-    outputDelimiter: string = ',';
+    outputDelimiter = ",";
     logFileName: string;
     checkCells: boolean;
     evalConditions: boolean;
@@ -32,42 +33,47 @@ export class MapFileSelectComponent implements OnInit, OnDestroy {
     //Set all other filepackages to be non primary - WORKAROUND
     primaryChanged(filePackage: FilePackage) {
         filePackage.isPrimarySource = true;
-        var others = this.filePackages.filter(function (el) {
-            return el != filePackage;
-        });
-        others.forEach(function (fp) {
+        const others = this.filePackages.filter(el => (el != filePackage));
+        others.forEach(function(fp) {
             fp.isPrimarySource = false;
         });
     }
 
-    fileChangeEvent(sourceId: string) {
-        this.uploader.onAfterAddingFile = (item) => {
-            item.alias = sourceId;
-        }
+    fileChangeEvent(sourceId: number, i: number) {
+        let sId = sourceId.toString();
+        //Remove items from the queue which have duplicate source IDs as the one being added
+        this.uploader.queue.forEach(fi => {
+            if (fi.alias === sId) {
+                this.uploader.removeFromQueue(fi);
+                i--;
+            }
+        });
+        this.uploader.queue[i].alias = sourceId.toString();
     }
 
     uploadAll() {
-        var formData = new FormData();
-        var fileList = this.uploader.queue;
-        var filePackage;
-        var i,j;
+        const formData = new FormData();
+        const fileList = this.uploader.queue;
+        let filePackage: FilePackage;
+        let i: number;
+        let j: number;
         for (i = 0; i < fileList.length; i++) {
-            var fileItem = fileList[i];
+            const fileItem = fileList[i];
             //Find the corresponding file package
             for (j = 0; j < this.filePackages.length; j++) {
                 if (this.filePackages[j].sourceId.toString() == fileItem.alias) {
                     filePackage = this.filePackages[j];
                 }
             }
-            formData.append("primary-" + filePackage.sourceId, filePackage.isPrimarySource);
-            formData.append("firstRowIsHeader-" + filePackage.sourceId, filePackage.firstRowHeader);
-            formData.append("altHeadRow-" + filePackage.sourceId, filePackage.altHeadRow);
-            formData.append("delimiter-" + filePackage.sourceId, filePackage.delimiter);
+            formData.append(`primary-${filePackage.sourceId}`, filePackage.isPrimarySource);
+            formData.append(`firstRowIsHeader-${filePackage.sourceId}`, filePackage.firstRowHeader);
+            formData.append(`altHeadRow-${filePackage.sourceId}`, filePackage.altHeadRow);
+            formData.append(`delimiter-${filePackage.sourceId}`, filePackage.delimiter);
             formData.append(filePackage.sourceId, fileItem._file, fileItem.file.name);
         }
         formData.append("mapId", this.selectedMapId);
         formData.append("evalConditions", this.evalConditions);
-        formData.append("outputDelimiter", (this.outputDelimiter == '' ? ',' : this.outputDelimiter));
+        formData.append("outputDelimiter", (this.outputDelimiter == "" ? "," : this.outputDelimiter));
 
         var xhr = new XMLHttpRequest();
 
@@ -75,46 +81,44 @@ export class MapFileSelectComponent implements OnInit, OnDestroy {
         var self = this;
         //MIME type of the returned file
         var mimetype = "";
-        var fileName = "";
+        const fileName = "";
 
-        xhr.onreadystatechange = function (e) {
+        xhr.onreadystatechange = function(e) {
             if (xhr.readyState == 4) {
                 self.setProcessing(false);
                 //Check the user set value of the file extension and set type 
                 switch (self.fileExt) {
-                    case "csv":
-                        mimetype = "text/csv";
-                        break;
-                    case "txt":
-                        mimetype = "text/plain";
-                        break;
-                    case "dat":
-                        mimetype = "application/octet-stream";
-                        break;
-                    default:
-                        mimetype = "text/plain";
-                        break;
+                case "csv":
+                    mimetype = "text/csv";
+                    break;
+                case "txt":
+                    mimetype = "text/plain";
+                    break;
+                case "dat":
+                    mimetype = "application/octet-stream";
+                    break;
+                default:
+                    mimetype = "text/plain";
+                    break;
                 }
 
                 // Create a new Blob object using the response data of the onload object
-                var blob = new Blob([this.response], { type: mimetype });
-                let a = document.createElement("a");
+                const blob = new Blob([this.response], { type: mimetype });
+                const a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);
                 //Create a DOMString representing the blob and point the link element towards it
-                let url = window.URL.createObjectURL(blob);
+                const url = window.URL.createObjectURL(blob);
                 a.href = url;
 
                 //Set the name of the returned file
                 if (self.fileName != "") {
                     if (self.fileExt != "") {
                         this.fileName = self.fileName + "." + self.fileExt;
-                    }
-                    else {
+                    } else {
                         this.fileName = self.fileName + ".txt";
-                    }                    
-                }
-                else {
+                    }
+                } else {
                     this.fileName = "output.txt";
                 }
                 a.setAttribute("download", this.fileName);
@@ -122,13 +126,13 @@ export class MapFileSelectComponent implements OnInit, OnDestroy {
                 a.click();
                 //release the reference to the file by revoking the Object URL
                 window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);              
+                document.body.removeChild(a);
             } else {
                 //deal with error state here
             }
         };
 
-        xhr.open("POST", "api/File/RunMapping",true);
+        xhr.open("POST", "api/File/RunMapping", true);
         xhr.send(formData);
         this.setProcessing(true);
     }
@@ -138,15 +142,19 @@ export class MapFileSelectComponent implements OnInit, OnDestroy {
     }
 
     constructor(private runMapService: RunMapService) {
-        this.uploader = new FileUploader({ url: 'api/File/RunMapping' });
+        this.uploader = new FileUploader({ url: "api/File/RunMapping" });
         this.uploader.onCompleteItem = (item: any, response: string, status: number, headers: any) => {
             var res = JSON.parse(response);
         };
     }
+
     ngOnInit() {
-        this.filePackageSubscription = this.runMapService.getFilePackages().subscribe(filePackages => this.filePackages = filePackages);
-        this.selectedMapIdSubscription = this.runMapService.getSelectedMapId().subscribe(selectedMapId => this.selectedMapId = selectedMapId);
+        this.filePackageSubscription = this.runMapService.getFilePackages()
+            .subscribe(filePackages => this.filePackages = filePackages);
+        this.selectedMapIdSubscription = this.runMapService.getSelectedMapId()
+            .subscribe(selectedMapId => this.selectedMapId = selectedMapId);
     }
+
     ngOnDestroy() {
         this.filePackageSubscription.unsubscribe();
         this.selectedMapIdSubscription.unsubscribe();

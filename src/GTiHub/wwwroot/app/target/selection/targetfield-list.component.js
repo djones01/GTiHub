@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../../services/data.service');
-var target_select_service_1 = require('../../services/target-select.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../../services/data.service");
+var target_select_service_1 = require("../../services/target-select.service");
 var TargetFieldListComponent = (function () {
     function TargetFieldListComponent(_dataService, selectService) {
         this._dataService = _dataService;
@@ -22,8 +22,10 @@ var TargetFieldListComponent = (function () {
     };
     TargetFieldListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.filterSubscription = this.selectService.getFilteredTargetFields().subscribe(function (targetFields) { return _this.targetFields = targetFields; });
-        this.selectedSubscription = this.selectService.getSelectedTargetField().subscribe(function (targetField) { return _this.selectedTargetField = targetField; });
+        this.filterSubscription = this.selectService.getFilteredTargetFields()
+            .subscribe(function (targetFields) { return _this.targetFields = targetFields; });
+        this.selectedSubscription = this.selectService.getSelectedTargetField()
+            .subscribe(function (targetField) { return _this.selectedTargetField = targetField; });
     };
     TargetFieldListComponent.prototype.ngOnDestroy = function () {
         this.filterSubscription.unsubscribe();
@@ -31,8 +33,8 @@ var TargetFieldListComponent = (function () {
     };
     TargetFieldListComponent = __decorate([
         core_1.Component({
-            selector: 'targetfield-list',
-            templateUrl: 'app/target/selection/targetfield-list.component.html',
+            selector: "targetfield-list",
+            templateUrl: "app/target/selection/targetfield-list.component.html",
             providers: [data_service_1.DataService],
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, target_select_service_1.TFieldSelectService])

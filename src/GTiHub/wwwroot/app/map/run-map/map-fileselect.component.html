@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </li>
-            <li *ngFor="let filePackage of filePackages" class="list-group-item">
+            <li *ngFor="let filePackage of filePackages; let i = index;" class="list-group-item">
                 <div class="row">
                     <div *ngIf="filePackages.length > 1" class="col-md-1">                     
                         <input type="radio" (click)="primaryChanged(filePackage)" name="primary" id="'primary'+filePackage.sourceId" [checked]="filePackage.isSourceHeader == true" value="true" />
@@ -51,7 +51,7 @@
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-default">
-                                    Browse&hellip; <input type="file" name="dataFile" style="display:none;" #dataFile (change)="fileChangeEvent(filePackage.sourceId)" ng2FileSelect [uploader]="uploader" />
+                                    Browse&hellip; <input type="file" name="dataFile" style="display:none;" #dataFile (change)="fileChangeEvent(filePackage.sourceId, i)" ng2FileSelect [uploader]="uploader" />
                                 </span>
                             </label>
                             <input type="text" class="form-control" readonly value="{{dataFile.value | extractFileName}}" />

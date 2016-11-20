@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../../services/data.service');
-var source_select_service_1 = require('../../services/source-select.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../../services/data.service");
+var source_select_service_1 = require("../../services/source-select.service");
 var SourceListComponent = (function () {
     function SourceListComponent(_dataService, selectService) {
         this._dataService = _dataService;
@@ -22,7 +22,8 @@ var SourceListComponent = (function () {
     };
     SourceListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.selectedSubscription = this.selectService.getSelectedSource().subscribe(function (selectedSource) { _this.selectedSource = selectedSource; });
+        this.selectedSubscription = this.selectService.getSelectedSource()
+            .subscribe(function (selectedSource) { _this.selectedSource = selectedSource; });
         this.sourcesSubscription = this.selectService.getSources().subscribe(function (sources) { return _this.sources = sources; });
         this.selectService.initSources();
     };
@@ -32,8 +33,8 @@ var SourceListComponent = (function () {
     };
     SourceListComponent = __decorate([
         core_1.Component({
-            selector: 'source-list',
-            templateUrl: 'app/source/selection/source-list.component.html',
+            selector: "source-list",
+            templateUrl: "app/source/selection/source-list.component.html",
             providers: [data_service_1.DataService],
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, source_select_service_1.SFieldSelectService])

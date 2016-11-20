@@ -1,13 +1,15 @@
-﻿// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace GTiHub.Controllers.API
+﻿namespace GTiHub.Controllers.API
 {
+    #region
+
     using System.Collections.Generic;
     using System.Linq;
 
     using GTiHub.Models.EntityModel;
 
     using Microsoft.AspNetCore.Mvc;
+
+    #endregion
 
     [Route("api/[controller]")]
     public class TargetsController : Controller

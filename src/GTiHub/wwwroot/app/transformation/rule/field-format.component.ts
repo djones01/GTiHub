@@ -1,27 +1,27 @@
-﻿import { Component, OnInit, OnChanges, Input, Output } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { DateFormatComponent } from './date-format.component';
+﻿import { Component, OnInit, OnChanges, Input, Output } from "@angular/core";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { DateFormatComponent } from "./date-format.component";
 
 @Component({
     moduleId: module.id,
-    selector: 'field-format',
-    templateUrl: 'field-format.component.html'
+    selector: "field-format",
+    templateUrl: "field-format.component.html"
 })
 export class FieldFormatComponent implements OnInit {
-    @Input() fieldDataType: string; 
+    @Input()
+    fieldDataType: string;
 
     //Modal Functions
     openCustomFormat(content) {
-        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
-            
-        }, (reason) => { });
+        this.modalService.open(content, { size: "lg" })
+            .result.then((result) => {
+
+                },
+                (reason) => {});
     }
 
-    constructor(private modalService: NgbModal) { }
-    ngOnInit() { }
-   
+    constructor(private modalService: NgbModal) {}
+
+    ngOnInit() {}
+
 }
-
-
-
-

@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GTiHub.Models.EntityModel
+﻿namespace GTiHub.Models.EntityModel
 {
+    #region
+
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    #endregion
+
     public class Map : BaseEntity
     {
         public Map()
@@ -15,14 +17,18 @@ namespace GTiHub.Models.EntityModel
             this.Transformations = new List<Transformation>();
         }
 
+        public bool Active { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime Effective_Date { get; set; }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MapId { get; set; }
-        public string Description { get; set; }
-        public DateTime Effective_Date { get; set; }
-        public bool Active { get; set; }
 
         public virtual ICollection<ProjectMap> ProjectMaps { get; set; }
+
         public virtual ICollection<Transformation> Transformations { get; set; }
     }
 }

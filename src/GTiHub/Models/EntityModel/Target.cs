@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GTiHub.Models.EntityModel
+﻿namespace GTiHub.Models.EntityModel
 {
+    #region
+
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    #endregion
+
     public class Target : BaseEntity
     {
         public Target()
@@ -15,15 +17,20 @@ namespace GTiHub.Models.EntityModel
             this.TargetFields = new List<TargetField>();
         }
 
+        public bool Active { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime Effective_Date { get; set; }
+
+        public string Name { get; set; }
+
+        public virtual ICollection<ProjectTarget> ProjectTargets { get; set; }
+
+        public virtual ICollection<TargetField> TargetFields { get; set; }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TargetId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime Effective_Date { get; set; }
-        public bool Active { get; set; }
-
-        public virtual ICollection<ProjectTarget> ProjectTargets { get; set; }
-        public virtual ICollection<TargetField> TargetFields { get; set; }
     }
 }

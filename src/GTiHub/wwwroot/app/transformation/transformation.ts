@@ -1,13 +1,14 @@
-﻿import { SourceField } from '../source/source';
-import { TargetField } from '../target/target';
-import { Map } from '../map/map';
+﻿import { SourceField } from "../source/source";
+import { TargetField } from "../target/target";
+import { Map } from "../map/map";
 
 export class Transformation {
     constructor(
         public description: string,
         public rule: Rule,
         public conditions: Condition[]
-    ) { }
+    ) {
+    }
 }
 
 export class Condition {
@@ -19,7 +20,8 @@ export class Condition {
         public cond_Value: string,
         public right_Paren: string,
         public sourceField: SourceField
-    ) { }
+    ) {
+    }
 }
 
 export class Rule {
@@ -29,16 +31,17 @@ export class Rule {
         public rule_Operation: string,
         public targetField: TargetField,
         public ruleSourceFields: RuleSourceField[]
-    ) { }
+    ) {
+    }
 }
 
 export class RuleSourceField {
     constructor(
         public seqNum: number,
         public append: string,
-        public prepend: string, 
+        public prepend: string,
         public custom_Format: string,
         public sourceField: SourceField
-    ) { }
+    ) {
+    }
 }
-

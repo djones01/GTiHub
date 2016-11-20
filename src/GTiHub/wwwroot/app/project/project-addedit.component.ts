@@ -1,13 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { DataService } from '../services/data.service';
+﻿import { Component, OnInit } from "@angular/core";
+import { DataService } from "../services/data.service";
 
 @Component({
-    selector: 'project-addedit',
+    selector: "project-addedit",
     providers: [DataService],
-    templateUrl: 'app/components/project/project-addedit.component.html'
+    templateUrl: "app/components/project/project-addedit.component.html"
 })
 export class ProjectAddEditComponent {
-    constructor(private _dataService: DataService) { }
+    constructor(private _dataService: DataService) {}
 
 
 }

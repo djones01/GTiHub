@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace GTiHub.Models.EntityModel
+﻿namespace GTiHub.Models.EntityModel
 {
+    #region
+
+    using System;
+
+    #endregion
+
     public class BaseEntity
     {
-        public DateTime? Creation_Date { get; set; }
         public string Created_By { get; set; }
+
+        public DateTime? Creation_Date { get; set; }
+
         public DateTime? Date_Modified { get; set; }
+
         public string Modified_By { get; set; }
     }
 }

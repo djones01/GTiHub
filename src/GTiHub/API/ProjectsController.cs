@@ -1,11 +1,15 @@
 ﻿namespace GTiHub.Controllers.API
 {
+    #region
+
     using System.Collections.Generic;
     using System.Linq;
 
     using GTiHub.Models.EntityModel;
 
     using Microsoft.AspNetCore.Mvc;
+
+    #endregion
 
     [Route("api/[controller]")]
     public class ProjectsController : Controller

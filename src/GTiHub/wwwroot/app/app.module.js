@@ -8,43 +8,43 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var platform_browser_1 = require('@angular/platform-browser');
-var forms_1 = require('@angular/forms');
-var app_component_1 = require('./app.component');
-var app_constants_1 = require('./app.constants');
-var app_routes_1 = require('./app.routes');
-var http_1 = require('@angular/http');
-var data_service_1 = require('./services/data.service');
-var ng2_pagination_1 = require('ng2-pagination');
-var ng2_file_upload_1 = require('ng2-file-upload');
-var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
-var ng2_datetime_picker_1 = require('ng2-datetime-picker');
+var core_1 = require("@angular/core");
+var platform_browser_1 = require("@angular/platform-browser");
+var forms_1 = require("@angular/forms");
+var app_component_1 = require("./app.component");
+var app_constants_1 = require("./app.constants");
+var app_routes_1 = require("./app.routes");
+var http_1 = require("@angular/http");
+var data_service_1 = require("./services/data.service");
+var ng2_pagination_1 = require("ng2-pagination");
+var ng2_file_upload_1 = require("ng2-file-upload");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
+var ng2_datetime_picker_1 = require("ng2-datetime-picker");
 //Component imports
-var home_component_1 = require('./home/home.component');
-var about_component_1 = require('./about/about.component');
-var project_detail_component_1 = require('./project/project-detail.component');
-var client_addedit_component_1 = require('./client/client-addedit.component');
-var source_addedit_component_1 = require('./source/source-addedit.component');
-var sourcefield_addedit_component_1 = require('./source/sourcefield-addedit.component');
-var source_list_component_1 = require('./source/selection/source-list.component');
-var sourcefield_list_component_1 = require('./source/selection/sourcefield-list.component');
-var target_addedit_component_1 = require('./target/target-addedit.component');
-var targetfield_addedit_component_1 = require('./target/targetfield-addedit.component');
-var target_list_component_1 = require('./target/selection/target-list.component');
-var targetfield_list_component_1 = require('./target/selection/targetfield-list.component');
-var map_addedit_component_1 = require('./map/map-addedit.component');
-var map_list_component_1 = require('./map/map-list.component');
-var map_runmap_component_1 = require('./map/run-map/map-runmap.component');
-var map_fileselect_component_1 = require('./map/run-map/map-fileselect.component');
-var transform_addedit_component_1 = require('./transformation/transform-addedit.component');
-var condition_addedit_component_1 = require('./transformation/condition/condition-addedit.component');
-var rule_addedit_component_1 = require('./transformation/rule/rule-addedit.component');
-var rulesourcefield_addedit_component_1 = require('./transformation/rule/rulesourcefield-addedit.component');
-var field_format_component_1 = require('./transformation/rule/field-format.component');
-var date_format_component_1 = require('./transformation/rule/date-format.component');
+var home_component_1 = require("./home/home.component");
+var about_component_1 = require("./about/about.component");
+var project_detail_component_1 = require("./project/project-detail.component");
+var client_addedit_component_1 = require("./client/client-addedit.component");
+var source_addedit_component_1 = require("./source/source-addedit.component");
+var sourcefield_addedit_component_1 = require("./source/sourcefield-addedit.component");
+var source_list_component_1 = require("./source/selection/source-list.component");
+var sourcefield_list_component_1 = require("./source/selection/sourcefield-list.component");
+var target_addedit_component_1 = require("./target/target-addedit.component");
+var targetfield_addedit_component_1 = require("./target/targetfield-addedit.component");
+var target_list_component_1 = require("./target/selection/target-list.component");
+var targetfield_list_component_1 = require("./target/selection/targetfield-list.component");
+var map_addedit_component_1 = require("./map/map-addedit.component");
+var map_list_component_1 = require("./map/map-list.component");
+var map_runmap_component_1 = require("./map/run-map/map-runmap.component");
+var map_fileselect_component_1 = require("./map/run-map/map-fileselect.component");
+var transform_addedit_component_1 = require("./transformation/transform-addedit.component");
+var condition_addedit_component_1 = require("./transformation/condition/condition-addedit.component");
+var rule_addedit_component_1 = require("./transformation/rule/rule-addedit.component");
+var rulesourcefield_addedit_component_1 = require("./transformation/rule/rulesourcefield-addedit.component");
+var field_format_component_1 = require("./transformation/rule/field-format.component");
+var date_format_component_1 = require("./transformation/rule/date-format.component");
 //Pipes
-var extract_file_name_pipe_1 = require('./pipes/extract-file-name.pipe');
+var extract_file_name_pipe_1 = require("./pipes/extract-file-name.pipe");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -60,7 +60,8 @@ var AppModule = (function () {
                 ng_bootstrap_1.NgbModule.forRoot(),
                 app_routes_1.routing
             ],
-            declarations: [app_component_1.AppComponent,
+            declarations: [
+                app_component_1.AppComponent,
                 home_component_1.HomeComponent,
                 about_component_1.AboutComponent,
                 project_detail_component_1.ProjectDetailComponent,

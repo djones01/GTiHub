@@ -1,5 +1,7 @@
 ﻿namespace GTiHub.Controllers.API
 {
+    #region
+
     using System.Collections.Generic;
     using System.Linq;
 
@@ -7,7 +9,8 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
-    using GTiHub.API;
+
+    #endregion
 
     [Route("api/[controller]")]
     public class MapsController : Controller
@@ -38,12 +41,6 @@
             return this._dbContext.Maps.ToList();
         }
 
-        [HttpGet("GetMapTransforms/{id}")]
-        public IEnumerable<Transformation> GetMapTransforms(int id)
-        {
-            return this._dbContext.Transformations.Where(x => x.MapId == id).Include(transform => transform.Rule).Include(transform => transform.Conditions).ToList();
-        }
-
         // GET api/Maps/5
         [HttpGet("{id}", Name = "GetMap")]
         public IActionResult Get(int id)
@@ -52,6 +49,16 @@
             if (map == null) return this.NotFound();
 
             return new ObjectResult(map);
+        }
+
+        [HttpGet("GetMapTransforms/{id}")]
+        public IEnumerable<Transformation> GetMapTransforms(int id)
+        {
+            return
+                this._dbContext.Transformations.Where(x => x.MapId == id)
+                    .Include(transform => transform.Rule)
+                    .Include(transform => transform.Conditions)
+                    .ToList();
         }
 
         // GET api/Maps/MapSources/5

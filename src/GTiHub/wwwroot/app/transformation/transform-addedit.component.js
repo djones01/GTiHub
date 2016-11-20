@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
-var map_addedit_service_1 = require('../services/map-addedit.service');
-var source_select_service_1 = require('../services/source-select.service');
-var target_select_service_1 = require('../services/target-select.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
+var map_addedit_service_1 = require("../services/map-addedit.service");
+var source_select_service_1 = require("../services/source-select.service");
+var target_select_service_1 = require("../services/target-select.service");
 var TransformAddEditComponent = (function () {
     function TransformAddEditComponent(_dataService, mapAddEditService) {
         this._dataService = _dataService;
@@ -37,15 +37,16 @@ var TransformAddEditComponent = (function () {
     };
     TransformAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.transformSubscription = this.mapAddEditService.getTransform().subscribe(function (transform) { return _this.transform = transform; });
+        this.transformSubscription = this.mapAddEditService.getTransform()
+            .subscribe(function (transform) { return _this.transform = transform; });
     };
     TransformAddEditComponent.prototype.ngOnDestroy = function () {
         this.transformSubscription.unsubscribe();
     };
     TransformAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'transform-addedit',
-            templateUrl: 'app/transformation/transform-addedit.component.html',
+            selector: "transform-addedit",
+            templateUrl: "app/transformation/transform-addedit.component.html",
             providers: [source_select_service_1.SFieldSelectService, target_select_service_1.TFieldSelectService]
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, map_addedit_service_1.MapAddEditService])

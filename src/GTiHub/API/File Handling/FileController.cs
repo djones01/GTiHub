@@ -1,5 +1,7 @@
 ﻿namespace GTiHub.API.File_Handling
 {
+    #region
+
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -11,6 +13,8 @@
 
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+
+    #endregion
 
     [Route("api/[controller]")]
     public class FileController : Controller

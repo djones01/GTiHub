@@ -8,16 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var BehaviorSubject_1 = require('rxjs/BehaviorSubject');
-var data_service_1 = require('./data.service');
-var source_1 = require('../source/source');
+var core_1 = require("@angular/core");
+var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+var data_service_1 = require("./data.service");
+var source_1 = require("../source/source");
 var SourceAddEditService = (function () {
     function SourceAddEditService(_dataService) {
         this._dataService = _dataService;
         this.seqNumCount = 1;
         //Values for tracking state of Source
-        this.sourceSubj = new BehaviorSubject_1.BehaviorSubject(new source_1.Source('', '', '', true, null));
+        this.sourceSubj = new BehaviorSubject_1.BehaviorSubject(new source_1.Source("", "", "", true, null));
         //Values for tracking state of Source sourcefields
         this.sourceFieldsSubj = new BehaviorSubject_1.BehaviorSubject([]);
         this.hasSourceFieldsSubj = new BehaviorSubject_1.BehaviorSubject(false);
@@ -26,7 +26,7 @@ var SourceAddEditService = (function () {
     SourceAddEditService.prototype.createOrUpdateSource = function () {
         var source = this.sourceSubj.getValue();
         source.sourceFields = this.sourceFieldsSubj.getValue();
-        this._dataService.Add('Sources', source).subscribe(function (source) { }, function (error) { return console.log(error); });
+        this._dataService.Add("Sources", source).subscribe(function (source) { }, function (error) { return console.log(error); });
     };
     SourceAddEditService.prototype.setSource = function (source) {
         this.sourceSubj.next(source);
@@ -57,7 +57,8 @@ var SourceAddEditService = (function () {
     };
     SourceAddEditService.prototype.addNewSourceField = function () {
         //Use concat here since push would return the length of the array post push
-        this.sourceFieldsSubj.next(this.sourceFieldsSubj.getValue().concat(new source_1.SourceField('N/A', 'text', true, this.seqNumCount++)));
+        this.sourceFieldsSubj.next(this.sourceFieldsSubj.getValue()
+            .concat(new source_1.SourceField("N/A", "text", true, this.seqNumCount++)));
         this.setHasSourceFields();
     };
     SourceAddEditService.prototype.removeSourceField = function (sourceField, i) {
@@ -91,7 +92,7 @@ var SourceAddEditService = (function () {
         return this.hasSourceFieldsSubj.asObservable();
     };
     SourceAddEditService.prototype.clear = function () {
-        this.sourceSubj.next(new source_1.Source('', '', '', true, null));
+        this.sourceSubj.next(new source_1.Source("", "", "", true, null));
         this.sourceFieldsSubj.next([]);
         this.hasSourceFieldsSubj.next(false);
     };

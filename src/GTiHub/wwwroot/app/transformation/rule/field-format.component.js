@@ -8,15 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
+var core_1 = require("@angular/core");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
 var FieldFormatComponent = (function () {
     function FieldFormatComponent(modalService) {
         this.modalService = modalService;
     }
     //Modal Functions
     FieldFormatComponent.prototype.openCustomFormat = function (content) {
-        this.modalService.open(content, { size: 'lg' }).result.then(function (result) {
+        this.modalService.open(content, { size: "lg" })
+            .result.then(function (result) {
         }, function (reason) { });
     };
     FieldFormatComponent.prototype.ngOnInit = function () { };
@@ -27,8 +28,8 @@ var FieldFormatComponent = (function () {
     FieldFormatComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'field-format',
-            templateUrl: 'field-format.component.html'
+            selector: "field-format",
+            templateUrl: "field-format.component.html"
         }), 
         __metadata('design:paramtypes', [ng_bootstrap_1.NgbModal])
     ], FieldFormatComponent);

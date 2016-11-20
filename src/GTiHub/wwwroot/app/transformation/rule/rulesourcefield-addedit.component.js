@@ -8,11 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../../services/data.service');
-var ng_bootstrap_1 = require('@ng-bootstrap/ng-bootstrap');
-var source_select_service_1 = require('../../services/source-select.service');
-var map_addedit_service_1 = require('../../services/map-addedit.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../../services/data.service");
+var ng_bootstrap_1 = require("@ng-bootstrap/ng-bootstrap");
+var source_select_service_1 = require("../../services/source-select.service");
+var map_addedit_service_1 = require("../../services/map-addedit.service");
 var RuleSourceFieldAddEditComponent = (function () {
     function RuleSourceFieldAddEditComponent(_dataService, modalService, selectService, MapAddEditService) {
         this._dataService = _dataService;
@@ -26,9 +26,10 @@ var RuleSourceFieldAddEditComponent = (function () {
     RuleSourceFieldAddEditComponent.prototype.openSourceSelect = function (content, ruleSourceField) {
         var _this = this;
         this.selectingRuleSourceField = ruleSourceField;
-        this.modalService.open(content, { size: 'lg' }).result.then(function (result) {
+        this.modalService.open(content, { size: "lg" })
+            .result.then(function (result) {
             //User selected source field in modal
-            if (result == 'Select SField') {
+            if (result == "Select SField") {
                 _this.selectingRuleSourceField.sourceField = _this.selectedSourceField;
             }
         }, function (reason) { });
@@ -42,10 +43,13 @@ var RuleSourceFieldAddEditComponent = (function () {
     RuleSourceFieldAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         //Modal subscriptions
-        this.hasSelectedSubscription = this.selectService.hasSelectedSourceField().subscribe(function (hasSelectedSourceField) { return _this.hasSelectedSourceField = hasSelectedSourceField; });
-        this.getSelectedSubscription = this.selectService.getSelectedSourceField().subscribe(function (selectedSourceField) { return _this.selectedSourceField = selectedSourceField; });
+        this.hasSelectedSubscription = this.selectService.hasSelectedSourceField()
+            .subscribe(function (hasSelectedSourceField) { return _this.hasSelectedSourceField = hasSelectedSourceField; });
+        this.getSelectedSubscription = this.selectService.getSelectedSourceField()
+            .subscribe(function (selectedSourceField) { return _this.selectedSourceField = selectedSourceField; });
         //Map creation subscriptions
-        this.getRuleSourceSubscription = this.MapAddEditService.getRuleSourceFields().subscribe(function (ruleSourceFields) { return _this.ruleSourceFields = ruleSourceFields; });
+        this.getRuleSourceSubscription = this.MapAddEditService.getRuleSourceFields()
+            .subscribe(function (ruleSourceFields) { return _this.ruleSourceFields = ruleSourceFields; });
     };
     RuleSourceFieldAddEditComponent.prototype.ngOnDestroy = function () {
         //Modal subscriptions
@@ -56,8 +60,8 @@ var RuleSourceFieldAddEditComponent = (function () {
     };
     RuleSourceFieldAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'rulesourcefield-addedit',
-            templateUrl: 'app/transformation/rule/rulesourcefield-addedit.component.html',
+            selector: "rulesourcefield-addedit",
+            templateUrl: "app/transformation/rule/rulesourcefield-addedit.component.html",
             providers: [data_service_1.DataService, source_select_service_1.SFieldSelectService]
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, ng_bootstrap_1.NgbModal, source_select_service_1.SFieldSelectService, map_addedit_service_1.MapAddEditService])

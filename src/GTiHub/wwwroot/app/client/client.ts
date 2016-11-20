@@ -2,5 +2,6 @@
     constructor(
         public name: string,
         public industry: string
-    ) { }
+    ) {
+    }
 }

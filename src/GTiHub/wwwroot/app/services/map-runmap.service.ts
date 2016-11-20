@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { DataService } from './data.service';
-import { FilePackage } from '../map/run-map/filepackage';
-import { Map } from '../map/map';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { DataService } from "./data.service";
+import { FilePackage } from "../map/run-map/filepackage";
+import { Map } from "../map/map";
 
 @Injectable()
 export class RunMapService {
@@ -15,27 +15,40 @@ export class RunMapService {
     //On changing selected mapping
     initFilePackages(mapId: number) {
         var filepackages = new Array<FilePackage>();
-        this._dataService.GetAllWithId('Maps/MapSources', mapId).subscribe(sources => {
-            sources.forEach(function (source) {
-                filepackages.push(new FilePackage(false,source['sourceId'], source['name'], source['description'], true, 1,'', null));
+        this._dataService.GetAllWithId("Maps/MapSources", mapId)
+            .subscribe(sources => {
+                sources.forEach(function(source) {
+                    filepackages.push(new FilePackage(false,
+                        source["sourceId"],
+                        source["name"],
+                        source["description"],
+                        true,
+                        1,
+                        "",
+                        null));
+                });
+                if (filepackages.length == 1) {
+                    filepackages[0].isPrimarySource = true;
+                }
+                this.filePackagesSubj.next(filepackages);
+                this.selectedMapIdSubj.next(mapId);
             });
-            if (filepackages.length == 1) {
-                filepackages[0].isPrimarySource = true;
-            }
-            this.filePackagesSubj.next(filepackages);
-            this.selectedMapIdSubj.next(mapId);
-        });
     }
 
     initMaps() {
         //Returns an object
-        this._dataService.GetAll('Maps').subscribe((maps: Object[]) => {
-            var selectMaps = new Array<Map>();
-            maps.forEach(function (map) {
-                selectMaps.push(new Map(map["description"], map["effective_Date"], map["active"], map["transformations"], map["mapId"]));
+        this._dataService.GetAll("Maps")
+            .subscribe((maps: Object[]) => {
+                var selectMaps = new Array<Map>();
+                maps.forEach(function(map) {
+                    selectMaps.push(new Map(map["description"],
+                        map["effective_Date"],
+                        map["active"],
+                        map["transformations"],
+                        map["mapId"]));
+                });
+                this.mapsSubj.next(selectMaps);
             });
-            this.mapsSubj.next(selectMaps);
-        });
     }
 
     getMaps(): Observable<Array<Map>> {

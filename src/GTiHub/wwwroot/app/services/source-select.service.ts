@@ -1,8 +1,8 @@
-﻿import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Source, SourceField } from '../source/source';
-import { DataService } from './data.service';
+﻿import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
+import { Source, SourceField } from "../source/source";
+import { DataService } from "./data.service";
 
 @Injectable()
 export class SFieldSelectService {
@@ -17,33 +17,41 @@ export class SFieldSelectService {
     setSelectedSource(source: Source) {
         this.selectedSourceSubj.next(source);
         this.hasSelectedSourceSubj.next(true);
- 
+
         //Set the available source fields
-        this._dataService.GetAllWithId('Sources/GetSourceFieldsBySource', this.selectedSourceSubj.getValue()["sourceId"])
+        this._dataService.GetAllWithId("Sources/GetSourceFieldsBySource",
+                this.selectedSourceSubj.getValue()["sourceId"])
             .subscribe(sourceFields => {
                 this.filteredSourceFieldsSubj.next(sourceFields);
-            });   
-        
+            });
+
         this.hasSourceFieldSubj.next(false);
     }
+
     getSelectedSource(): Observable<Source> {
         return this.selectedSourceSubj.asObservable();
     }
+
     hasSelectedSource(): Observable<boolean> {
         return this.hasSelectedSourceSubj.asObservable();
     }
+
     getSources(): Observable<Source[]> {
         return this.sourcesSubj.asObservable();
     }
+
     setSources(sources: Source[]) {
         this.sourcesSubj.next(sources);
     }
+
     addSource(source: Source) {
         //Use concat here since push would return the length of the array post push
         this.sourcesSubj.next(this.sourcesSubj.getValue().concat(source));
     }
+
     initSources() {
-        this._dataService.GetAll('Sources').subscribe(sources => this.sourcesSubj.next(sources), error => console.log(error));
+        this._dataService.GetAll("Sources")
+            .subscribe(sources => this.sourcesSubj.next(sources), error => console.log(error));
     }
 
     //Sourcefield methods
@@ -52,6 +60,7 @@ export class SFieldSelectService {
 
         this.hasSourceFieldSubj.next(true);
     }
+
     getSelectedSourceField(): Observable<SourceField> {
         return this.selectedSourceFieldSubj.asObservable();
     }
@@ -67,7 +76,7 @@ export class SFieldSelectService {
     }
 
     constructor(private _dataService: DataService) {
-        
+
     }
 
 }

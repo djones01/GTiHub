@@ -8,22 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var data_service_1 = require('../services/data.service');
-var target_addedit_service_1 = require('../services/target-addedit.service');
+var core_1 = require("@angular/core");
+var data_service_1 = require("../services/data.service");
+var target_addedit_service_1 = require("../services/target-addedit.service");
 var TargetFieldAddEditComponent = (function () {
     function TargetFieldAddEditComponent(_dataService, targetAddEditService) {
         this._dataService = _dataService;
         this.targetAddEditService = targetAddEditService;
         this.targetFields = [];
         this.options = [
-            { value: 'url', display: 'URL' },
-            { value: 'text', display: 'Text' },
-            { value: 'date', display: 'Date' },
-            { value: 'bool', display: 'Boolean' },
-            { value: 'num', display: 'Number' },
-            { value: 'currency', display: 'Currency' },
-            { value: 'email', display: 'Email' }
+            { value: "url", display: "URL" },
+            { value: "text", display: "Text" },
+            { value: "date", display: "Date" },
+            { value: "bool", display: "Boolean" },
+            { value: "num", display: "Number" },
+            { value: "currency", display: "Currency" },
+            { value: "email", display: "Email" }
         ];
     }
     TargetFieldAddEditComponent.prototype.removeTargetField = function (targetField, i) {
@@ -31,15 +31,16 @@ var TargetFieldAddEditComponent = (function () {
     };
     TargetFieldAddEditComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.targetFieldSubscription = this.targetAddEditService.getTargetFields().subscribe(function (targetFields) { return _this.targetFields = targetFields; });
+        this.targetFieldSubscription = this.targetAddEditService.getTargetFields()
+            .subscribe(function (targetFields) { return _this.targetFields = targetFields; });
     };
     TargetFieldAddEditComponent.prototype.ngOnDestroy = function () {
         this.targetFieldSubscription.unsubscribe();
     };
     TargetFieldAddEditComponent = __decorate([
         core_1.Component({
-            selector: 'targetfield-addedit',
-            templateUrl: 'app/target/targetfield-addedit.component.html',
+            selector: "targetfield-addedit",
+            templateUrl: "app/target/targetfield-addedit.component.html",
             providers: [data_service_1.DataService],
         }), 
         __metadata('design:paramtypes', [data_service_1.DataService, target_addedit_service_1.TargetAddEditService])

@@ -8,15 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var ExtractFileNamePipe = (function () {
     function ExtractFileNamePipe() {
     }
     ExtractFileNamePipe.prototype.transform = function (value) {
-        return value.replace(/\\/g, '/').replace(/.*\//, '');
+        return value.replace(/\\/g, "/").replace(/.*\//, "");
     };
     ExtractFileNamePipe = __decorate([
-        core_1.Pipe({ name: 'extractFileName' }), 
+        core_1.Pipe({ name: "extractFileName" }), 
         __metadata('design:paramtypes', [])
     ], ExtractFileNamePipe);
     return ExtractFileNamePipe;

@@ -8,15 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var map_runmap_service_1 = require('../../services/map-runmap.service');
-var ng2_file_upload_1 = require('ng2-file-upload');
+var core_1 = require("@angular/core");
+var map_runmap_service_1 = require("../../services/map-runmap.service");
+var ng2_file_upload_1 = require("ng2-file-upload");
 var MapFileSelectComponent = (function () {
     function MapFileSelectComponent(runMapService) {
         this.runMapService = runMapService;
         this.processingMap = false;
-        this.outputDelimiter = ',';
-        this.uploader = new ng2_file_upload_1.FileUploader({ url: 'api/File/RunMapping' });
+        this.outputDelimiter = ",";
+        this.uploader = new ng2_file_upload_1.FileUploader({ url: "api/File/RunMapping" });
         this.uploader.onCompleteItem = function (item, response, status, headers) {
             var res = JSON.parse(response);
         };
@@ -24,23 +24,29 @@ var MapFileSelectComponent = (function () {
     //Set all other filepackages to be non primary - WORKAROUND
     MapFileSelectComponent.prototype.primaryChanged = function (filePackage) {
         filePackage.isPrimarySource = true;
-        var others = this.filePackages.filter(function (el) {
-            return el != filePackage;
-        });
+        var others = this.filePackages.filter(function (el) { return (el != filePackage); });
         others.forEach(function (fp) {
             fp.isPrimarySource = false;
         });
     };
-    MapFileSelectComponent.prototype.fileChangeEvent = function (sourceId) {
-        this.uploader.onAfterAddingFile = function (item) {
-            item.alias = sourceId;
-        };
+    MapFileSelectComponent.prototype.fileChangeEvent = function (sourceId, i) {
+        var _this = this;
+        var sId = sourceId.toString();
+        //Remove items from the queue which have duplicate source IDs as the one being added
+        this.uploader.queue.forEach(function (fi) {
+            if (fi.alias === sId) {
+                _this.uploader.removeFromQueue(fi);
+                i--;
+            }
+        });
+        this.uploader.queue[i].alias = sourceId.toString();
     };
     MapFileSelectComponent.prototype.uploadAll = function () {
         var formData = new FormData();
         var fileList = this.uploader.queue;
         var filePackage;
-        var i, j;
+        var i;
+        var j;
         for (i = 0; i < fileList.length; i++) {
             var fileItem = fileList[i];
             //Find the corresponding file package
@@ -57,7 +63,7 @@ var MapFileSelectComponent = (function () {
         }
         formData.append("mapId", this.selectedMapId);
         formData.append("evalConditions", this.evalConditions);
-        formData.append("outputDelimiter", (this.outputDelimiter == '' ? ',' : this.outputDelimiter));
+        formData.append("outputDelimiter", (this.outputDelimiter == "" ? "," : this.outputDelimiter));
         var xhr = new XMLHttpRequest();
         //Need to use self in callback to have access to "this"
         var self = this;
@@ -121,8 +127,10 @@ var MapFileSelectComponent = (function () {
     };
     MapFileSelectComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.filePackageSubscription = this.runMapService.getFilePackages().subscribe(function (filePackages) { return _this.filePackages = filePackages; });
-        this.selectedMapIdSubscription = this.runMapService.getSelectedMapId().subscribe(function (selectedMapId) { return _this.selectedMapId = selectedMapId; });
+        this.filePackageSubscription = this.runMapService.getFilePackages()
+            .subscribe(function (filePackages) { return _this.filePackages = filePackages; });
+        this.selectedMapIdSubscription = this.runMapService.getSelectedMapId()
+            .subscribe(function (selectedMapId) { return _this.selectedMapId = selectedMapId; });
     };
     MapFileSelectComponent.prototype.ngOnDestroy = function () {
         this.filePackageSubscription.unsubscribe();
@@ -131,8 +139,8 @@ var MapFileSelectComponent = (function () {
     MapFileSelectComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'map-fileselect',
-            templateUrl: 'map-fileselect.component.html'
+            selector: "map-fileselect",
+            templateUrl: "map-fileselect.component.html"
         }), 
         __metadata('design:paramtypes', [map_runmap_service_1.RunMapService])
     ], MapFileSelectComponent);
